@@ -7,7 +7,8 @@ using Microsoft.Xna.Framework;
 namespace RC.Engine.Animation
 {
     public class RCKeyFrameController<CntrlType> 
-        : DurationController<CntrlType> where CntrlType : RCSpatial
+        : RCDurationController<CntrlType> 
+            where CntrlType : RCSpatial
     {
         public enum InterpolationMode
         {
@@ -114,7 +115,6 @@ namespace RC.Engine.Animation
                 out _destRot,
                 out _destTrans
                 );
- 
         }
 
         protected override void UpdateDurationAnimation(
@@ -131,8 +131,8 @@ namespace RC.Engine.Animation
                 out lerpRot,
                 out lerpTrans
                 );
-           
-            
+
+
             if (_doRotation)
             {
                 float alteredPecentComplete = 0.0f;
@@ -155,9 +155,7 @@ namespace RC.Engine.Animation
                     case QuaternionInterploationMode.Spherical:
                         lerpRot = Quaternion.Slerp(_sourceRot, _destRot, alteredPecentComplete);
                         break;
-
                 }
-                
             }
             if (_doScale)
             {
@@ -170,10 +168,9 @@ namespace RC.Engine.Animation
                         lerpScale = Vector3.SmoothStep(_sourceScale, _destScale, percentComplete);
                         break;
                 }
-                
             }
 
-            if ( _doTranslation)
+            if (_doTranslation)
             {
                 switch (TranslationMode)
                 {
@@ -190,8 +187,6 @@ namespace RC.Engine.Animation
                 Matrix.CreateScale(lerpScale) *
                 Matrix.CreateFromQuaternion(lerpRot) *
                 Matrix.CreateTranslation(lerpTrans);
-                
-        }
-           
+        }  
     }
 }

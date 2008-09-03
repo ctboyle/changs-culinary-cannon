@@ -8,6 +8,7 @@ using Microsoft.Xna.Framework.Content;
 using RC.Engine.Animation;
 using RC.Engine.Cameras;
 using RC.Engine.GraphicsManagement.BoundingVolumes;
+using RC.Engine.Rendering;
 
 #endregion
 
@@ -29,49 +30,29 @@ namespace RC.Engine.GraphicsManagement
         protected Matrix _worldTrans;
         private Matrix _localTrans;
 
-        protected List<IController> _animateControllers;
+        protected List<IRCController> _animateControllers;
 
 
         public RCSpatial parentNode
         {
-            get
-            {
-                return _parentNode;
-            }
-
-            set
-            {
-                _parentNode = value;
-            }
+            get { return _parentNode; }
+            set { _parentNode = value; }
         }
         
         public IRCBoundingVolume WorldBound
         {
-            get
-            {
-                return _worldBound;
-            }
+            get { return _worldBound; }
         }
 
         public Matrix LocalTrans
         {
-            get
-            {
-                return _localTrans;
-            }
-            set
-            {
-                _localTrans = value;
-            }
-
+            get { return _localTrans; }
+            set { _localTrans = value; }
         }
 
         public Matrix WorldTrans
         {
-            get
-            {
-                return _worldTrans;
-            }
+            get { return _worldTrans; }
         }
 
         public RCSpatial()
@@ -84,23 +65,19 @@ namespace RC.Engine.GraphicsManagement
                 Vector3.Zero,
                 0.0f
                 );
-                    
-            _animateControllers = new List<IController>();
 
+            _animateControllers = new List<IRCController>();
         }
 
         /// <summary>
         /// Abstract method for loading graphic content.
         /// </summary>
-        public abstract void LoadGraphicsContent(
-            GraphicsDevice graphics,
-            ContentManager content
-            );
+        public abstract void LoadContent(ContentManager content, IServiceProvider services);
 
         /// <summary>
         /// Abstract method for un-loading graphic content.
         /// </summary>
-        public abstract void UnloadGraphicsContent();
+        public abstract void UnloadContent();
 
         /// <summary>
         /// Called to update the SceneObject
@@ -120,11 +97,9 @@ namespace RC.Engine.GraphicsManagement
         /// <summary>
         /// Override for specific behavior on the draw pass.
         /// </summary>
-        public abstract void Draw(GraphicsDevice graphicsDevice);
+        public abstract void Draw(GameTime gameTime, IServiceProvider services);
     
-
-
-        public bool AddController(IController controller)
+        public bool AddController(IRCController controller)
         {
             bool fAttachSucceeded = false;
 
@@ -137,11 +112,11 @@ namespace RC.Engine.GraphicsManagement
             return fAttachSucceeded;
         }
 
-        public IController GetController<ContrllerType> ()
+        public IRCController GetController<ContrllerType>()
         {
 
-            return _animateControllers.FindLast(new Predicate<IController>(
-                    delegate(IController x)
+            return _animateControllers.FindLast(new Predicate<IRCController>(
+                    delegate(IRCController x)
                     {
                         if (x is ContrllerType)
                         {
@@ -153,7 +128,7 @@ namespace RC.Engine.GraphicsManagement
                 ));
         }   
 
-        public void RemoveController(IController controller)
+        public void RemoveController(IRCController controller)
         {
             if (controller != null)
             {
@@ -207,9 +182,4 @@ namespace RC.Engine.GraphicsManagement
             }
         }
     }
-
-
-
 }
-
-

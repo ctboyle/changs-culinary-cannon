@@ -1,6 +1,6 @@
 using System;
 
-namespace ChangsCulinaryCannon_Win
+namespace ChangsCulinaryCannon
 {
     static class Program
     {

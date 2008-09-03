@@ -3,6 +3,8 @@ Microsoft Visual Studio Solution File, Format Version 9.00
 # Visual Studio 2005
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RC.Engine", "RC.Engine\RC.Engine.csproj", "{8618CBBD-9108-493E-A4FC-BE6D6EDE0771}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ChangsCulinaryCannon-Win", "..\ChangsCulinaryCannon-Win\ChangsCulinaryCannon-Win\ChangsCulinaryCannon-Win.csproj", "{71CA02AC-982C-437E-9BB8-EB822CD9DE6C}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x86 = Debug|x86
@@ -15,6 +17,12 @@ Global
 		{8618CBBD-9108-493E-A4FC-BE6D6EDE0771}.Release|x86.Build.0 = Release|x86
 		{77F6EF9A-E976-4D9B-A105-C68532A2C39E}.Debug|x86.ActiveCfg = Debug|x86
 		{77F6EF9A-E976-4D9B-A105-C68532A2C39E}.Release|x86.ActiveCfg = Release|x86
+		{71CA02AC-982C-437E-9BB8-EB822CD9DE6C}.Debug|x86.ActiveCfg = Debug|x86
+		{71CA02AC-982C-437E-9BB8-EB822CD9DE6C}.Debug|x86.Build.0 = Debug|x86
+		{71CA02AC-982C-437E-9BB8-EB822CD9DE6C}.Release|x86.ActiveCfg = Release|x86
+		{71CA02AC-982C-437E-9BB8-EB822CD9DE6C}.Release|x86.Build.0 = Release|x86
+		{C5140CA6-E09C-42E0-8CD3-ADEB17BF350A}.Debug|x86.ActiveCfg = Debug|x86
+		{C5140CA6-E09C-42E0-8CD3-ADEB17BF350A}.Release|x86.ActiveCfg = Release|x86
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -6,6 +6,7 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Content;
 
 using RC.Engine.GraphicsManagement.BoundingVolumes;
+using RC.Engine.Rendering;
 #endregion
 
 namespace RC.Engine.GraphicsManagement
@@ -15,11 +16,11 @@ namespace RC.Engine.GraphicsManagement
     /// 
     /// The RCNode's bounding volume is computed by merging all of its children.
     /// </summary>
-    public class RCSceneNode : RCSpatial, INode
+    public class RCNode : RCSpatial, IRCNode
     {
         protected List<RCSpatial> listChildren;
         
-        public RCSceneNode()
+        public RCNode()
         {
             listChildren = new List<RCSpatial>();
         }
@@ -51,42 +52,34 @@ namespace RC.Engine.GraphicsManagement
         /// <summary>
         /// Invokes all children's LoadGraphicsContent.
         /// </summary>
-        public override void LoadGraphicsContent(
-            GraphicsDevice graphics,
-            ContentManager content
-            )
+        public override void LoadContent(ContentManager content, IServiceProvider services)
         {
             foreach (RCSpatial child in listChildren)
             {
-                child.LoadGraphicsContent(
-                    graphics,
-                    content
-                );
-
+                child.LoadContent(content, services);
             }
         }
 
         /// <summary>
         /// Invokes all children's UnloadGraphicsContent.
         /// </summary>
-        public override void UnloadGraphicsContent()
+        public override void UnloadContent()
         {
             foreach (RCSpatial child in listChildren)
             {
-                child.UnloadGraphicsContent();
+                child.UnloadContent();
 
             }
         }
 
-
         /// <summary>
         /// Draws all children 
         /// </summary>
-        public override void Draw(GraphicsDevice graphicsDevice)
+        public override void Draw(GameTime gameTime, IServiceProvider services)
         {           
             foreach (RCSpatial child in listChildren)
             {
-                child.Draw(graphicsDevice);
+                child.Draw(gameTime, services);
             }
         }
 

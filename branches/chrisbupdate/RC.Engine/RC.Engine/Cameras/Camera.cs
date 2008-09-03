@@ -10,7 +10,7 @@ using RC.Engine.Rendering;
 
 namespace RC.Engine.Cameras
 {
-    public abstract class RCCamera : RCSceneNode
+    public abstract class RCCamera : RCNode
     {
         protected Matrix _view;
         protected Matrix _projection;
@@ -38,26 +38,17 @@ namespace RC.Engine.Cameras
          
         public Matrix View
         {
-            get
-            {
-                return _view;
-            }
+            get { return _view; }
         }
 
         public Matrix Projection
         {
-            get
-            {
-                return _projection;
-            }
+            get { return _projection; }
         }
 
         public Viewport Viewport
         {
-            get
-            {
-                return _viewport;
-            }
+            get { return _viewport; }
             set
             {
                 _viewport = value;
@@ -68,29 +59,16 @@ namespace RC.Engine.Cameras
         
         public float Near
         {
-            get
-            {
-                return _near;
-            }
-            set
-            {
-                _near = value;
-            }
+            get { return _near; }
+            set { _near = value; }
         }
 
         public float Far
         {
-            get
-            {
-                return _far;
-            }
-            set
-            {
-                _far = value;
-            }
+            get { return _far; }
+            set { _far = value; }
         }
         
-
         public Color ClearColor
         {
             get { return _clearColor; }
@@ -98,7 +76,7 @@ namespace RC.Engine.Cameras
         }
 
         public RCCamera(Viewport newViewport)
-            :base()
+            : base()
         {
             SetViewport(newViewport);
 
@@ -158,7 +136,6 @@ namespace RC.Engine.Cameras
             
 
             return ray;
-            
         }
 
         public bool ContainsPoint(Point screenCoords)
@@ -180,7 +157,6 @@ namespace RC.Engine.Cameras
             _view = UpdateView();
 
             _projection = UpdateProjection();
-
         }
 
         private Matrix UpdateView()
@@ -194,6 +170,5 @@ namespace RC.Engine.Cameras
         /// </summary>
         /// <returns></returns>
         protected abstract Matrix UpdateProjection();
-
     }
 }

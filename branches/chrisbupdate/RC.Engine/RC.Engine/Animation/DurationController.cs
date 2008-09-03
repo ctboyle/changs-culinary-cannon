@@ -7,16 +7,13 @@ using RC.Engine.GraphicsManagement;
 
 namespace RC.Engine.Animation
 {
-    abstract public class DurationController<CntrlType>
-        : Controller<CntrlType> where CntrlType : RCSpatial
+    abstract public class RCDurationController<CntrlType>
+        : RCController<CntrlType> where CntrlType : RCSpatial
     {
-        public delegate void AnimationCompleteHandler();
-        public event AnimationCompleteHandler OnComplete;
-
         float _elaspedTime;
         float _duration;
 
-        public DurationController()
+        public RCDurationController()
             :base()
         {
             _elaspedTime = 0.0f;
@@ -35,36 +32,29 @@ namespace RC.Engine.Animation
 
         public override void Update(GameTime gameTime)
         {
-            if (_isAnimating)
+            if (!_isAnimating) return;
+
+            bool isLastframe = false;
+            float incrementTime = (float)gameTime.ElapsedRealTime.TotalSeconds;
+
+            if (incrementTime > 0.03f)
             {
-                bool isLastframe = false;
-                float incrementTime = (float)gameTime.ElapsedRealTime.TotalSeconds;
+                incrementTime = 0.03f;
+            }
 
-                if (incrementTime > 0.03f)
-                {
-                    incrementTime = 0.03f;
-                }
+            _elaspedTime += incrementTime;
 
-                _elaspedTime += incrementTime;
+            if (_elaspedTime >= _duration)
+            {
+                _isAnimating = false;
+                isLastframe = true;
+            }
 
-                
+            UpdateDurationAnimation(PercentComplete, !_isAnimating);
 
-                if (_elaspedTime >= _duration)
-                {
-                    _isAnimating = false;
-                    isLastframe = true;
-                }
-
-                UpdateDurationAnimation(PercentComplete, !_isAnimating);
-
-                if (isLastframe)
-                {
-                    if (OnComplete != null)
-                    {
-                        OnComplete();
-                    }
-                }
-
+            if (isLastframe)
+            {
+                FireAnimationComplete();
             }
         }
 
@@ -87,7 +77,5 @@ namespace RC.Engine.Animation
                     ); 
             }
         }
-
-
     }
 }
