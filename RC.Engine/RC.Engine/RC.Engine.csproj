@@ -50,6 +50,8 @@
     <Reference Include="System">
       <Private>False</Private>
     </Reference>
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Animation\Controller.cs" />
@@ -64,21 +66,16 @@
     <Compile Include="GraphicsManagement\BoundingVolumes\BoundingRect.cs" />
     <Compile Include="GraphicsManagement\BoundingVolumes\BoundingSphere.cs" />
     <Compile Include="GraphicsManagement\BoundingVolumes\BoundingVolume.cs" />
+    <Compile Include="GraphicsManagement\ModelNode.cs" />
     <Compile Include="GraphicsManagement\Node.cs" />
     <Compile Include="GraphicsManagement\SceneInterfaces.cs" />
     <Compile Include="GraphicsManagement\Spatial.cs" />
-    <Compile Include="Input\InputManager.cs" />
-    <Compile Include="Input\IWatcher.cs" />
     <Compile Include="Picking\PickRecord.cs" />
     <Compile Include="Picking\ScenePicker.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Rendering\DirectionalLight.cs" />
     <Compile Include="Rendering\LightSource.cs" />
     <Compile Include="Rendering\RenderManager.cs" />
-    <Compile Include="SceneManagement\ISceneCreator.cs" />
-    <Compile Include="SceneManagement\Scene.cs" />
-    <Compile Include="SceneManagement\SceneManager.cs" />
-    <Compile Include="SoundManagement\SoundManager.cs" />
     <Compile Include="StateManagement\GameState.cs" />
     <Compile Include="StateManagement\StateManager.cs" />
   </ItemGroup>

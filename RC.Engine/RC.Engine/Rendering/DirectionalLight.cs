@@ -14,15 +14,15 @@ namespace RC.Engine.Rendering
     /// 
     /// Children of this node will we rendered with this light enabled.
     /// </summary>
-    public class RCDirectionalLight : RCSceneNode
+    public class RCDirectionalLight : RCNode
     {
         protected RCLightSource _lightSource;
-        protected RCRenderManager.DirectionalLightIndex _index;
+        protected DirectionalLightIndex _index;
         protected Vector3 _direction;
         protected Vector3 _diffuse;
         protected Vector3 _specular;
 
-        public RCRenderManager.DirectionalLightIndex LightIndex
+        public DirectionalLightIndex LightIndex
         {
             get
             {
@@ -67,23 +67,24 @@ namespace RC.Engine.Rendering
             get { return _lightSource; }
         }
         
-        public RCDirectionalLight(RCRenderManager.DirectionalLightIndex index)
+        public RCDirectionalLight(DirectionalLightIndex index)
         {
             _lightSource = new RCLightSource(this);
             _index = index;
         }
 
-        public override void Draw(Microsoft.Xna.Framework.Graphics.GraphicsDevice graphicsDevice)
+        public override void Draw(GameTime gameTime, IServiceProvider services)
         {
-            
+            IRCRenderManager render = services.GetService(typeof(IRCRenderManager)) as IRCRenderManager;
+
             // Enable light before rendering children
-            RCRenderManager.EnableDirectionalLight(this);
+            render.EnableDirectionalLight(this);
             
             // Draw children.
-            base.Draw(graphicsDevice);
+            base.Draw(gameTime, services);
 
             // disable light before continuing drawing in the scene graph.
-            RCRenderManager.DisableDirectionalLight(this);
+            render.DisableDirectionalLight(this);
         }
 
     }

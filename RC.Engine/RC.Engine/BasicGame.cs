@@ -5,39 +5,36 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using RC.Engine.StateManagement;
 using RC.Engine.Rendering;
+using RC.Engine.Cameras;
+using Microsoft.Xna.Framework.Graphics;
 
 namespace RC.Engine
 {
     public class RCBasicGame : Game
     {
-        private GraphicsDeviceManager graphics;
-        private IGameStateManager stateManager;
-        private ContentManager content;
+        private GraphicsDeviceManager _graphics;
+        private IRCRenderManager _renderMgr;
 
         public RCBasicGame()
         {
-            graphics = new GraphicsDeviceManager(this);
-            content = new ContentManager(Services);
-            stateManager = new RCGameStateManager(this);           
+            _graphics = new GraphicsDeviceManager(this);
+            _renderMgr = new RCRenderManager();
+
+            Services.AddService(typeof(IRCRenderManager), _renderMgr);
+            Services.AddService(typeof(IRCGameStateManager), new RCGameStateManager(this));
+            Services.AddService(typeof(IRCCameraManager), new RCCameraManager());
         }
 
-        protected ContentManager ContentManager
+        protected override void LoadContent()
         {
-            get { return content; }
+            _renderMgr.Load(Services);
+            base.LoadContent();
         }
 
-        // Loading and unloading for games services and singletons.
-        protected override void LoadGraphicsContent(bool loadAllContent)
+        protected override void UnloadContent()
         {
-            RCRenderManager.Load(graphics.GraphicsDevice);
-            base.LoadGraphicsContent(loadAllContent);
-        }
-
-        protected override void UnloadGraphicsContent(bool unloadAllContent)
-        {
-            RCRenderManager.Unload();
-            content.Unload();
-            base.UnloadGraphicsContent(unloadAllContent);
+            _renderMgr.Unload();
+            base.UnloadContent();
         }
     }
 }

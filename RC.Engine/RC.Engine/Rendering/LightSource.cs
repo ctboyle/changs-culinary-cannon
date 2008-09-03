@@ -5,7 +5,7 @@ using RC.Engine.GraphicsManagement;
 
 namespace RC.Engine.Rendering
 {
-    public class RCLightSource : RCSceneNode
+    public class RCLightSource : RCNode
     {
         RCDirectionalLight _light;
 

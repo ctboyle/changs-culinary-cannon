@@ -13,82 +13,21 @@ using RC.Engine.StateManagement;
 using RC.Engine.GraphicsManagement;
 using RC.Engine.Rendering;
 using RC.Engine.Cameras;
-using RC.Engine.SceneManagement;
-using RC.Engine.Input;
 
 namespace RC.Engine.StateManagement
 {
-    public abstract partial class RCGameState : DrawableGameComponent
+    public abstract partial class RCGameState
     {
-        protected IGameStateManager gameManager;
-        protected InputManager input;
-        protected Rectangle TitleSafeArea;
-        protected ContentManager content;
-        protected IGraphicsDeviceService graphics;
-        protected RCSceneManager _sceneManager;
-        protected Cue music;
+        public abstract void Initialize(IServiceProvider services);
 
-        public RCGameState(Game game)
-            : base(game)
-        {
-            content = new ContentManager(Game.Services);
-            gameManager = (IGameStateManager)game.Services.GetService(typeof(IGameStateManager));
-            graphics = (IGraphicsDeviceService)this.Game.Services.GetService(typeof(IGraphicsDeviceService));
-            _sceneManager = new RCSceneManager(graphics, content);
-            input = new InputManager(game);
-            input.Initialize();
-            
-        }
+        public abstract void LoadContent(ContentManager content, IServiceProvider services);
 
-        protected override void LoadGraphicsContent(bool loadAllContent)
-        {
-          
-            _sceneManager.Load(
-                    content
-                    );
+        public abstract void UnloadContent();
 
-            base.LoadGraphicsContent(loadAllContent);
-        }
+        public abstract void StateChanged(RCGameState newState, RCGameState oldState);
 
-        protected override void UnloadGraphicsContent(bool unloadAllContent)
-        {
+        public abstract void Draw(GameTime gameTime, IServiceProvider services);
 
-
-            _sceneManager.Unload();
-            base.UnloadGraphicsContent(unloadAllContent);
-        }
-
-        public override void Draw(GameTime gameTime)
-        {
-            _sceneManager.Draw();
-            base.Draw(gameTime);
-        }
-
-        public override void Update(GameTime gameTime)
-        {
-            input.Update(gameTime);
-            _sceneManager.Update(gameTime);
-            base.Update(gameTime);
-        }
-
-        internal protected virtual void StateChanged(
-            RCGameState newState,
-            RCGameState oldState
-            )
-        {
-            if (newState == this)
-            {
-                Visible = Enabled = true;
-            }
-            else
-            {
-                Visible = Enabled = false;
-            }
-        }
-
-        public RCGameState Value
-        {
-            get { return (this); }
-        }
+        public abstract void Update(GameTime gameTime);
     }
 }

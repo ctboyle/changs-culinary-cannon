@@ -10,48 +10,84 @@ using RC.Engine.GraphicsManagement;
 
 namespace RC.Engine.Rendering
 {
+    public delegate void RenderFunc(GraphicsDevice device);
+
+    public enum DirectionalLightIndex
+    {
+        Light0 = 0,
+        Light1,
+        Light2,
+        Count
+    }
+
+    public interface IRCRenderManager
+    {
+        void Load(IServiceProvider services);
+
+        void Unload();
+        
+        void EnableDirectionalLight(RCDirectionalLight lightNode);
+        
+        void DisableDirectionalLight(RCDirectionalLight lightNode);
+        
+        void SetEffectMaterial(
+            Vector3 ambient,
+            Vector3 diffuse,
+            Vector3 specular,
+            float specularPower,
+            Vector3 emissive,
+            float alpha
+            );
+
+        void SetTexture(Texture2D texture);
+        
+        void TextureMappingEnabled(bool enabled);
+        
+        void SetWorld(Matrix world);
+        
+        void Render(GraphicsDevice device, RenderFunc renderLogic);
+
+        void RenderScene(GameTime gametime, RCSpatial sceneRoot);
+    }
+
     /// <summary>
     /// Central functionality for Rendering the Scene.
     /// </summary>
-    public class RCRenderManager
+    internal class RCRenderManager : IRCRenderManager
     {
-        /// <summary>
-        /// Delegate for rendering objects.
-        /// </summary>
-        public delegate void RenderFunc(GraphicsDevice device);
-       
-        public enum DirectionalLightIndex
+        private BasicEffect _sceneEffect;
+        private int _countEnabledLights = 0;
+        private Color _clearColor = Color.CornflowerBlue;
+        private IRCCameraManager _cameraMgr;
+        private IServiceProvider _services;
+
+        public RCRenderManager()
         {
-            Light0 = 0,
-            Light1,
-            Light2,
-            Count
+            System.Console.WriteLine("Created Render Manager");
         }
 
-        private static BasicEffect _sceneEffect;
-        private static int _countEnabledLights = 0;
-        private static Color _clearColor = Color.CornflowerBlue;
-
-
-        public static void Load(GraphicsDevice device)
+        public void Load(IServiceProvider services)
         {
-            _sceneEffect = new BasicEffect(device, null);
-            device.RenderState.DepthBufferEnable = true;
-            device.RenderState.StencilEnable = true;
-            
+            _services = services;
+            _cameraMgr = services.GetService(typeof(IRCCameraManager)) as IRCCameraManager;
+
+            IGraphicsDeviceService graphics = services.GetService(typeof(IGraphicsDeviceService)) as IGraphicsDeviceService;
+            graphics.GraphicsDevice.RenderState.DepthBufferEnable = true;
+            graphics.GraphicsDevice.RenderState.StencilEnable = true;
+
+            _sceneEffect = new BasicEffect(graphics.GraphicsDevice, null);
         }
 
-        public static void Unload()
+        public void Unload()
         {
             _sceneEffect = null;
-
         }
 
         /// <summary>
         /// Enables the RenderManagers effect with the lightNode's Index light
         /// and assgins the appropriate effect properties.
         /// </summary>
-        public static void EnableDirectionalLight(RCDirectionalLight lightNode)
+        public void EnableDirectionalLight(RCDirectionalLight lightNode)
         {
             if (_sceneEffect != null)
             {
@@ -59,13 +95,13 @@ namespace RC.Engine.Rendering
 
                 switch (lightNode.LightIndex)
                 {
-                    case RCRenderManager.DirectionalLightIndex.Light0:
+                    case DirectionalLightIndex.Light0:
                         effectLight = _sceneEffect.DirectionalLight0;
                         break;
-                    case RCRenderManager.DirectionalLightIndex.Light1:
+                    case DirectionalLightIndex.Light1:
                         effectLight = _sceneEffect.DirectionalLight1;
                         break;
-                    case RCRenderManager.DirectionalLightIndex.Light2:
+                    case DirectionalLightIndex.Light2:
                         effectLight = _sceneEffect.DirectionalLight2;
                         break;
                     default:
@@ -103,7 +139,7 @@ namespace RC.Engine.Rendering
         /// Disables the light refrenced by lightNode's index. Disables lighting if
         /// enabled light count goes to zero.
         /// </summary>
-        public static void DisableDirectionalLight(RCDirectionalLight lightNode)
+        public void DisableDirectionalLight(RCDirectionalLight lightNode)
         {
             if (_sceneEffect != null)
             {
@@ -111,13 +147,13 @@ namespace RC.Engine.Rendering
 
                 switch (lightNode.LightIndex)
                 {
-                    case RCRenderManager.DirectionalLightIndex.Light0:
+                    case DirectionalLightIndex.Light0:
                         effectLight = _sceneEffect.DirectionalLight0;
                         break;
-                    case RCRenderManager.DirectionalLightIndex.Light1:
+                    case DirectionalLightIndex.Light1:
                         effectLight = _sceneEffect.DirectionalLight1;
                         break;
-                    case RCRenderManager.DirectionalLightIndex.Light2:
+                    case DirectionalLightIndex.Light2:
                         effectLight = _sceneEffect.DirectionalLight2;
                         break;
                     default:
@@ -140,7 +176,7 @@ namespace RC.Engine.Rendering
         /// <summary>
         /// Sets the current material properties to be rendered.
         /// </summary>
-        public static void SetEffectMaterial(
+        public void SetEffectMaterial(
             Vector3 ambient,
             Vector3 diffuse,
             Vector3 specular,
@@ -162,7 +198,7 @@ namespace RC.Engine.Rendering
             }
         }
 
-        public static void SetTexture(Texture2D texture)
+        public void SetTexture(Texture2D texture)
         {
             if (_sceneEffect != null)
             {
@@ -178,7 +214,7 @@ namespace RC.Engine.Rendering
             
         }
 
-        public static void TextureMappingEnabled(bool fEnabled)
+        public void TextureMappingEnabled(bool fEnabled)
         {
             if (_sceneEffect != null)
             {
@@ -189,7 +225,7 @@ namespace RC.Engine.Rendering
         /// <summary>
         /// Sets the effects world transform property
         /// </summary>
-        public static void SetWorld(Matrix world)
+        public void SetWorld(Matrix world)
         {
             if (_sceneEffect != null)
             {
@@ -203,7 +239,7 @@ namespace RC.Engine.Rendering
         /// 
         /// Applys all passes of the effect to the geometry.
         /// </summary>
-        public static void Render(GraphicsDevice device, RenderFunc renderLogic)
+        public void Render(GraphicsDevice device, RenderFunc renderLogic)
         {   
             if (_sceneEffect != null)
             {
@@ -223,68 +259,58 @@ namespace RC.Engine.Rendering
             }
         }
 
-        /// <summary>
-        /// Use to render a scene.
-        /// 
-        /// Will ensure that the Correct camera and viewport are used!
-        /// </summary>
-        public static void DrawScene(RCSpatial sceneRoot)
+        public void RenderScene(GameTime gameTime, RCSpatial sceneRoot)
         {
-            if (_sceneEffect != null)
+            if (_sceneEffect == null) return;
+            
+            bool fCameraSuccess = false;
+
+            _sceneEffect.GraphicsDevice.RenderState.DepthBufferWriteEnable = true;
+            _sceneEffect.GraphicsDevice.RenderState.DepthBufferEnable = true;
+
+            fCameraSuccess = UpdateSceneCameraParameters();
+
+            if (_sceneEffect != null && fCameraSuccess)
             {
-                bool fCameraSuccess = false;
-
-                _sceneEffect.GraphicsDevice.RenderState.DepthBufferWriteEnable = true;
-                _sceneEffect.GraphicsDevice.RenderState.DepthBufferEnable = true;
-
-                fCameraSuccess = UpdateSceneCameraParameters();
-
-
-                
-
-                if (_sceneEffect != null && fCameraSuccess)
+                // Clear screen using current clear color.
+                if (_cameraMgr.ActiveCamera.ClearScreen)
                 {
-                    // Clear screen using current clear color.
-                    if (RCCameraManager.ActiveCamera.ClearScreen)
-                    {
-                        ClearScreen();
-                    }
-                    
-                    sceneRoot.Draw(_sceneEffect.GraphicsDevice);
+                    ClearScreen();
                 }
+
+                sceneRoot.Draw(gameTime, _services);
             }
         }
 
-        protected static void ClearScreen()
+        protected void ClearScreen()
         {
             if (_sceneEffect != null)
             {
-                
+
                 _sceneEffect.GraphicsDevice.Clear(
-                        RCCameraManager.ActiveCamera.ClearOptions,
+                        _cameraMgr.ActiveCamera.ClearOptions,
                         _clearColor,
                         1.0f,
                         0
                         );
-                
+
             }
         }
 
-        
-        protected static bool UpdateSceneCameraParameters()
+        protected bool UpdateSceneCameraParameters()
         {
             bool fUpdatedCameraParameters = false;
 
             if (_sceneEffect != null)
             {
-                if (RCCameraManager.ActiveCamera != null)
+                if (_cameraMgr.ActiveCamera != null)
                 {
                     // Ensure that the correct viewport is drawn to.
-                    _sceneEffect.GraphicsDevice.Viewport = RCCameraManager.ActiveCamera.Viewport;
-                    _sceneEffect.View = RCCameraManager.ActiveCamera.View;
-                    _sceneEffect.Projection = RCCameraManager.ActiveCamera.Projection;
-                    
-                    _clearColor = RCCameraManager.ActiveCamera.ClearColor;
+                    _sceneEffect.GraphicsDevice.Viewport = _cameraMgr.ActiveCamera.Viewport;
+                    _sceneEffect.View = _cameraMgr.ActiveCamera.View;
+                    _sceneEffect.Projection = _cameraMgr.ActiveCamera.Projection;
+
+                    _clearColor = _cameraMgr.ActiveCamera.ClearColor;
 
                     fUpdatedCameraParameters = true;
                 }
