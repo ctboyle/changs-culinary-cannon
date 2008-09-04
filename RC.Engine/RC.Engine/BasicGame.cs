@@ -5,39 +5,55 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using RC.Engine.StateManagement;
 using RC.Engine.Rendering;
+using RC.Engine.Cameras;
+using RC.Engine.Utility;
 
 namespace RC.Engine
 {
     public class RCBasicGame : Game
     {
+        private RCGameStateManager stateMgr;
         private GraphicsDeviceManager graphics;
-        private IGameStateManager stateManager;
-        private ContentManager content;
+        private RCLoadableCollection mgrs = new RCLoadableCollection();
 
         public RCBasicGame()
         {
             graphics = new GraphicsDeviceManager(this);
-            content = new ContentManager(Services);
-            stateManager = new RCGameStateManager(this);           
+            stateMgr = new RCGameStateManager(this);
+            mgrs.Add(new RCRenderManager(this));
+            mgrs.Add(new RCCameraManager(this));
+            Services.AddService(typeof(ContentManager), this.Content);
         }
 
-        protected ContentManager ContentManager
+        protected IRCGameStateManager StateManager
         {
-            get { return content; }
+            get { return stateMgr; }
+        }
+        
+        protected override void Initialize()
+        {
+            Components.Add(stateMgr);
+            base.Initialize();
         }
 
-        // Loading and unloading for games services and singletons.
-        protected override void LoadGraphicsContent(bool loadAllContent)
+        protected override void LoadContent()
         {
-            RCRenderManager.Load(graphics.GraphicsDevice);
-            base.LoadGraphicsContent(loadAllContent);
+            foreach(IRCLoadable mgr in mgrs)
+            {
+                mgr.Load();
+            }
+
+            base.LoadContent();
         }
 
-        protected override void UnloadGraphicsContent(bool unloadAllContent)
+        protected override void UnloadContent()
         {
-            RCRenderManager.Unload();
-            content.Unload();
-            base.UnloadGraphicsContent(unloadAllContent);
+            foreach (IRCLoadable mgr in mgrs)
+            {
+                mgr.Unload();
+            }
+
+            base.UnloadContent();
         }
     }
 }

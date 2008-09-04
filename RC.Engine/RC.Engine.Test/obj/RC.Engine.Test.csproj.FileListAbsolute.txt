@@ -1,0 +1,10 @@
+C:\Users\TabletPC\Documents\Projects\changs-culinary-cannon\branches\service_creation\RC.Engine\RC.Engine.Test\bin\x86\Debug\RC.Engine.Test.exe
+C:\Users\TabletPC\Documents\Projects\changs-culinary-cannon\branches\service_creation\RC.Engine\RC.Engine.Test\bin\x86\Debug\RC.Engine.Test.pdb
+C:\Users\TabletPC\Documents\Projects\changs-culinary-cannon\branches\service_creation\RC.Engine\RC.Engine.Test\obj\x86\Debug\ResolveAssemblyReference.cache
+C:\Users\TabletPC\Documents\Projects\changs-culinary-cannon\branches\service_creation\RC.Engine\RC.Engine.Test\obj\x86\Debug\Microsoft.Xna.Framework.RuntimeProfile.txt
+C:\Users\TabletPC\Documents\Projects\changs-culinary-cannon\branches\service_creation\RC.Engine\RC.Engine.Test\obj\x86\Debug\RC.Engine.Test.obj.x86.Debug.Microsoft.Xna.Framework.RuntimeProfile.txt
+C:\Users\TabletPC\Documents\Projects\changs-culinary-cannon\branches\service_creation\RC.Engine\RC.Engine.Test\obj\x86\Debug\RC.Engine.Test.exe
+C:\Users\TabletPC\Documents\Projects\changs-culinary-cannon\branches\service_creation\RC.Engine\RC.Engine.Test\obj\x86\Debug\RC.Engine.Test.pdb
+C:\Users\TabletPC\Documents\Projects\changs-culinary-cannon\branches\service_creation\RC.Engine\RC.Engine.Test\bin\x86\Debug\Content\enemy.xnb
+C:\Users\TabletPC\Documents\Projects\changs-culinary-cannon\branches\service_creation\RC.Engine\RC.Engine.Test\bin\x86\Debug\RC.Engine.dll
+C:\Users\TabletPC\Documents\Projects\changs-culinary-cannon\branches\service_creation\RC.Engine\RC.Engine.Test\bin\x86\Debug\RC.Engine.pdb

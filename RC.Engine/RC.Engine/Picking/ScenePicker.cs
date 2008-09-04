@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
-using RC.Engine.SceneManagement;
 using Microsoft.Xna.Framework;
 using RC.Engine.GraphicsManagement;
 using RC.Engine.Cameras;
@@ -19,13 +18,10 @@ namespace RC.Engine.Picking
         /// <returns></returns>
         public RCPickRecord Pick(
             Point worldScreenCoords, 
-            RCScene scene
+            RCCamera camera,
+            RCSpatial sceneRoot
             )
         {
-            RCCamera camera = RCCameraManager.GetCamera(
-                scene.SceneCameraLabel
-                );
-
             if (camera != null)
             {
                 // First check to see if the point is in the camera's
@@ -40,7 +36,7 @@ namespace RC.Engine.Picking
                     if (worldRay != null)
                     {
                         // Find any intersectinos.
-                        return Pick(worldRay.Value, scene.SceneRoot);
+                        return Pick(worldRay.Value, sceneRoot);
                     }
                 }
             }

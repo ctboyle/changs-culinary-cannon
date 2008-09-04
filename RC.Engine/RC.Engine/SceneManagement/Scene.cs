@@ -12,7 +12,7 @@ using RC.Engine.Rendering;
 
 namespace RC.Engine.SceneManagement
 {
-    public class RCScene
+    public class RCScene : IRCManager
     {
         protected string _cameraLabel;
         protected RCSpatial _sceneRoot;
@@ -51,28 +51,18 @@ namespace RC.Engine.SceneManagement
 
         }
 
-        public virtual void Load(
-            GraphicsDevice graphicsDevice,
-            ContentManager contentManager
-            )
+        public virtual void Load(IServiceProvider services)
         {
-            if (_sceneRoot != null)
-            {
-                _sceneRoot.LoadGraphicsContent(
-                    graphicsDevice,
-                    contentManager
-                    );
+            if (_sceneRoot == null) return;
 
-                _isLoaded = true;
-            }
+            _sceneRoot.LoadContent(services);
+            _isLoaded = true;
         }
 
         public virtual void Unload()
         {
-            if (_sceneRoot != null)
-            {
-                _sceneRoot.UnloadGraphicsContent();
-            }
+            if (_sceneRoot == null) return;
+            _sceneRoot.UnloadContent();
         }
 
 

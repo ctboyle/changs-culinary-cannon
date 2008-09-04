@@ -1,74 +1,54 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
-
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Storage;
-
 using RC.Engine.StateManagement;
 using RC.Engine.GraphicsManagement;
 using RC.Engine.Rendering;
 using RC.Engine.Cameras;
-using RC.Engine.SceneManagement;
-using RC.Engine.Input;
 
 namespace RC.Engine.StateManagement
 {
-    public abstract partial class RCGameState : DrawableGameComponent
+    public abstract partial class RCGameState
     {
-        protected IGameStateManager gameManager;
-        protected InputManager input;
-        protected Rectangle TitleSafeArea;
-        protected ContentManager content;
-        protected IGraphicsDeviceService graphics;
-        protected RCSceneManager _sceneManager;
-        protected Cue music;
+        private IRCGameStateManager _gameManager = null;
+        private bool _isVisible = true;
+        private bool _isUpdated = true;
 
-        public RCGameState(Game game)
-            : base(game)
+        public bool IsVisible
         {
-            content = new ContentManager(Game.Services);
-            gameManager = (IGameStateManager)game.Services.GetService(typeof(IGameStateManager));
-            graphics = (IGraphicsDeviceService)this.Game.Services.GetService(typeof(IGraphicsDeviceService));
-            _sceneManager = new RCSceneManager(graphics, content);
-            input = new InputManager(game);
-            input.Initialize();
-            
+            get { return _isVisible; }
+            set { _isVisible = value; }
         }
 
-        protected override void LoadGraphicsContent(bool loadAllContent)
+        public bool IsUpdated
         {
-          
-            _sceneManager.Load(
-                    content
-                    );
-
-            base.LoadGraphicsContent(loadAllContent);
+            get { return _isUpdated; }
+            set { _isUpdated = value; }
         }
 
-        protected override void UnloadGraphicsContent(bool unloadAllContent)
+        public virtual void Load(IServiceProvider services)
         {
-
-
-            _sceneManager.Unload();
-            base.UnloadGraphicsContent(unloadAllContent);
+            _gameManager = services.GetService(typeof(IRCGameStateManager)) as IRCGameStateManager;
         }
 
-        public override void Draw(GameTime gameTime)
+        public virtual void Unload()
         {
-            _sceneManager.Draw();
-            base.Draw(gameTime);
+
         }
 
-        public override void Update(GameTime gameTime)
+        public abstract void Draw(GameTime gameTime, IServiceProvider services);
+
+        public abstract void Update(GameTime gameTime, IServiceProvider services);
+
+        protected IRCGameStateManager GameStateMgr
         {
-            input.Update(gameTime);
-            _sceneManager.Update(gameTime);
-            base.Update(gameTime);
+            get { return _gameManager; }
         }
 
         internal protected virtual void StateChanged(
@@ -78,17 +58,12 @@ namespace RC.Engine.StateManagement
         {
             if (newState == this)
             {
-                Visible = Enabled = true;
+                IsVisible = IsUpdated = true;
             }
             else
             {
-                Visible = Enabled = false;
+                IsVisible = IsUpdated = false;
             }
-        }
-
-        public RCGameState Value
-        {
-            get { return (this); }
         }
     }
 }
