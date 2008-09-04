@@ -6,6 +6,7 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Content;
 
 using RC.Engine.GraphicsManagement.BoundingVolumes;
+using RC.Engine.Rendering;
 #endregion
 
 namespace RC.Engine.GraphicsManagement
@@ -51,30 +52,22 @@ namespace RC.Engine.GraphicsManagement
         /// <summary>
         /// Invokes all children's LoadGraphicsContent.
         /// </summary>
-        public override void LoadGraphicsContent(
-            GraphicsDevice graphics,
-            ContentManager content
-            )
+        public override void Load(IServiceProvider services)
         {
             foreach (RCSpatial child in listChildren)
             {
-                child.LoadGraphicsContent(
-                    graphics,
-                    content
-                );
-
+                child.Load(services);
             }
         }
 
         /// <summary>
         /// Invokes all children's UnloadGraphicsContent.
         /// </summary>
-        public override void UnloadGraphicsContent()
+        public override void Unload()
         {
             foreach (RCSpatial child in listChildren)
             {
-                child.UnloadGraphicsContent();
-
+                child.Unload();
             }
         }
 
@@ -82,11 +75,11 @@ namespace RC.Engine.GraphicsManagement
         /// <summary>
         /// Draws all children 
         /// </summary>
-        public override void Draw(GraphicsDevice graphicsDevice)
+        public override void Draw(GraphicsDevice graphicsDevice, IRCRenderManager render)
         {           
             foreach (RCSpatial child in listChildren)
             {
-                child.Draw(graphicsDevice);
+                child.Draw(graphicsDevice, render);
             }
         }
 

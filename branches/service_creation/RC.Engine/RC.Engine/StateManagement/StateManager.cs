@@ -1,130 +1,152 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
-
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
 
 namespace RC.Engine.StateManagement
 {
     public delegate void StateChangeHandler(RCGameState newState, RCGameState oldState);
 
-    public interface IGameStateManager
+    public interface IRCGameStateManager
     {
-        event StateChangeHandler OnStateChange;
-        RCGameState State { get; }
-        void PopState();
-        void PushState(RCGameState state);
-        bool ContainsState(RCGameState state);
-        void ChangeState(RCGameState newState);
+        bool IsLoaded { get; set; }
+        void AddState(string label, RCGameState state);
+        void RemoveState(string label);
+        void PushState(string label);
+        RCGameState PopState();
+        RCGameState PeekState();
     }
 
-
-    class RCGameStateManager :  GameComponent, IGameStateManager
+    internal class RCGameStateManager : DrawableGameComponent, IRCGameStateManager, IDisposable
     {
-        private Stack<RCGameState> states = new Stack<RCGameState>();
+        public delegate void StateChangeFunc(RCGameState previousState, RCGameState newState);
 
-        public event StateChangeHandler OnStateChange;
+        private Dictionary<string, RCGameState> states = new Dictionary<string, RCGameState>();
+        private List<RCGameState> stateStack = new List<RCGameState>();
+        private bool _isLoaded = false;
 
-        private int initialDrawOrder = 0;
-        private int drawOrder;
+        public event StateChangeFunc StateChanged;
 
         public RCGameStateManager(Game game)
             : base(game)
         {
-            game.Services.AddService(typeof(IGameStateManager), this);
-            drawOrder = initialDrawOrder;
         }
 
-        private RCGameState RemoveState()
+        public bool IsLoaded
         {
-            RCGameState oldState = (RCGameState)states.Peek();
+            get { return _isLoaded; }
+            set { _isLoaded = value; }
+        }
 
-            //remove the state from our game components
-            Game.Components.Remove(oldState.Value);
+        public void AddState(string label, RCGameState state)
+        {
+            if (_isLoaded)
+            {
+                throw new InvalidOperationException("States cannot be added after content is loaded.");
+            }
 
-            states.Pop();
+            states.Add(label, state);
+        }
+
+        public void RemoveState(string label)
+        {
+            if (_isLoaded)
+            {
+                throw new InvalidOperationException("States cannot be removed after content is loaded.");
+            }
+
+            states.Remove(label);
+        }
+
+        public void PushState(string label)
+        {
+            if (stateStack.Count > 0)
+            {
+                if (StateChanged != null)
+                {
+                    StateChanged(stateStack[0], states[label]);
+                }
+            }
+
+            stateStack.Insert(0, states[label]);
+        }
+
+        public RCGameState PopState()
+        {
+            if (stateStack.Count == 0) return null;
+
+            RCGameState oldState = stateStack[0];
+            stateStack.RemoveAt(0);
+
+            if (StateChanged != null)
+            {
+                if (stateStack.Count >= 1)
+                {
+                    StateChanged(oldState, stateStack[0]);
+                }
+            }
 
             return oldState;
         }
 
-        private void AddState(RCGameState state)
+        public RCGameState PeekState()
         {
-            states.Push(state);
-
-            Game.Components.Add(state);
-
-            //Register the event for this state
-            OnStateChange += state.StateChanged;
+            if (stateStack.Count == 0) return null;
+            return stateStack[0];
         }
 
-        public void PopState()
+        public override void Draw(GameTime gameTime)
         {
-            RCGameState oldState = RemoveState();
-
-            drawOrder -= 100;
-
-            //Let everyone know we just changed states
-            if (OnStateChange != null)
-                OnStateChange(State, oldState);
-
-            //Unregister the event for this state
-            OnStateChange -= oldState.StateChanged;
-        }
-
-        public void PushState(RCGameState newState)
-        {
-            RCGameState oldState = State as RCGameState;
-            drawOrder += 100;
-            newState.DrawOrder = drawOrder;
-            
-            AddState(newState);
-
-            //Let everyone know we just changed states
-            if (OnStateChange != null)
-                OnStateChange(newState, oldState);
-        }
-
-        public void ChangeState(RCGameState newState)
-        {
-            //We are changing states, so pop everything ...
-            //if we don't want to really change states but just modify,
-            //we should call PushState and PopState
-            while (states.Count > 0)
+            for (int i = stateStack.Count - 1; i >= 0; --i)
             {
-                RCGameState oldState = RemoveState();
-                if (oldState != null)
-                {
-                    //Unregister the event for this state
-                    OnStateChange -= oldState.StateChanged;
-                }
+                RCGameState currentState = stateStack[i];
+
+                if (!currentState.IsVisible) continue;
+
+                currentState.Draw(gameTime, Game.Services);
             }
 
-            //changing state, reset our draw order
-            newState.DrawOrder = drawOrder = initialDrawOrder;
-            AddState(newState);
-
-            //Let everyone know we just changed states
-            if (OnStateChange != null)
-                OnStateChange(State, null);
+            base.Draw(gameTime);
         }
 
-        public bool ContainsState(RCGameState state)
+        public override void Update(GameTime gameTime)
         {
-            return (states.Contains(state));
-        }
-
-        public RCGameState State
-        {
-            get
+            for (int i = stateStack.Count - 1; i >= 0; --i)
             {
-                if (states.Count != 0)
-                {
-                    return (states.Peek());
-                }
-                return null;
+                RCGameState currentState = stateStack[i];
+
+                if (!currentState.IsUpdated) continue;
+
+                currentState.Update(gameTime, Game.Services);
             }
+
+            base.Update(gameTime);
         }
 
+        protected override void LoadContent()
+        {
+            foreach (RCGameState state in states.Values)
+            {
+                state.Load(Game.Services);
+            }
 
+            _isLoaded = true;
+
+            base.LoadContent();
+        }
+
+        protected override void UnloadContent()
+        {
+            foreach (RCGameState state in states.Values)
+            {
+                state.Unload();
+            }
+
+            _isLoaded = false;
+            states.Clear();
+
+            base.UnloadContent();
+        }
     }
 }

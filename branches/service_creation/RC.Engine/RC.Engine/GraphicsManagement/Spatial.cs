@@ -8,6 +8,7 @@ using Microsoft.Xna.Framework.Content;
 using RC.Engine.Animation;
 using RC.Engine.Cameras;
 using RC.Engine.GraphicsManagement.BoundingVolumes;
+using RC.Engine.Rendering;
 
 #endregion
 
@@ -21,7 +22,7 @@ namespace RC.Engine.GraphicsManagement
     ///  3. A parent
     ///  4. A position relative to its parent
     /// </summary>
-    public abstract class RCSpatial: ISpatial
+    public abstract class RCSpatial : ISpatial
     {
         protected IRCBoundingVolume _worldBound;
 
@@ -92,15 +93,12 @@ namespace RC.Engine.GraphicsManagement
         /// <summary>
         /// Abstract method for loading graphic content.
         /// </summary>
-        public abstract void LoadGraphicsContent(
-            GraphicsDevice graphics,
-            ContentManager content
-            );
+        public abstract void Load(IServiceProvider services);
 
         /// <summary>
         /// Abstract method for un-loading graphic content.
         /// </summary>
-        public abstract void UnloadGraphicsContent();
+        public abstract void Unload();
 
         /// <summary>
         /// Called to update the SceneObject
@@ -120,7 +118,7 @@ namespace RC.Engine.GraphicsManagement
         /// <summary>
         /// Override for specific behavior on the draw pass.
         /// </summary>
-        public abstract void Draw(GraphicsDevice graphicsDevice);
+        public abstract void Draw(GraphicsDevice graphicsDevice, IRCRenderManager render);
     
 
 
