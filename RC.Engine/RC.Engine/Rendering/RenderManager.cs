@@ -9,7 +9,7 @@ using RC.Engine.Utility;
 
 namespace RC.Engine.Rendering
 {
-    public delegate void RenderFunc(IRCRenderManager render, GraphicsDevice device);
+    public delegate void RenderFunc(GraphicsDevice device, IRCRenderManager render);
 
     public enum DirectionalLightIndex
     {
@@ -21,6 +21,7 @@ namespace RC.Engine.Rendering
 
     public interface IRCRenderManager : IRCLoadable
     {
+        GraphicsDevice Graphics { get; }
         void EnableDirectionalLight(RCDirectionalLight lightNode);
         void DisableDirectionalLight(RCDirectionalLight lightNode);
         void SetEffectMaterial(
@@ -34,8 +35,10 @@ namespace RC.Engine.Rendering
         void SetTexture(Texture2D texture);
         void TextureMappingEnabled(bool enabled);
         void SetWorld(Matrix world);
-        void Render(GraphicsDevice device, RenderFunc renderLogic);
+        void Render(RenderFunc renderLogic);
+        void RenderModel(Model model, RenderFunc renderLogic);
         void DrawScene(RCSpatial sceneRoot);
+        void ClearScreen();
     }
 
     /// <summary>
@@ -43,7 +46,7 @@ namespace RC.Engine.Rendering
     /// </summary>
     internal class RCRenderManager : IRCRenderManager
     {
-        private BasicEffect _sceneEffect;
+        private BasicEffect _sceneEffect = null;
         private int _countEnabledLights = 0;
         private Color _clearColor = Color.CornflowerBlue;
         private IRCCameraManager _cameraMgr = null;
@@ -53,6 +56,11 @@ namespace RC.Engine.Rendering
         {
             _game = game;
             _game.Services.AddService(typeof(IRCRenderManager), this);
+        }
+
+        public GraphicsDevice Graphics
+        {
+            get { return _game.GraphicsDevice; }
         }
 
         public void Load()
@@ -219,7 +227,7 @@ namespace RC.Engine.Rendering
         /// 
         /// Applys all passes of the effect to the geometry.
         /// </summary>
-        public void Render(GraphicsDevice device, RenderFunc renderLogic)
+        public void Render(RenderFunc renderLogic)
         {
             if (_sceneEffect == null) return;
 
@@ -230,12 +238,27 @@ namespace RC.Engine.Rendering
                 pass.Begin();
 
                 // Do the specific rendering.
-                renderLogic(this, device);
+                renderLogic(_game.GraphicsDevice, this);
 
                 pass.End();
             }
 
             _sceneEffect.End();
+        }
+
+        public void RenderModel(Model model, RenderFunc renderLogic)
+        {
+            foreach (ModelMesh mesh in model.Meshes)
+            {
+                foreach (ModelMeshPart part in mesh.MeshParts)
+                {
+                    _sceneEffect.View = _cameraMgr.ActiveCamera.View;
+                    _sceneEffect.Projection = _cameraMgr.ActiveCamera.Projection;
+                    renderLogic(_game.GraphicsDevice, this);
+                    part.Effect = _sceneEffect;  
+                }
+                mesh.Draw();
+            }
         }
 
         /// <summary>
@@ -262,15 +285,15 @@ namespace RC.Engine.Rendering
                     ClearScreen();
                 }
                 
-                sceneRoot.Draw(_sceneEffect.GraphicsDevice, this);
+                sceneRoot.Draw(this);
             }
         }
 
-        protected void ClearScreen()
+        public void ClearScreen()
         {
             if (_sceneEffect == null) return;
 
-            _sceneEffect.GraphicsDevice.Clear(
+            Graphics.Clear(
                 _cameraMgr.ActiveCamera.ClearOptions,
                 _clearColor,
                 1.0f,

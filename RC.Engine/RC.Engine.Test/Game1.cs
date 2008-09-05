@@ -19,8 +19,13 @@ namespace RC.Engine.Test
         protected override void Initialize()
         {
             StateManager.AddState("Test", new TestState());
-            StateManager.PushState("Test");
             base.Initialize();
+        }
+
+        protected override void BeginRun()
+        {
+            StateManager.PushState("Test");
+            base.BeginRun();
         }
     }
 }
