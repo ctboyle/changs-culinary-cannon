@@ -118,9 +118,7 @@ namespace RC.Engine.GraphicsManagement
         /// <summary>
         /// Override for specific behavior on the draw pass.
         /// </summary>
-        public abstract void Draw(GraphicsDevice graphicsDevice, IRCRenderManager render);
-    
-
+        public abstract void Draw(IRCRenderManager render);
 
         public bool AddController(IController controller)
         {

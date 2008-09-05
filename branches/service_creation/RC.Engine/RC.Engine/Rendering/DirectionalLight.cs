@@ -73,13 +73,13 @@ namespace RC.Engine.Rendering
             _index = index;
         }
 
-        public override void Draw(Microsoft.Xna.Framework.Graphics.GraphicsDevice graphicsDevice, IRCRenderManager render)
+        public override void Draw(IRCRenderManager render)
         {
             // Enable light before rendering children
             render.EnableDirectionalLight(this);
             
             // Draw children.
-            base.Draw(graphicsDevice, render);
+            base.Draw(render);
 
             // disable light before continuing drawing in the scene graph.
             render.DisableDirectionalLight(this);

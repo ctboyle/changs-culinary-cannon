@@ -75,11 +75,11 @@ namespace RC.Engine.GraphicsManagement
         /// <summary>
         /// Draws all children 
         /// </summary>
-        public override void Draw(GraphicsDevice graphicsDevice, IRCRenderManager render)
+        public override void Draw(IRCRenderManager render)
         {           
             foreach (RCSpatial child in listChildren)
             {
-                child.Draw(graphicsDevice, render);
+                child.Draw(render);
             }
         }
 
