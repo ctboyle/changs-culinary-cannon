@@ -24,15 +24,6 @@ namespace RC.Engine.Test
             get { return Services.GetService(typeof(ContentManager)) as ContentManager; }
         }
 
-        protected GraphicsDevice Graphics
-        {
-            get
-            {
-                IGraphicsDeviceService service = Services.GetService(typeof(IGraphicsDeviceService)) as IGraphicsDeviceService;
-                return service.GraphicsDevice;
-            }
-        }
-
         protected IRCGameStateStack GameStateStack
         {
             get { return Services.GetService(typeof(IRCGameStateStack)) as IRCGameStateStack; }

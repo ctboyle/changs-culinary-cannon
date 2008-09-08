@@ -25,61 +25,39 @@ namespace RC.Engine.GraphicsManagement
     public abstract class RCSpatial : ISpatial
     {
         protected IRCBoundingVolume _worldBound;
-
-        protected RCSpatial _parentNode;
+        private RCSpatial _parentNode;
         protected Matrix _worldTrans;
         private Matrix _localTrans;
 
         protected List<IController> _animateControllers;
 
-
-        public RCSpatial parentNode
+        public RCSpatial ParentNode
         {
-            get
-            {
-                return _parentNode;
-            }
-
-            set
-            {
-                _parentNode = value;
-            }
+            get { return _parentNode; }
+            set { _parentNode = value; }
         }
         
         public IRCBoundingVolume WorldBound
         {
-            get
-            {
-                return _worldBound;
-            }
+            get { return _worldBound; }
         }
 
         public Matrix LocalTrans
         {
-            get
-            {
-                return _localTrans;
-            }
-            set
-            {
-                _localTrans = value;
-            }
-
+            get { return _localTrans; }
+            set { _localTrans = value; }
         }
 
         public Matrix WorldTrans
         {
-            get
-            {
-                return _worldTrans;
-            }
+            get { return _worldTrans; }
         }
 
         public RCSpatial()
         {
             _localTrans = Matrix.Identity;
             _worldTrans = Matrix.Identity;
-            parentNode = null;
+            ParentNode = null;
 
             _worldBound = new RCBoundingSphere(
                 Vector3.Zero,
@@ -87,7 +65,6 @@ namespace RC.Engine.GraphicsManagement
                 );
                     
             _animateControllers = new List<IController>();
-
         }
 
         /// <summary>
@@ -174,10 +151,10 @@ namespace RC.Engine.GraphicsManagement
             UpdateControllers(gameTime);
 
 
-            if (parentNode != null)
+            if (ParentNode != null)
             {
                 // Compute world transform from parent's and local transforms.
-                _worldTrans = _localTrans * parentNode.WorldTrans;
+                _worldTrans = _localTrans * ParentNode.WorldTrans;
             }
             else
             {
@@ -196,16 +173,11 @@ namespace RC.Engine.GraphicsManagement
         ///</summary>
         protected void PropigateBVToRoot()
         {
-            if (parentNode != null)
+            if (ParentNode != null)
             {
-                parentNode.UpdateWorldBound();
-                parentNode.PropigateBVToRoot();
+                ParentNode.UpdateWorldBound();
+                ParentNode.PropigateBVToRoot();
             }
         }
     }
-
-
-
 }
-
-

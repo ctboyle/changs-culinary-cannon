@@ -28,7 +28,7 @@ namespace RC.Engine.Test
             _wedge.Load(ContentMgr);
 
             // Create a camera and add it to the camera manageer
-            RCCamera camera = new RCPerspectiveCamera(Graphics.Viewport);
+            RCCamera camera = new RCPerspectiveCamera(RenderMgr.Graphics.Viewport);
             camera.LocalTrans = Matrix.Invert(
                 Matrix.CreateLookAt(
                     new Vector3(1.0f, 1.0f, 10.0f),
@@ -56,7 +56,7 @@ namespace RC.Engine.Test
             camera.AddChild(lightNode.LightSource);
             _sceneRoot = lightNode;
         }
-
+       
         public override void Draw(Microsoft.Xna.Framework.GameTime gameTime)
         {
             CameraMgr.SetActiveCamera("Test");

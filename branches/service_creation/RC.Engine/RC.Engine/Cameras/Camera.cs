@@ -16,13 +16,10 @@ namespace RC.Engine.Cameras
         protected Matrix _projection;
         protected Viewport _viewport;
         protected Color _clearColor;
-
         protected ClearOptions _clearOptions;
-
         protected float _near;
         protected float _far;
-        
-        bool _clearScreen;
+        private bool _clearScreen;
 
         public ClearOptions ClearOptions
         {
@@ -38,26 +35,17 @@ namespace RC.Engine.Cameras
          
         public Matrix View
         {
-            get
-            {
-                return _view;
-            }
+            get { return _view; }
         }
 
         public Matrix Projection
         {
-            get
-            {
-                return _projection;
-            }
+            get { return _projection; }
         }
 
         public Viewport Viewport
         {
-            get
-            {
-                return _viewport;
-            }
+            get { return _viewport; }
             set
             {
                 _viewport = value;
@@ -65,29 +53,16 @@ namespace RC.Engine.Cameras
             }
         }
 
-        
         public float Near
         {
-            get
-            {
-                return _near;
-            }
-            set
-            {
-                _near = value;
-            }
+            get { return _near; }
+            set { _near = value; }
         }
 
         public float Far
         {
-            get
-            {
-                return _far;
-            }
-            set
-            {
-                _far = value;
-            }
+            get { return _far; }
+            set { _far = value; }
         }
         
 
@@ -98,7 +73,7 @@ namespace RC.Engine.Cameras
         }
 
         public RCCamera(Viewport newViewport)
-            :base()
+            : base()
         {
             SetViewport(newViewport);
 
@@ -117,7 +92,6 @@ namespace RC.Engine.Cameras
         public void SetViewport(Viewport newViewport)
         {
             _viewport = newViewport;
-
             _viewport.MinDepth = 0.0f;
 			_viewport.MaxDepth = 1.0f;
         }
@@ -194,6 +168,5 @@ namespace RC.Engine.Cameras
         /// </summary>
         /// <returns></returns>
         protected abstract Matrix UpdateProjection();
-
     }
 }

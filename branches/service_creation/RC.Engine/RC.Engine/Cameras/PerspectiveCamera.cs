@@ -14,21 +14,16 @@ namespace RC.Engine.Cameras
     {
         protected float _FOV;
 
-
         // Field of View property
         public float FOV
         {
-            get
-            {
-                return _FOV;
-            }
+            get { return _FOV; }
             set
             {
                 _FOV = value;
                 UpdateWorldData(null);
             }
         }
-
 
         public RCPerspectiveCamera(Viewport newViewport)
             : base(newViewport)

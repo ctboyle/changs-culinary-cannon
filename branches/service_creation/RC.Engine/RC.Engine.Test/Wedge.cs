@@ -36,7 +36,6 @@ namespace RC.Engine.Test
 
         protected override void UpdateWorldBound()
         {
-           
         }
     }
 }
