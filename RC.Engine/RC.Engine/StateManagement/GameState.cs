@@ -58,25 +58,6 @@ namespace RC.Engine.StateManagement
             get { return _services; }
         }
 
-        protected ContentManager ContentMgr
-        {
-            get { return _services.GetService(typeof(ContentManager)) as ContentManager; }
-        }
-
-        protected GraphicsDevice Graphics
-        {
-            get 
-            {
-                IGraphicsDeviceService service = _services.GetService(typeof(IGraphicsDeviceService)) as IGraphicsDeviceService;
-                return service.GraphicsDevice;
-            }
-        }
-
-        protected IRCGameStateManager GameStateMgr
-        {
-            get { return _services.GetService(typeof(IRCGameStateManager)) as IRCGameStateManager; }
-        }
-
         internal protected virtual void StateChanged(
             RCGameState newState,
             RCGameState oldState
