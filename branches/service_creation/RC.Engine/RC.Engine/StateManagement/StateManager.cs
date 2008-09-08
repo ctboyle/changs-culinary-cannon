@@ -9,14 +9,18 @@ namespace RC.Engine.StateManagement
 {
     public delegate void StateChangeHandler(RCGameState newState, RCGameState oldState);
 
-    public interface IRCGameStateManager
+    public interface IRCGameStateStack
+    {
+        void PushState(string label);
+        RCGameState PopState();
+        RCGameState PeekState();
+    }
+
+    public interface IRCGameStateManager : IRCGameStateStack
     {
         bool IsLoaded { get; set; }
         void AddState(string label, RCGameState state);
         void RemoveState(string label);
-        void PushState(string label);
-        RCGameState PopState();
-        RCGameState PeekState();
     }
 
     internal class RCGameStateManager : DrawableGameComponent, IRCGameStateManager, IDisposable
@@ -32,6 +36,7 @@ namespace RC.Engine.StateManagement
         public RCGameStateManager(Game game)
             : base(game)
         {
+            game.Services.AddService(typeof(IRCGameStateStack), this);
         }
 
         public bool IsLoaded
