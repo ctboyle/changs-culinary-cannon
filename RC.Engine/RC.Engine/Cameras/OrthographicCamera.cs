@@ -43,8 +43,5 @@ namespace RC.Engine.Cameras
                 _far
                 );
         }
-
-
-
     }
 }

@@ -30,7 +30,7 @@ namespace RC.Engine.GraphicsManagement
         /// </summary>
         public void AddChild(RCSpatial newChild)
         {
-            newChild.parentNode = this;
+            newChild.ParentNode = this;
             listChildren.Add(newChild);
         }
 
@@ -70,7 +70,6 @@ namespace RC.Engine.GraphicsManagement
                 child.Unload();
             }
         }
-
 
         /// <summary>
         /// Draws all children 
