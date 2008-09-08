@@ -8,6 +8,7 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using RC.Engine.Rendering;
 using Microsoft.Xna.Framework.Input;
+using RC.Engine.StateManagement;
 
 namespace RC.Engine.Test
 {
@@ -16,17 +17,18 @@ namespace RC.Engine.Test
         private RCSpatial _sceneRoot = null;
         private Wedge _wedge = new Wedge();
 
-        public override void Load(IServiceProvider services)
+        public TestState(IServiceProvider services)
+            : base(services)
         {
-            IRCCameraManager cameraMgr = services.GetService(typeof(IRCCameraManager)) as IRCCameraManager;
-            IGraphicsDeviceService deviceMgr = services.GetService(typeof(IGraphicsDeviceService)) as IGraphicsDeviceService;
-            IRCRenderManager renderMgr = services.GetService(typeof(IRCRenderManager)) as IRCRenderManager;
-
+        }
+        
+        public override void Load()
+        {
             // Load the wedge to the draw to the screen
-            _wedge.Load(services);
-
+            _wedge.Load(ContentMgr);
+         
             // Create a camera and add it to the camera manageer
-            RCCamera camera = new RCPerspectiveCamera(deviceMgr.GraphicsDevice.Viewport);
+            RCCamera camera = new RCPerspectiveCamera(Graphics.Viewport);
             camera.LocalTrans = Matrix.Invert(
                 Matrix.CreateLookAt(
                     new Vector3(1.0f, 1.0f, 10.0f),
@@ -34,7 +36,7 @@ namespace RC.Engine.Test
                     Vector3.Up
                 )
             );
-            cameraMgr.AddCamera("Test", camera);
+            CameraMgr.AddCamera("Test", camera);
 
             // Create the directional light
             RCDirectionalLight lightNode = new RCDirectionalLight(DirectionalLightIndex.Light0);
@@ -53,27 +55,28 @@ namespace RC.Engine.Test
             lightNode.AddChild(camera);
             camera.AddChild(lightNode.LightSource);
             _sceneRoot = lightNode;
-
-            base.Load(services);
         }
 
-        public override void Unload()
+        public override void Draw(Microsoft.Xna.Framework.GameTime gameTime)
         {
-            base.Unload();
+            CameraMgr.SetActiveCamera("Test");
+            RenderMgr.DrawScene(_sceneRoot);
         }
 
-        public override void Draw(Microsoft.Xna.Framework.GameTime gameTime, IServiceProvider services)
-        {
-            IRCRenderManager renderMgr = services.GetService(typeof(IRCRenderManager)) as IRCRenderManager;
-            IRCCameraManager cameraMgr = services.GetService(typeof(IRCCameraManager)) as IRCCameraManager;
-            cameraMgr.SetActiveCamera("Test");
-            renderMgr.DrawScene(_sceneRoot);
-        }
-
-        public override void Update(Microsoft.Xna.Framework.GameTime gameTime, IServiceProvider services)
+        public override void Update(Microsoft.Xna.Framework.GameTime gameTime)
         {
             UpdateInput();
             _sceneRoot.UpdateGS(gameTime, true);
+        }
+
+        protected IRCCameraManager CameraMgr
+        {
+            get { return Services.GetService(typeof(IRCCameraManager)) as IRCCameraManager; }
+        }
+
+        protected IRCRenderManager RenderMgr
+        {
+            get { return Services.GetService(typeof(IRCRenderManager)) as IRCRenderManager; }
         }
 
         private void UpdateInput()

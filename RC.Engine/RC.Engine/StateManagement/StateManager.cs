@@ -105,7 +105,7 @@ namespace RC.Engine.StateManagement
 
                 if (!currentState.IsVisible) continue;
 
-                currentState.Draw(gameTime, Game.Services);
+                currentState.Draw(gameTime);
             }
 
             base.Draw(gameTime);
@@ -117,9 +117,9 @@ namespace RC.Engine.StateManagement
             {
                 RCGameState currentState = stateStack[i];
 
-                if (!currentState.IsUpdated) continue;
+                if (!currentState.IsUpdateable) continue;
 
-                currentState.Update(gameTime, Game.Services);
+                currentState.Update(gameTime);
             }
 
             base.Update(gameTime);
@@ -129,7 +129,7 @@ namespace RC.Engine.StateManagement
         {
             foreach (RCGameState state in states.Values)
             {
-                state.Load(Game.Services);
+                state.Load();
             }
 
             _isLoaded = true;

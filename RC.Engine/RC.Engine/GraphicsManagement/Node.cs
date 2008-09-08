@@ -52,11 +52,11 @@ namespace RC.Engine.GraphicsManagement
         /// <summary>
         /// Invokes all children's LoadGraphicsContent.
         /// </summary>
-        public override void Load(IServiceProvider services)
+        public override void Load(ContentManager content)
         {
             foreach (RCSpatial child in listChildren)
             {
-                child.Load(services);
+                child.Load(content);
             }
         }
 
