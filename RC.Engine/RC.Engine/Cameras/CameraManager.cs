@@ -24,49 +24,49 @@ namespace RC.Engine.Cameras
 
         internal class RCCameraDictionary : IDictionary<string, RCCamera>
         {
-            private Dictionary<string, RCCamera> cameras = new Dictionary<string, RCCamera>();
+            private Dictionary<string, RCCamera> _cameras = new Dictionary<string, RCCamera>();
 
             #region IDictionary<string,RCCamera> Members
 
             public void Add(string key, RCCamera value)
             {
-                cameras.Add(key, value);
+                _cameras.Add(key, value);
             }
 
             public bool ContainsKey(string key)
             {
-                return cameras.ContainsKey(key);
+                return _cameras.ContainsKey(key);
             }
 
             public ICollection<string> Keys
             {
-                get { return cameras.Keys; }
+                get { return _cameras.Keys; }
             }
 
             public bool Remove(string key)
             {
-                return cameras.Remove(key);
+                return _cameras.Remove(key);
             }
 
             public bool TryGetValue(string key, out RCCamera value)
             {
-                return cameras.TryGetValue(key, out value);
+                return _cameras.TryGetValue(key, out value);
             }
 
             public ICollection<RCCamera> Values
             {
-                get { return cameras.Values; }
+                get { return _cameras.Values; }
             }
 
             public RCCamera this[string key]
             {
                 get
                 {
-                    return cameras[key];
+                    return _cameras[key];
                 }
                 set
                 {
-                    cameras[key] = value;
+                    _cameras[key] = value;
                 }
             }
 
@@ -76,17 +76,17 @@ namespace RC.Engine.Cameras
 
             public void Add(KeyValuePair<string, RCCamera> item)
             {
-                cameras.Add(item.Key, item.Value);
+                _cameras.Add(item.Key, item.Value);
             }
 
             public void Clear()
             {
-                cameras.Clear();
+                _cameras.Clear();
             }
 
             public bool Contains(KeyValuePair<string, RCCamera> item)
             {
-                return cameras.ContainsKey(item.Key) && cameras[item.Key].Equals(item.Value);
+                return _cameras.ContainsKey(item.Key) && _cameras[item.Key].Equals(item.Value);
             }
 
             public void CopyTo(KeyValuePair<string, RCCamera>[] array, int arrayIndex)
@@ -96,7 +96,7 @@ namespace RC.Engine.Cameras
 
             public int Count
             {
-                get { return cameras.Count; }
+                get { return _cameras.Count; }
             }
 
             public bool IsReadOnly
@@ -106,7 +106,7 @@ namespace RC.Engine.Cameras
 
             public bool Remove(KeyValuePair<string, RCCamera> item)
             {
-                return cameras.Remove(item.Key);
+                return _cameras.Remove(item.Key);
             }
 
             #endregion
@@ -115,7 +115,7 @@ namespace RC.Engine.Cameras
 
             public IEnumerator<KeyValuePair<string, RCCamera>> GetEnumerator()
             {
-                return cameras.GetEnumerator();
+                return _cameras.GetEnumerator();
             }
 
             #endregion
@@ -124,7 +124,7 @@ namespace RC.Engine.Cameras
 
             System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator()
             {
-                return cameras.GetEnumerator();
+                return _cameras.GetEnumerator();
             }
 
             #endregion
@@ -132,8 +132,8 @@ namespace RC.Engine.Cameras
 
         #endregion
 
-        private RCCameraDictionary cameras = new RCCameraDictionary();
-        private string activeCameraLabel = String.Empty;
+        private RCCameraDictionary _cameras = new RCCameraDictionary();
+        private string _activeCameraLabel = String.Empty;
         private Game _game = null;
 
         public RCCameraManager(Game game)
@@ -150,27 +150,27 @@ namespace RC.Engine.Cameras
         {
         }
 
-        public RCCamera ActiveCamera { get { return cameras[activeCameraLabel]; } }
+        public RCCamera ActiveCamera { get { return _cameras[_activeCameraLabel]; } }
 
         public void AddCamera(string cameraLabel, RCCamera newCamera)
         {
-            cameras.Add(cameraLabel, newCamera);
+            _cameras.Add(cameraLabel, newCamera);
         }
 
         public void RemoveCamera(string cameraLabel)
         {
-            cameras.Remove(cameraLabel);
+            _cameras.Remove(cameraLabel);
         }
 
         public void SetActiveCamera(string cameraLabel)
         {
-            activeCameraLabel = cameraLabel;
+            _activeCameraLabel = cameraLabel;
         }
 
         public RCCamera this[string cameraLabel]
         {
-            get { return cameras[cameraLabel]; }
-            set { cameras[cameraLabel] = value; }
+            get { return _cameras[cameraLabel]; }
+            set { _cameras[cameraLabel] = value; }
         }
     }
 }

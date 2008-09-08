@@ -23,12 +23,12 @@ namespace RC.Engine.StateManagement
         void RemoveState(string label);
     }
 
-    internal class RCGameStateManager : DrawableGameComponent, IRCGameStateManager, IDisposable
+    internal class RCGameStateManager : DrawableGameComponent, IRCGameStateManager
     {
         public delegate void StateChangeFunc(RCGameState previousState, RCGameState newState);
 
-        private Dictionary<string, RCGameState> states = new Dictionary<string, RCGameState>();
-        private List<RCGameState> stateStack = new List<RCGameState>();
+        private Dictionary<string, RCGameState> _states = new Dictionary<string, RCGameState>();
+        private List<RCGameState> _stateStack = new List<RCGameState>();
         private bool _isLoaded = false;
 
         public event StateChangeFunc StateChanged;
@@ -52,7 +52,7 @@ namespace RC.Engine.StateManagement
                 throw new InvalidOperationException("States cannot be added after content is loaded.");
             }
 
-            states.Add(label, state);
+            _states.Add(label, state);
         }
 
         public void RemoveState(string label)
@@ -62,34 +62,34 @@ namespace RC.Engine.StateManagement
                 throw new InvalidOperationException("States cannot be removed after content is loaded.");
             }
 
-            states.Remove(label);
+            _states.Remove(label);
         }
 
         public void PushState(string label)
         {
-            if (stateStack.Count > 0)
+            if (_stateStack.Count > 0)
             {
                 if (StateChanged != null)
                 {
-                    StateChanged(stateStack[0], states[label]);
+                    StateChanged(_stateStack[0], _states[label]);
                 }
             }
 
-            stateStack.Insert(0, states[label]);
+            _stateStack.Insert(0, _states[label]);
         }
 
         public RCGameState PopState()
         {
-            if (stateStack.Count == 0) return null;
+            if (_stateStack.Count == 0) return null;
 
-            RCGameState oldState = stateStack[0];
-            stateStack.RemoveAt(0);
+            RCGameState oldState = _stateStack[0];
+            _stateStack.RemoveAt(0);
 
             if (StateChanged != null)
             {
-                if (stateStack.Count >= 1)
+                if (_stateStack.Count >= 1)
                 {
-                    StateChanged(oldState, stateStack[0]);
+                    StateChanged(oldState, _stateStack[0]);
                 }
             }
 
@@ -98,15 +98,15 @@ namespace RC.Engine.StateManagement
 
         public RCGameState PeekState()
         {
-            if (stateStack.Count == 0) return null;
-            return stateStack[0];
+            if (_stateStack.Count == 0) return null;
+            return _stateStack[0];
         }
 
         public override void Draw(GameTime gameTime)
         {
-            for (int i = stateStack.Count - 1; i >= 0; --i)
+            for (int i = _stateStack.Count - 1; i >= 0; --i)
             {
-                RCGameState currentState = stateStack[i];
+                RCGameState currentState = _stateStack[i];
 
                 if (!currentState.IsVisible) continue;
 
@@ -118,9 +118,9 @@ namespace RC.Engine.StateManagement
 
         public override void Update(GameTime gameTime)
         {
-            for (int i = stateStack.Count - 1; i >= 0; --i)
+            for (int i = _stateStack.Count - 1; i >= 0; --i)
             {
-                RCGameState currentState = stateStack[i];
+                RCGameState currentState = _stateStack[i];
 
                 if (!currentState.IsUpdateable) continue;
 
@@ -132,7 +132,7 @@ namespace RC.Engine.StateManagement
 
         protected override void LoadContent()
         {
-            foreach (RCGameState state in states.Values)
+            foreach (RCGameState state in _states.Values)
             {
                 state.Load();
             }
@@ -144,13 +144,13 @@ namespace RC.Engine.StateManagement
 
         protected override void UnloadContent()
         {
-            foreach (RCGameState state in states.Values)
+            foreach (RCGameState state in _states.Values)
             {
                 state.Unload();
             }
 
             _isLoaded = false;
-            states.Clear();
+            _states.Clear();
 
             base.UnloadContent();
         }
