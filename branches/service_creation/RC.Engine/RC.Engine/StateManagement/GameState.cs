@@ -14,11 +14,16 @@ using RC.Engine.Cameras;
 
 namespace RC.Engine.StateManagement
 {
-    public abstract partial class RCGameState
+    public class RCGameState
     {
-        private IRCGameStateManager _gameManager = null;
+        private IServiceProvider _services = null;
         private bool _isVisible = true;
         private bool _isUpdated = true;
+
+        public RCGameState(IServiceProvider services)
+        {
+            _services = services;
+        }
 
         public bool IsVisible
         {
@@ -26,29 +31,50 @@ namespace RC.Engine.StateManagement
             set { _isVisible = value; }
         }
 
-        public bool IsUpdated
+        public bool IsUpdateable
         {
             get { return _isUpdated; }
             set { _isUpdated = value; }
         }
 
-        public virtual void Load(IServiceProvider services)
+        public virtual void Load()
         {
-            _gameManager = services.GetService(typeof(IRCGameStateManager)) as IRCGameStateManager;
         }
 
         public virtual void Unload()
         {
-
         }
 
-        public abstract void Draw(GameTime gameTime, IServiceProvider services);
+        public virtual void Draw(GameTime gameTime)
+        {
+        }
 
-        public abstract void Update(GameTime gameTime, IServiceProvider services);
+        public virtual void Update(GameTime gameTime)
+        {
+        }
+
+        protected IServiceProvider Services
+        {
+            get { return _services; }
+        }
+
+        protected ContentManager ContentMgr
+        {
+            get { return _services.GetService(typeof(ContentManager)) as ContentManager; }
+        }
+
+        protected GraphicsDevice Graphics
+        {
+            get 
+            {
+                IGraphicsDeviceService service = _services.GetService(typeof(IGraphicsDeviceService)) as IGraphicsDeviceService;
+                return service.GraphicsDevice;
+            }
+        }
 
         protected IRCGameStateManager GameStateMgr
         {
-            get { return _gameManager; }
+            get { return _services.GetService(typeof(IRCGameStateManager)) as IRCGameStateManager; }
         }
 
         internal protected virtual void StateChanged(
@@ -58,11 +84,11 @@ namespace RC.Engine.StateManagement
         {
             if (newState == this)
             {
-                IsVisible = IsUpdated = true;
+                IsVisible = IsUpdateable = true;
             }
             else
             {
-                IsVisible = IsUpdated = false;
+                IsVisible = IsUpdateable = false;
             }
         }
     }

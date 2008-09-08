@@ -93,7 +93,7 @@ namespace RC.Engine.GraphicsManagement
         /// <summary>
         /// Abstract method for loading graphic content.
         /// </summary>
-        public abstract void Load(IServiceProvider services);
+        public abstract void Load(ContentManager content);
 
         /// <summary>
         /// Abstract method for un-loading graphic content.

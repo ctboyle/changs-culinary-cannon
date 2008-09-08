@@ -13,9 +13,8 @@ namespace RC.Engine.Test
     {
         private Model _wedgeModel = null;
 
-        public override void Load(IServiceProvider services)
+        public override void Load(ContentManager content)
         {
-            ContentManager content = services.GetService(typeof(ContentManager)) as ContentManager;
             _wedgeModel = content.Load<Model>(@"Content/enemy");
         }
 
