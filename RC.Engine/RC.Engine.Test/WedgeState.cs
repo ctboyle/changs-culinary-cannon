@@ -37,7 +37,7 @@ namespace RC.Engine.Test
                 )
             );
             CameraMgr.AddCamera("Test", camera);
-
+            
             // Create the directional light
             RCDirectionalLight lightNode = new RCDirectionalLight(DirectionalLightIndex.Light0);
             lightNode.Diffuse = new Vector3(1.2f);

@@ -27,7 +27,7 @@ namespace RC.Engine.Test
         {
             render.RenderModel(
                 _wedgeModel,
-                delegate(GraphicsDevice g, IRCRenderManager r)
+                delegate(IRCRenderManager r)
                 {
                     r.SetWorld(WorldTrans);
                 }
