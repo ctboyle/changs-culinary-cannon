@@ -9,7 +9,7 @@ using RC.Engine.Utility;
 
 namespace RC.Engine.Rendering
 {
-    public delegate void RenderFunc(GraphicsDevice device, IRCRenderManager render);
+    public delegate void RenderFunc(IRCRenderManager render);
 
     public enum DirectionalLightIndex
     {
@@ -238,7 +238,7 @@ namespace RC.Engine.Rendering
                 pass.Begin();
 
                 // Do the specific rendering.
-                renderLogic(_game.GraphicsDevice, this);
+                renderLogic(this);
 
                 pass.End();
             }
@@ -254,7 +254,7 @@ namespace RC.Engine.Rendering
                 {
                     _sceneEffect.View = _cameraMgr.ActiveCamera.View;
                     _sceneEffect.Projection = _cameraMgr.ActiveCamera.Projection;
-                    renderLogic(_game.GraphicsDevice, this);
+                    renderLogic(this);
                     part.Effect = _sceneEffect;  
                 }
                 mesh.Draw();
