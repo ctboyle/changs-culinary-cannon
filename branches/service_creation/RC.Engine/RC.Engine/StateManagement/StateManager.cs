@@ -18,51 +18,39 @@ namespace RC.Engine.StateManagement
 
     public interface IRCGameStateManager : IRCGameStateStack
     {
-        bool IsLoaded { get; set; }
         void AddState(string label, RCGameState state);
         void RemoveState(string label);
     }
 
     internal class RCGameStateManager : DrawableGameComponent, IRCGameStateManager
     {
+        public delegate void LoadingFunc(RCGameState currentState, bool loading);
         public delegate void StateChangeFunc(RCGameState previousState, RCGameState newState);
 
         private Dictionary<string, RCGameState> _states = new Dictionary<string, RCGameState>();
         private List<RCGameState> _stateStack = new List<RCGameState>();
-        private bool _isLoaded = false;
 
         public event StateChangeFunc StateChanged;
+        public event LoadingFunc StateLoading;
 
         public RCGameStateManager(Game game)
             : base(game)
         {
+            game.Services.AddService(typeof(IRCGameStateManager), this);
             game.Services.AddService(typeof(IRCGameStateStack), this);
-        }
-
-        public bool IsLoaded
-        {
-            get { return _isLoaded; }
-            set { _isLoaded = value; }
         }
 
         public void AddState(string label, RCGameState state)
         {
-            if (_isLoaded)
-            {
-                throw new InvalidOperationException("States cannot be added after content is loaded.");
-            }
-
             _states.Add(label, state);
+            LoadState(state);
         }
 
         public void RemoveState(string label)
         {
-            if (_isLoaded)
-            {
-                throw new InvalidOperationException("States cannot be removed after content is loaded.");
-            }
-
+            RCGameState removeState = _states[label];
             _states.Remove(label);
+            UnloadState(removeState);
         }
 
         public void PushState(string label)
@@ -130,29 +118,28 @@ namespace RC.Engine.StateManagement
             base.Update(gameTime);
         }
 
-        protected override void LoadContent()
-        {
-            foreach (RCGameState state in _states.Values)
-            {
-                state.Load();
-            }
-
-            _isLoaded = true;
-
-            base.LoadContent();
-        }
-
         protected override void UnloadContent()
         {
             foreach (RCGameState state in _states.Values)
             {
-                state.Unload();
+                UnloadState(state);
             }
 
-            _isLoaded = false;
             _states.Clear();
 
             base.UnloadContent();
+        }
+
+        private void LoadState(RCGameState state)
+        {
+            state.Load();
+            if (StateLoading != null) StateLoading(state, true);
+        }
+
+        private void UnloadState(RCGameState state)
+        {
+            state.Unload();
+            if (StateLoading != null) StateLoading(state, false);
         }
     }
 }
