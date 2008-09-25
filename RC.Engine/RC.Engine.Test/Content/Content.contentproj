@@ -31,10 +31,24 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="enemy.X">
+    <Compile Include="Models\enemy.X">
       <Name>enemy</Name>
       <Importer>XImporter</Importer>
       <Processor>ModelProcessor</Processor>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Models\treasure_chest.x">
+      <Name>treasure_chest</Name>
+      <Importer>XImporter</Importer>
+      <Processor>ModelProcessor</Processor>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Textures\treasure_chest_2.png">
+      <Name>treasure_chest_2</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
     </Compile>
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Microsoft\XNA Game Studio\v2.0\Microsoft.Xna.GameStudio.ContentPipeline.targets" />

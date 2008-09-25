@@ -8,3 +8,16 @@ C:\Users\TabletPC\Documents\Projects\changs-culinary-cannon\branches\service_cre
 C:\Users\TabletPC\Documents\Projects\changs-culinary-cannon\branches\service_creation\RC.Engine\RC.Engine.Test\bin\x86\Debug\Content\enemy.xnb
 C:\Users\TabletPC\Documents\Projects\changs-culinary-cannon\branches\service_creation\RC.Engine\RC.Engine.Test\bin\x86\Debug\RC.Engine.dll
 C:\Users\TabletPC\Documents\Projects\changs-culinary-cannon\branches\service_creation\RC.Engine\RC.Engine.Test\bin\x86\Debug\RC.Engine.pdb
+C:\Dev\RC.Engine\RC.Engine.Test\bin\x86\Debug\Content\Models\enemy.xnb
+C:\Dev\RC.Engine\RC.Engine.Test\bin\x86\Debug\Content\Models\treasure_chest.xnb
+C:\Dev\RC.Engine\RC.Engine.Test\bin\x86\Debug\Content\Textures\treasure_chest_2.xnb
+C:\Dev\RC.Engine\RC.Engine.Test\bin\x86\Debug\Content\Textures\treasure_chest_2%0.xnb
+C:\Dev\RC.Engine\RC.Engine.Test\bin\x86\Debug\RC.Engine.Test.exe
+C:\Dev\RC.Engine\RC.Engine.Test\bin\x86\Debug\RC.Engine.Test.pdb
+C:\Dev\RC.Engine\RC.Engine.Test\bin\x86\Debug\RC.Engine.dll
+C:\Dev\RC.Engine\RC.Engine.Test\bin\x86\Debug\RC.Engine.pdb
+C:\Dev\RC.Engine\RC.Engine.Test\obj\x86\Debug\ResolveAssemblyReference.cache
+C:\Dev\RC.Engine\RC.Engine.Test\obj\x86\Debug\Microsoft.Xna.Framework.RuntimeProfile.txt
+C:\Dev\RC.Engine\RC.Engine.Test\obj\x86\Debug\RC.Engine.Test.obj.x86.Debug.Microsoft.Xna.Framework.RuntimeProfile.txt
+C:\Dev\RC.Engine\RC.Engine.Test\obj\x86\Debug\RC.Engine.Test.exe
+C:\Dev\RC.Engine\RC.Engine.Test\obj\x86\Debug\RC.Engine.Test.pdb

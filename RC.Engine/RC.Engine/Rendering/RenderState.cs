@@ -1,0 +1,38 @@
+using System;
+using System.Collections.Generic;
+using System.Text;
+using Microsoft.Xna.Framework.Graphics;
+
+namespace RC.Engine.Rendering
+{
+    public abstract class RCRenderState
+    {
+        static RCRenderState()
+        {
+            Default.Add(new RCAlphaState());
+            Default.Add(new RCMaterialState());
+        }
+
+
+        // supported global states
+        public enum StateType
+        {
+            ALPHA,
+            MATERIAL,
+            //CULL,
+            //FOG,
+            //POLYGONOFFSET,
+            //STENCIL,
+            //WIREFRAME,
+            //ZBUFFER
+        };
+
+
+        public abstract StateType GetStateType();
+
+        public abstract void ConfigureDevice(GraphicsDevice device);
+
+        // default states
+        public static RCRenderStateCollection Default = new RCRenderStateCollection(false);
+    }
+}

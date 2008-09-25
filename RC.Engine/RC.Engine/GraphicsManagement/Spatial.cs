@@ -9,6 +9,7 @@ using RC.Engine.Animation;
 using RC.Engine.Cameras;
 using RC.Engine.GraphicsManagement.BoundingVolumes;
 using RC.Engine.Rendering;
+using RC.Engine.SceneEffects;
 
 #endregion
 
@@ -29,7 +30,33 @@ namespace RC.Engine.GraphicsManagement
         protected Matrix _worldTrans;
         private Matrix _localTrans;
 
-        protected List<IController> _animateControllers;
+        /// <summary>
+        /// List of contollers that control any time varying quantites in this object
+        /// to facilitate animations.
+        /// </summary>
+        protected List<IController> _animateControllers = new List<IController>();
+
+        /// <summary>
+        /// Render states to apply to this and/or children of this node.
+        /// </summary>
+        private RCRenderStateCollection _globalStates = new RCRenderStateCollection(false);
+
+        /// <summary>
+        /// List of effects to apply while drawing.
+        /// 
+        /// For RCNode,
+        /// All child objects are rendered with the effect rooted
+        /// at the node.
+        /// 
+        /// </summary>
+        private List<RCEffect> _effects = new List<RCEffect>();
+
+        /// <summary>
+        /// Attached Lights in the scene graph.
+        /// 
+        /// If a node has a light, it is applied to all children.
+        /// </summary>
+        protected List<RCLight> _lights = new List<RCLight>();
 
         public RCSpatial ParentNode
         {
@@ -40,6 +67,12 @@ namespace RC.Engine.GraphicsManagement
         public IRCBoundingVolume WorldBound
         {
             get { return _worldBound; }
+        }
+
+        public List<RCEffect> Effects
+        {
+            get { return _effects; }
+            set { _effects = value; }
         }
 
         public Matrix LocalTrans
@@ -53,6 +86,16 @@ namespace RC.Engine.GraphicsManagement
             get { return _worldTrans; }
         }
 
+        /// <summary>
+        /// Use this property to configure the renderstates associated with this node.
+        /// </summary>
+        public RCRenderStateCollection GlobalStates
+        {
+            get { return _globalStates; }
+            set { _globalStates = value; }
+        }
+
+
         public RCSpatial()
         {
             _localTrans = Matrix.Identity;
@@ -63,19 +106,29 @@ namespace RC.Engine.GraphicsManagement
                 Vector3.Zero,
                 0.0f
                 );
-                    
-            _animateControllers = new List<IController>();
         }
 
         /// <summary>
         /// Abstract method for loading graphic content.
         /// </summary>
-        public abstract void Load(ContentManager content);
+        public virtual void Load(GraphicsDevice device, ContentManager content)
+        {
+            foreach (RCEffect effect in Effects)
+            {
+                effect.LoadContent(device, content);
+            }
+        }
 
         /// <summary>
         /// Abstract method for un-loading graphic content.
         /// </summary>
-        public abstract void Unload();
+        public virtual void Unload()
+        {
+            foreach (RCEffect effect in Effects)
+            {
+                //effect.Unload();
+            }
+        }
 
         /// <summary>
         /// Called to update the SceneObject
@@ -89,6 +142,78 @@ namespace RC.Engine.GraphicsManagement
             if (fInitiator)
             {
                 PropigateBVToRoot();
+            }
+        }
+
+        public void UpdateRS()
+        {
+            UpdateRS(null, null);
+        }
+
+        public void UpdateRS(RCRenderStateStack stateStack, Stack<RCLight> lightStack)
+        {
+            bool fInitiator = (stateStack == null);
+
+            if (fInitiator)
+            {
+                stateStack = new RCRenderStateStack();
+                lightStack = new Stack<RCLight>();
+
+                // Ensure that states are accumulated from parents just in case we are not
+                // at the graph root.
+                PropigateStateFromRoot(stateStack, lightStack);
+            }
+            else
+            {
+                PushState(stateStack, lightStack);
+            }
+
+            // Manage derived-class specific state management.
+            UpdateState(stateStack, lightStack);
+
+            if (!fInitiator)
+            {
+                PopState(stateStack, lightStack);
+            }
+        }
+
+        protected abstract void UpdateState(RCRenderStateStack stateStack, Stack<RCLight> lightStack);
+
+        protected void PropigateStateFromRoot(RCRenderStateStack stateStack, Stack<RCLight> lightStack)
+        {
+            if (_parentNode != null)
+            {
+                _parentNode.PropigateStateFromRoot(stateStack, lightStack);
+            }
+
+            PushState(stateStack, lightStack);
+        }
+
+        /// <summary>
+        /// Places render states on a stack as the scene graph is traversed.
+        /// 
+        /// Also manages active lights on a lights stack.
+        /// </summary>
+        /// <param name="stateStack"></param>
+        /// <param name="lightStack"></param>
+        private void PushState(RCRenderStateStack stateStack, Stack<RCLight> lightStack)
+        {
+            stateStack.PushStates(_globalStates);
+            
+            foreach (RCLight light in _lights)
+            {
+                lightStack.Push(light);
+            }
+        }
+
+        private void PopState(RCRenderStateStack stateStack, Stack<RCLight> lightStack)
+        {
+            stateStack.PopStates(_globalStates);
+            
+            int iSize = _lights.Count;
+            for (int i = 0; i < iSize; iSize++)
+            {
+                lightStack.Pop();
             }
         }
 
@@ -142,6 +267,38 @@ namespace RC.Engine.GraphicsManagement
             }
         }
 
+        public void AddLight(RCLight light)
+        {
+            // Do not fail if light is already in list.
+            if (!_lights.Contains(light))
+            {
+                _lights.Add(light);
+            }
+        }
+
+        public void RemoveLight(RCLight light)
+        {
+            _lights.Remove(light);
+        }
+
+        public void AddEffect(RCEffect effect)
+        {
+            if (effect == null)
+            {
+                throw new ArgumentNullException();
+            }
+
+            if (!_effects.Contains(effect))
+            {
+                _effects.Add(effect);
+            }
+        }
+
+        public void RemoveEffect(RCEffect effect)
+        {
+            _effects.Remove(effect);
+        }
+
         /// <summary>
         /// Override to update all object world oriented data.
         /// </summary>
@@ -179,5 +336,7 @@ namespace RC.Engine.GraphicsManagement
                 ParentNode.PropigateBVToRoot();
             }
         }
+
+        
     }
 }

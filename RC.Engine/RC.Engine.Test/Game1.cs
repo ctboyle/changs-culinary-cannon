@@ -18,13 +18,16 @@ namespace RC.Engine.Test
     {
         protected override void Initialize()
         {
-            StateManager.AddState("Test", new WedgeState(Services));
+            StateManager.AddState("Test", new TestState(Services));
             base.Initialize();
         }
 
         protected override void BeginRun()
         {
             StateManager.PushState("Test");
+
+            this.GraphicsDevice.RenderState.CullMode = CullMode.None;
+
             base.BeginRun();
         }
     }

@@ -45,6 +45,10 @@ namespace RC.Engine.StateManagement
         {
         }
 
+        public virtual void Initialize()
+        {
+        }
+
         public virtual void Draw(GameTime gameTime)
         {
         }

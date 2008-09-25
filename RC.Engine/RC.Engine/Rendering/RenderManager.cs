@@ -7,6 +7,7 @@ using RC.Engine.Cameras;
 using RC.Engine.GraphicsManagement;
 using RC.Engine.Utility;
 
+
 namespace RC.Engine.Rendering
 {
     public delegate void RenderFunc(IRCRenderManager render);
@@ -22,21 +23,24 @@ namespace RC.Engine.Rendering
     public interface IRCRenderManager : IRCLoadable
     {
         GraphicsDevice Graphics { get; }
-        void EnableDirectionalLight(RCDirectionalLight lightNode);
-        void DisableDirectionalLight(RCDirectionalLight lightNode);
-        void SetEffectMaterial(
-            Vector3 ambient,
-            Vector3 diffuse,
-            Vector3 specular,
-            float specularPower,
-            Vector3 emissive,
-            float alpha
-            );
-        void SetTexture(Texture2D texture);
-        void TextureMappingEnabled(bool enabled);
-        void SetWorld(Matrix world);
-        void Render(RenderFunc renderLogic);
-        void RenderModel(Model model, RenderFunc renderLogic);
+
+        Matrix World
+        {
+            get;
+        }
+
+        Matrix View
+        {
+            get;
+        }
+        Matrix Projection
+        {
+            get;
+        }
+
+        void SetRenderState(RCRenderState renderState);
+        RCRenderState GetRenderState(RCRenderState.StateType type);
+        void Draw(RCGeometry geometry);
         void DrawScene(RCSpatial sceneRoot);
         void ClearScreen();
     }
@@ -46,11 +50,30 @@ namespace RC.Engine.Rendering
     /// </summary>
     internal class RCRenderManager : IRCRenderManager
     {
-        private BasicEffect _sceneEffect = null;
-        private int _countEnabledLights = 0;
-        private Color _clearColor = Color.CornflowerBlue;
         private IRCCameraManager _cameraMgr = null;
         private Game _game = null;
+        private Matrix _world;
+
+
+        private RCGeometry _geometry = null;
+
+        private RCRenderStateCollection _renderStates =
+            new RCRenderStateCollection(true);
+
+        public Matrix World
+        {
+            get { return _world; }
+        }
+
+        public Matrix View
+        {
+            get { return _cameraMgr.ActiveCamera.View; }
+        }
+        public Matrix Projection
+        {
+            get { return _cameraMgr.ActiveCamera.Projection; }
+        }
+
 
         public RCRenderManager(Game game)
         {
@@ -71,195 +94,47 @@ namespace RC.Engine.Rendering
 
             graphics.GraphicsDevice.RenderState.DepthBufferEnable = true;
             graphics.GraphicsDevice.RenderState.StencilEnable = true;
-
-            _sceneEffect = new BasicEffect(graphics.GraphicsDevice, null);
         }
 
         public void Unload()
         {
-            _sceneEffect = null;
+
         }
 
-        /// <summary>
-        /// Enables the RenderManagers effect with the lightNode's Index light
-        /// and assgins the appropriate effect properties.
-        /// </summary>
-        public void EnableDirectionalLight(RCDirectionalLight lightNode)
+        public void SetRenderState(RCRenderStateCollection renderStates)
         {
-            if (_sceneEffect == null) return;
-
-            BasicDirectionalLight effectLight = null;
-
-            switch (lightNode.LightIndex)
+            foreach (RCRenderState state in renderStates)
             {
-                case DirectionalLightIndex.Light0:
-                    effectLight = _sceneEffect.DirectionalLight0;
-                    break;
-                case DirectionalLightIndex.Light1:
-                    effectLight = _sceneEffect.DirectionalLight1;
-                    break;
-                case DirectionalLightIndex.Light2:
-                    effectLight = _sceneEffect.DirectionalLight2;
-                    break;
-                default:
-                    throw (new Exception("Light Index is invalid."));
-
-            }
-
-            if (effectLight.Enabled)
-            {
-                throw (new Exception("Light is already enabled."));
-            }
-
-            // Enable Lighting
-            _sceneEffect.LightingEnabled = true;
-            effectLight.Enabled = true;
-
-
-            // Set Effect Light properties to reflect the LightNode
-            effectLight.DiffuseColor = lightNode.Diffuse;
-            effectLight.SpecularColor = lightNode.Specular;
-            effectLight.Direction = lightNode.Direction;
-
-            // increment local count of enabled lights
-            _countEnabledLights++;
-
-            if (_countEnabledLights > (int)DirectionalLightIndex.Count)
-            {
-                throw (new Exception("Tried to enable more lights than RenderManager provides."));
+                SetRenderState(state);
             }
         }
 
-
-        /// <summary>
-        /// Disables the light refrenced by lightNode's index. Disables lighting if
-        /// enabled light count goes to zero.
-        /// </summary>
-        public void DisableDirectionalLight(RCDirectionalLight lightNode)
+        public void RestoreRenderState(RCRenderStateCollection renderStates)
         {
-            if (_sceneEffect == null) return;
-
-            BasicDirectionalLight effectLight = null;
-
-            switch (lightNode.LightIndex)
+            foreach (RCRenderState state in renderStates)
             {
-                case DirectionalLightIndex.Light0:
-                    effectLight = _sceneEffect.DirectionalLight0;
-                    break;
-                case DirectionalLightIndex.Light1:
-                    effectLight = _sceneEffect.DirectionalLight1;
-                    break;
-                case DirectionalLightIndex.Light2:
-                    effectLight = _sceneEffect.DirectionalLight2;
-                    break;
-                default:
-                    throw (new Exception("Light Index is invalid."));
-
-            }
-
-            effectLight.Enabled = false;
-
-            _countEnabledLights--;
-
-            // Trun off lighting if there are no lights enabled.
-            if (_countEnabledLights <= 0)
-            {
-                _sceneEffect.LightingEnabled = false;
+                SetRenderState(RCRenderState.Default[state.GetStateType()]);
             }
         }
 
-        /// <summary>
-        /// Sets the current material properties to be rendered.
-        /// </summary>
-        public void SetEffectMaterial(
-            Vector3 ambient,
-            Vector3 diffuse,
-            Vector3 specular,
-            float specularPower,
-            Vector3 emissive,
-            float alpha
-            )
+
+        public void SetRenderState(RCRenderState renderState)
         {
-            if (_sceneEffect == null) return;
-
-            _sceneEffect.AmbientLightColor = ambient;
-            _sceneEffect.DiffuseColor = diffuse;
-            _sceneEffect.SpecularColor = specular;
-            _sceneEffect.EmissiveColor = emissive;
-            _sceneEffect.Alpha = alpha;
-            _sceneEffect.SpecularPower = specularPower;
-            _sceneEffect.CommitChanges();
-        }
-
-        public void SetTexture(Texture2D texture)
-        {
-            if (_sceneEffect == null) return;
-
-            if (texture != null)
+            if (renderState != null)
             {
-                _sceneEffect.Texture = texture;
-            }
-            else
-            {
-                TextureMappingEnabled(false);
+                // Cache the new state
+                _renderStates[renderState.GetStateType()] = renderState;
+
+                // Enable the state
+                renderState.ConfigureDevice(Graphics);
             }
         }
 
-        public void TextureMappingEnabled(bool enabled)
+        public RCRenderState GetRenderState(RCRenderState.StateType type)
         {
-            if (_sceneEffect == null) return;
-            
-            _sceneEffect.TextureEnabled = enabled;
+            return _renderStates[type];
         }
 
-        /// <summary>
-        /// Sets the effects world transform property
-        /// </summary>
-        public void SetWorld(Matrix world)
-        {
-            if (_sceneEffect == null) return;
-
-            _sceneEffect.World = world;
-        }
-
-        /// <summary>
-        /// Renders the logic defined in the renderLogic function delegate.
-        /// 
-        /// Applys all passes of the effect to the geometry.
-        /// </summary>
-        public void Render(RenderFunc renderLogic)
-        {
-            if (_sceneEffect == null) return;
-
-            _sceneEffect.Begin();
-
-            foreach (EffectPass pass in _sceneEffect.CurrentTechnique.Passes)
-            {
-                pass.Begin();
-
-                // Do the specific rendering.
-                renderLogic(this);
-
-                pass.End();
-            }
-
-            _sceneEffect.End();
-        }
-
-        public void RenderModel(Model model, RenderFunc renderLogic)
-        {
-            foreach (ModelMesh mesh in model.Meshes)
-            {
-                foreach (ModelMeshPart part in mesh.MeshParts)
-                {
-                    _sceneEffect.View = _cameraMgr.ActiveCamera.View;
-                    _sceneEffect.Projection = _cameraMgr.ActiveCamera.Projection;
-                    renderLogic(this);
-                    part.Effect = _sceneEffect;  
-                }
-                mesh.Draw();
-            }
-        }
 
         /// <summary>
         /// Use to render a scene.
@@ -268,34 +143,94 @@ namespace RC.Engine.Rendering
         /// </summary>
         public void DrawScene(RCSpatial sceneRoot)
         {
-            if (_sceneEffect == null) return;
- 
-            bool fCameraSuccess = false;
-
-            _sceneEffect.GraphicsDevice.RenderState.DepthBufferWriteEnable = true;
-            _sceneEffect.GraphicsDevice.RenderState.DepthBufferEnable = true;
-
-            fCameraSuccess = UpdateSceneCameraParameters();
-
-            if (_sceneEffect != null && fCameraSuccess)
+            if (_cameraMgr.ActiveCamera == null)
             {
-                // Clear screen using current clear color.
-                if (_cameraMgr.ActiveCamera.ClearScreen)
-                {
-                    ClearScreen();
-                }
-                
-                sceneRoot.Draw(this);
+                throw new InvalidOperationException("Active camera must be set before drawing scene");
             }
+
+            UpdateSceneCameraParameters();
+            
+            // Clear screen using current clear color.
+            if (_cameraMgr.ActiveCamera.ClearScreen)
+            {
+                ClearScreen();
+            }
+
+                            
+            sceneRoot.Draw(this);
+        }
+
+        public void Draw(RCGeometry geometry)
+        {
+            _geometry = geometry;
+
+            // Enable the geometry's renderstates
+            SetRenderState(geometry.RenderStates);
+
+            _world = geometry.WorldTrans;
+
+            // Render the geometry obejct with each of the effects.
+            bool isPrimaryEffect = true;
+            foreach (RCEffect effect in geometry.Effects)
+            {
+                ApplyEffect(effect, isPrimaryEffect);
+                isPrimaryEffect = false;
+            }
+        }
+
+        private void ApplyEffect(RCEffect rcEffect, bool isPrimaryEffect)
+        {
+            Effect shader = rcEffect.Effect;
+
+            // Configure The Effect
+            rcEffect.CustomConfigure(this);
+
+            shader.Begin();
+
+            EffectPassCollection passes = shader.CurrentTechnique.Passes;
+            for (int iPass = 0; iPass < passes.Count; iPass++ )
+            {
+                rcEffect.SetRenderState(iPass, this, isPrimaryEffect);
+
+                passes[iPass].Begin();
+
+                DrawElements();
+
+                passes[iPass].End();
+
+                rcEffect.RestoreRenderState(iPass, this, isPrimaryEffect);
+            }
+
+            shader.End();
+        }
+
+        private void DrawElements()
+        {
+            RCVertexBuffer VBuffer = _geometry.VBuffer;
+
+            Graphics.VertexDeclaration = VBuffer.VertexDeclaration;
+            Graphics.Vertices[0].SetSource(
+                VBuffer.VertexBuffer,
+                0,
+                VBuffer.VertexSize);
+
+            Graphics.Indices = _geometry.IBuffer;
+            
+
+            // Finally draw the actual triangles on the screen
+            Graphics.DrawIndexedPrimitives(
+                PrimitiveType.TriangleList,
+                0, 0,
+                VBuffer.NumVertices,
+                0,
+                _geometry.IBuffer.SizeInBytes / (sizeof(short) *3)); // TODO: CHANGE THIS LAST PARAMETER!
         }
 
         public void ClearScreen()
         {
-            if (_sceneEffect == null) return;
-
             Graphics.Clear(
                 _cameraMgr.ActiveCamera.ClearOptions,
-                _clearColor,
+                _cameraMgr.ActiveCamera.ClearColor,
                 1.0f,
                 0
                 );
@@ -303,18 +238,8 @@ namespace RC.Engine.Rendering
 
         protected bool UpdateSceneCameraParameters()
         {
-            if (_sceneEffect == null || _cameraMgr.ActiveCamera == null)
-            {
-                return false;
-            }
-
             // Ensure that the correct viewport is drawn to.
-            _sceneEffect.GraphicsDevice.Viewport = _cameraMgr.ActiveCamera.Viewport;
-            _sceneEffect.View = _cameraMgr.ActiveCamera.View;
-            _sceneEffect.Projection = _cameraMgr.ActiveCamera.Projection;
-
-            _clearColor = _cameraMgr.ActiveCamera.ClearColor;
-
+            Graphics.Viewport = _cameraMgr.ActiveCamera.Viewport;
             return true;
         }
     }
