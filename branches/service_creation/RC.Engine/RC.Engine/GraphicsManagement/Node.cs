@@ -7,6 +7,7 @@ using Microsoft.Xna.Framework.Content;
 
 using RC.Engine.GraphicsManagement.BoundingVolumes;
 using RC.Engine.Rendering;
+using RC.Engine.SceneEffects;
 #endregion
 
 namespace RC.Engine.GraphicsManagement
@@ -18,11 +19,11 @@ namespace RC.Engine.GraphicsManagement
     /// </summary>
     public class RCSceneNode : RCSpatial, INode
     {
-        protected List<RCSpatial> listChildren;
+        protected List<RCSpatial> _listChildren;
         
         public RCSceneNode()
         {
-            listChildren = new List<RCSpatial>();
+            _listChildren = new List<RCSpatial>();
         }
 
         /// <summary>
@@ -31,7 +32,7 @@ namespace RC.Engine.GraphicsManagement
         public void AddChild(RCSpatial newChild)
         {
             newChild.ParentNode = this;
-            listChildren.Add(newChild);
+            _listChildren.Add(newChild);
         }
 
         /// <summary>
@@ -44,7 +45,7 @@ namespace RC.Engine.GraphicsManagement
             bool removed = false;
             if (removeChild != null)
             {
-                removed = listChildren.Remove(removeChild);
+                removed = _listChildren.Remove(removeChild);
             }
             return removed;
         }
@@ -52,11 +53,13 @@ namespace RC.Engine.GraphicsManagement
         /// <summary>
         /// Invokes all children's LoadGraphicsContent.
         /// </summary>
-        public override void Load(ContentManager content)
+        public override void Load(GraphicsDevice device, ContentManager content)
         {
-            foreach (RCSpatial child in listChildren)
+            base.Load(device, content);
+
+            foreach (RCSpatial child in _listChildren)
             {
-                child.Load(content);
+                child.Load(device, content);
             }
         }
 
@@ -65,7 +68,9 @@ namespace RC.Engine.GraphicsManagement
         /// </summary>
         public override void Unload()
         {
-            foreach (RCSpatial child in listChildren)
+            base.Unload();
+
+            foreach (RCSpatial child in _listChildren)
             {
                 child.Unload();
             }
@@ -76,7 +81,7 @@ namespace RC.Engine.GraphicsManagement
         /// </summary>
         public override void Draw(IRCRenderManager render)
         {           
-            foreach (RCSpatial child in listChildren)
+            foreach (RCSpatial child in _listChildren)
             {
                 child.Draw(render);
             }
@@ -92,7 +97,7 @@ namespace RC.Engine.GraphicsManagement
         {
             base.UpdateWorldData(gameTime);
 
-            foreach (RCSpatial child in listChildren)
+            foreach (RCSpatial child in _listChildren)
             {
                 child.UpdateGS(gameTime, false);
             }
@@ -109,7 +114,7 @@ namespace RC.Engine.GraphicsManagement
             // smallest volume that can contains all the children BVs.
 
             Boolean fFirstChild = true;
-            foreach (RCSpatial child in listChildren)
+            foreach (RCSpatial child in _listChildren)
             {    
                 // Use the first child to define the initial BV.
                 if (fFirstChild)
@@ -129,13 +134,21 @@ namespace RC.Engine.GraphicsManagement
             }
         }
 
+        protected override void  UpdateState(RCRenderStateStack stateStack, Stack<RCLight> lightStack)
+        {
+            foreach (RCSpatial child in _listChildren)
+            {
+                child.UpdateRS(stateStack, lightStack);
+            }
+        }
+
         #region INode Members
 
         public List<ISpatial> GetChildren()
         {
-            List<ISpatial> childList = new List<ISpatial>(listChildren.Count);
+            List<ISpatial> childList = new List<ISpatial>(_listChildren.Count);
 
-            foreach (RCSpatial child in listChildren)
+            foreach (RCSpatial child in _listChildren)
             {
                 childList.Add(child);
             }

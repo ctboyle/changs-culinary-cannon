@@ -15,7 +15,7 @@ namespace RC.Engine.Test
 
         public override void Load(ContentManager content)
         {
-            _wedgeModel = content.Load<Model>(@"Content/enemy");
+            _wedgeModel = content.Load<Model>(@"Content/Models/treasure_chest");
         }
 
         public override void Unload()

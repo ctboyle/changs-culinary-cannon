@@ -43,6 +43,8 @@ namespace RC.Engine.StateManagement
         public void AddState(string label, RCGameState state)
         {
             _states.Add(label, state);
+            
+            state.Initialize();
             LoadState(state);
         }
 
@@ -117,7 +119,7 @@ namespace RC.Engine.StateManagement
 
             base.Update(gameTime);
         }
-
+        
         protected override void UnloadContent()
         {
             foreach (RCGameState state in _states.Values)
