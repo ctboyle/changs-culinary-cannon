@@ -45,8 +45,15 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Textures\treasure_chest_2.png">
-      <Name>treasure_chest_2</Name>
+    <Compile Include="Textures\seattle.png">
+      <Name>seattle</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Textures\smiley.png">
+      <Name>smiley</Name>
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
     </Compile>

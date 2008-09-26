@@ -11,6 +11,7 @@ namespace RC.Engine.Rendering
         BlendWeight,
         Normal,
         Color,
+        Texture,
         Fog,
         PointSize,
         BlendIndices,
@@ -98,7 +99,7 @@ namespace RC.Engine.Rendering
                 {
                     elements.Add(new VertexElement(
                         0,
-                        (short)element.Offset,
+                        (short)(element.Offset * sizeof(float)),
                         GetVertexFormat(element),
                         VertexElementMethod.Default,
                         GetVertexUsage(element),
@@ -154,6 +155,9 @@ namespace RC.Engine.Rendering
                     break;
                 case ElementType.Normal:
                     usage = VertexElementUsage.Normal;
+                    break;
+                case ElementType.Texture:
+                    usage = VertexElementUsage.TextureCoordinate;
                     break;
                 case ElementType.BlendWeight:
                     usage = VertexElementUsage.BlendWeight;

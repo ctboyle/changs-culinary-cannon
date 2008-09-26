@@ -29,8 +29,8 @@ namespace RC.Engine.Test
             IRCRenderManager renderMgr = Services.GetService(typeof(IRCRenderManager)) as IRCRenderManager;
            
             // Create the model
-
             RCGeometry model = MeshCreator.CreateObject();
+
 
             // Create a camera and add it to the camera manageer
             RCCamera camera = new RCPerspectiveCamera(deviceMgr.GraphicsDevice.Viewport);
@@ -61,8 +61,6 @@ namespace RC.Engine.Test
 
             lightNode.SetLight(light);
             lightNode.AddLight(light);
-
-
 
 
             // Structure the scene graph and set the light node as the root

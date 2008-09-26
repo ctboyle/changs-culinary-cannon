@@ -267,6 +267,10 @@ namespace RC.Engine.GraphicsManagement
             }
         }
 
+        /// <summary>
+        /// Adds a light at this node to affect the rendering of this node and children.
+        /// </summary>
+        /// <param name="light">The light to affect this node and its children.</param>
         public void AddLight(RCLight light)
         {
             // Do not fail if light is already in list.

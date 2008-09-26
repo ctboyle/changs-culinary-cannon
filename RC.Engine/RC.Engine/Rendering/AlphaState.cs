@@ -42,7 +42,7 @@ namespace RC.Engine.Rendering
 
         public override StateType GetStateType()
         {
-            return StateType.ALPHA;
+            return StateType.Alpha;
         }
     }
 }

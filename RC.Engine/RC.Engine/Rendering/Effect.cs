@@ -65,10 +65,8 @@ namespace RC.Engine.Rendering
             SetDefaultAlphaState();
         }
 
-        private void SetDefaultAlphaState()
+        protected virtual void SetDefaultAlphaState()
         {
-            _alphaStates[0] = new RCAlphaState();
-            _alphaStates[0].BlendEnabled = true;
             for (int i = 0; i < _iPassQuantity; i++)
             {
                 _alphaStates[i] = new RCAlphaState();
@@ -95,7 +93,7 @@ namespace RC.Engine.Rendering
             {
                 _alphaStates[iPass].BlendEnabled = true;
 
-                RCAlphaState savedState = (RCAlphaState)render.GetRenderState(RCRenderState.StateType.ALPHA);
+                RCAlphaState savedState = (RCAlphaState)render.GetRenderState(RCRenderState.StateType.Alpha);
                 render.SetRenderState(_alphaStates[iPass]);
                 _alphaStates[iPass] = savedState;
             }
@@ -108,7 +106,7 @@ namespace RC.Engine.Rendering
         {
             if (!isPrimaryEffect || iPass > 0)
             {
-                RCAlphaState savedState = (RCAlphaState)render.GetRenderState(RCRenderState.StateType.ALPHA);
+                RCAlphaState savedState = (RCAlphaState)render.GetRenderState(RCRenderState.StateType.Alpha);
                 render.SetRenderState(_alphaStates[iPass]);
                 _alphaStates[iPass] = savedState;
             }
