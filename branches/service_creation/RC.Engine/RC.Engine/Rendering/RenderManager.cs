@@ -91,9 +91,6 @@ namespace RC.Engine.Rendering
             _cameraMgr = _game.Services.GetService(typeof(IRCCameraManager)) as IRCCameraManager;
 
             IGraphicsDeviceService graphics = _game.Services.GetService(typeof(IGraphicsDeviceService)) as IGraphicsDeviceService;
-
-            graphics.GraphicsDevice.RenderState.DepthBufferEnable = true;
-            graphics.GraphicsDevice.RenderState.StencilEnable = true;
         }
 
         public void Unload()
@@ -207,6 +204,7 @@ namespace RC.Engine.Rendering
         private void DrawElements()
         {
             RCVertexBuffer VBuffer = _geometry.VBuffer;
+            RCIndexBuffer IBuffer = _geometry.IBuffer;
 
             Graphics.VertexDeclaration = VBuffer.VertexDeclaration;
             Graphics.Vertices[0].SetSource(
@@ -214,7 +212,7 @@ namespace RC.Engine.Rendering
                 0,
                 VBuffer.VertexSize);
 
-            Graphics.Indices = _geometry.IBuffer;
+            Graphics.Indices = IBuffer.IndexBuffer;
             
 
             // Finally draw the actual triangles on the screen
@@ -223,7 +221,7 @@ namespace RC.Engine.Rendering
                 0, 0,
                 VBuffer.NumVertices,
                 0,
-                _geometry.IBuffer.SizeInBytes / (sizeof(short) *3)); // TODO: CHANGE THIS LAST PARAMETER!
+                IBuffer.NumPrimitives);
         }
 
         public void ClearScreen()

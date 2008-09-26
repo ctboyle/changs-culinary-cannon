@@ -11,20 +11,21 @@ namespace RC.Engine.Rendering
         {
             Default.Add(new RCAlphaState());
             Default.Add(new RCMaterialState());
+            Default.Add(new RCDepthBufferState());
         }
 
 
         // supported global states
         public enum StateType
         {
-            ALPHA,
-            MATERIAL,
+            Alpha,
+            Material,
+            Depth
             //CULL,
             //FOG,
             //POLYGONOFFSET,
             //STENCIL,
-            //WIREFRAME,
-            //ZBUFFER
+            //WIREFRAME, 
         };
 
 

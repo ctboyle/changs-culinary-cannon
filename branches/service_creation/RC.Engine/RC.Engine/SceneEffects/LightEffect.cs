@@ -50,7 +50,7 @@ namespace RC.Engine.SceneEffects
             ((BasicEffect)Effect).World = render.World;
             ((BasicEffect)Effect).View = render.View;
 
-            RCMaterialState materialState = (RCMaterialState)render.GetRenderState(RCRenderState.StateType.MATERIAL);
+            RCMaterialState materialState = (RCMaterialState)render.GetRenderState(RCRenderState.StateType.Material);
 
             ((BasicEffect)Effect).DiffuseColor = materialState.Diffuse.ToVector3();
             ((BasicEffect)Effect).AmbientLightColor = materialState.Ambient.ToVector3();

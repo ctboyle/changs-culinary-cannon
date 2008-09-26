@@ -12,16 +12,13 @@ namespace RC.Engine.GraphicsManagement
     public class RCGeometry : RCSpatial
     {
         public RCRenderStateCollection RenderStates = new RCRenderStateCollection(false);
-        private RCLightEffect _lightEffect = null;
-
-        private short[] _indices;
-
-        // TODO: Need own index buffer.
-        private IndexBuffer _iBuffer;
+        private RCLightEffect _lightEffect = null;      
         
+  
+        private RCIndexBuffer _iBuffer;     
         private RCVertexBuffer _vBuffer;
 
-        public IndexBuffer IBuffer
+        public RCIndexBuffer IBuffer
         {
             get { return _iBuffer; }
         }
@@ -33,9 +30,9 @@ namespace RC.Engine.GraphicsManagement
         
 
 
-        public RCGeometry(short[] indices, RCVertexBuffer vertexBuffer)
+        public RCGeometry(RCIndexBuffer indexBuffer, RCVertexBuffer vertexBuffer)
         {
-            _indices = indices;
+            _iBuffer = indexBuffer;
             _vBuffer = vertexBuffer;
         }
 
@@ -43,16 +40,14 @@ namespace RC.Engine.GraphicsManagement
         {
             base.Load(device, content);
 
-            _iBuffer = new IndexBuffer(device, typeof(short), _indices.Length, BufferUsage.None);
-            _iBuffer.SetData<short>(_indices);
-            
+            IBuffer.Load(device);            
             VBuffer.Load(device);
         }
 
         public override void Unload()
         {
             VBuffer.UnLoad();
-            _indices = null;
+            IBuffer.UnLoad();
         }
         
 

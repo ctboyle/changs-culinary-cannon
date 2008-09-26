@@ -17,12 +17,12 @@ namespace RC.Engine.Rendering
 
         static RCMaterialState()
         {
-            Default[StateType.MATERIAL] = new RCMaterialState();
+            Default[StateType.Material] = new RCMaterialState();
         }
 
         public override StateType GetStateType()
         {
-            return StateType.MATERIAL;
+            return StateType.Material;
         }
 
         public override void ConfigureDevice(GraphicsDevice device)

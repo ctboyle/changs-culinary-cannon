@@ -72,7 +72,9 @@
     <Compile Include="GraphicsManagement\Spatial.cs" />
     <Compile Include="Rendering\AlphaState.cs" />
     <Compile Include="Rendering\Atributes.cs" />
+    <Compile Include="Rendering\DepthBufferState.cs" />
     <Compile Include="Rendering\Effect.cs" />
+    <Compile Include="Rendering\IndexBuffer.cs" />
     <Compile Include="Rendering\MaterialState.cs" />
     <Compile Include="Rendering\RenderConstants.cs" />
     <Compile Include="Rendering\RenderState.cs" />
@@ -81,6 +83,7 @@
     <Compile Include="Rendering\VertexBuffer.cs" />
     <Compile Include="SceneEffects\Light.cs" />
     <Compile Include="SceneEffects\LightEffect.cs" />
+    <Compile Include="SceneEffects\TextureEffect.cs" />
     <Compile Include="Utility\IRCLoadable.cs" />
     <Compile Include="Picking\PickRecord.cs" />
     <Compile Include="Picking\ScenePicker.cs" />
