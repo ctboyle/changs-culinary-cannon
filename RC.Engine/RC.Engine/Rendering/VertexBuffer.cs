@@ -4,9 +4,11 @@ using System.Text;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework;
 
+using RC.Engine.ContentManagement;
+
 namespace RC.Engine.Rendering
 {
-    public class RCVertexBuffer
+    public class RCVertexBuffer : RCDeviceResource
     {
         private RCVertexAttributes _attributes;
         private int _numVertices;
@@ -45,21 +47,15 @@ namespace RC.Engine.Rendering
         {
             get { return _vertexDeclaration; }
         }
-           
-
-        public RCVertexBuffer(RCVertexAttributes attributes, int numVertices)
+          
+        public RCVertexBuffer(IGraphicsDeviceService graphics, RCVertexAttributes attributes, int numVertices)
+            : base(graphics)
         {
             _attributes = attributes;
             _numVertices = numVertices;
             _numChannelsPerVertex = attributes.GetChannelQuantity();
             _channelQuantity = _numChannelsPerVertex * _numVertices;
             _data = new float[_channelQuantity];
-        }
-
-        public void Load(GraphicsDevice device)
-        {
-            _vertexBuffer = CreateVertexBuffer(device);
-            _vertexDeclaration = Attributes.CreateVertexDeclaration(device);
         }
 
         public void SetData(ElementType type, float[] data)
@@ -79,19 +75,34 @@ namespace RC.Engine.Rendering
                 {
                     _data[_numChannelsPerVertex * iVertex + iChannel + offset] = data[numChannelsForType * iVertex + iChannel];
                 }
-            } 
+            }
         }
 
-        public VertexBuffer CreateVertexBuffer(GraphicsDevice device)
+        protected override bool IsOnDevice
         {
-            VertexBuffer buffer = new VertexBuffer(device, SizeInBytes, BufferUsage.WriteOnly);
-            buffer.SetData<float>(_data);
-            return buffer;
+            get { return (_vertexBuffer != null); }
         }
 
-        internal void UnLoad()
+        protected override void SetOnDevice()
         {
-            throw new Exception("The method or operation is not implemented.");
+            _vertexBuffer = new VertexBuffer(Graphics.GraphicsDevice, SizeInBytes, BufferUsage.WriteOnly);
+            _vertexBuffer.SetData<float>(_data);
+            _vertexDeclaration = Attributes.CreateVertexDeclaration(Graphics.GraphicsDevice);
+        }
+
+        protected override void RemoveFromDevice()
+        {
+            if (_vertexDeclaration != null)
+            {
+                _vertexDeclaration.Dispose();
+                _vertexDeclaration = null;
+            }
+
+            if (_vertexBuffer != null)
+            {
+                _vertexBuffer.Dispose();
+                _vertexBuffer = null;
+            }
         }
     }
 }

@@ -3,38 +3,26 @@ using System.Collections.Generic;
 using System.Text;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Content;
+using RC.Engine.ContentManagement;
 
 namespace RC.Engine.Rendering
 {
-
-    public abstract class RCEffect
+    public abstract class RCEffect : RCContent<Effect>
     {
-        private Effect myEffect;
-
         // Blending states for each pass.
         private RCAlphaState[] _alphaStates;
-
         private int _iPassQuantity;
-
-        public Effect Effect
-        {
-            get
-            {
-                return myEffect;
-            }
-        }
 
         public string TechniqueName
         {
-            get { return myEffect.CurrentTechnique.Name; }
+            get { return Content.CurrentTechnique.Name; }
             set
             {
-                foreach (EffectTechnique technique in myEffect.Techniques)
+                foreach (EffectTechnique technique in Content.Techniques)
                 {
                     if (technique.Name == value)
                     {
-                        myEffect.CurrentTechnique = myEffect.Techniques[value];
-
+                        Content.CurrentTechnique = Content.Techniques[value];
                         UpdateTechniqueInfo();
                         break;      
                     }
@@ -44,23 +32,23 @@ namespace RC.Engine.Rendering
             }
         }
 
-        public RCEffect()
+        public RCEffect(Guid id, IRCContentManager contentMgr)
+            : base(id, contentMgr)
         {
-
+            UpdateTechniqueInfo();
         }
 
         private void UpdateTechniqueInfo()
         {
-            if (myEffect.CurrentTechnique != null)
+            if (Content.CurrentTechnique != null)
             {
-                SetPassQuantity(myEffect.CurrentTechnique.Passes.Count);
+                SetPassQuantity(Content.CurrentTechnique.Passes.Count);
             }
         }
 
         private void SetPassQuantity(int iPassQuantity)
         {
             _iPassQuantity = iPassQuantity;
-
             _alphaStates = new RCAlphaState[iPassQuantity];
             SetDefaultAlphaState();
         }
@@ -82,7 +70,6 @@ namespace RC.Engine.Rendering
         }
 
         public abstract void CustomConfigure(IRCRenderManager render);
-
 
         public virtual void SetRenderState(
             int iPass, 
@@ -111,18 +98,5 @@ namespace RC.Engine.Rendering
                 _alphaStates[iPass] = savedState;
             }
         }
-        
-
-
-
-        protected abstract Effect LoadEffect(GraphicsDevice myDevice, ContentManager myLoader);
-
-        public void LoadContent(GraphicsDevice myDevice, ContentManager myLoader)
-        {
-            myEffect = LoadEffect(myDevice, myLoader);
-            UpdateTechniqueInfo();
-        }
-
-    }
-    
+    } 
 }

@@ -1,4 +1,6 @@
 using System;
+using Ninject.Core;
+using RC.Engine.StateManagement;
 
 namespace RC.Engine.Test
 {
@@ -9,10 +11,8 @@ namespace RC.Engine.Test
         /// </summary>
         static void Main(string[] args)
         {
-            using (Game1 game = new Game1())
-            {
-                game.Run();
-            }
+            RCGameStarter g = new RCGameStarter(new GameModule());
+            g.Start();
         }
     }
 }

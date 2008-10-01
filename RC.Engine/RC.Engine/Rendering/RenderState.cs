@@ -28,7 +28,6 @@ namespace RC.Engine.Rendering
             //WIREFRAME, 
         };
 
-
         public abstract StateType GetStateType();
 
         public abstract void ConfigureDevice(GraphicsDevice device);

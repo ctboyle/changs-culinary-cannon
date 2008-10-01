@@ -179,8 +179,6 @@ namespace RC.Engine.Rendering
                     break;
                 default:
                     throw new NotSupportedException();
-                    break;
-
             }
 
             return usage;

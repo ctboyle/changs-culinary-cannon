@@ -16,7 +16,7 @@ namespace RC.Engine.SceneEffects
             SPOT
         };
 
-        LightType Type;
+        //LightType Type;
 
         public Matrix Transform = Matrix.Identity;
 

@@ -6,54 +6,48 @@ using Microsoft.Xna.Framework;
 using RC.Engine.SceneEffects;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Content;
+using RC.Engine.ContentManagement;
+using Ninject.Core;
 
 namespace RC.Engine.GraphicsManagement
 {
     public class RCGeometry : RCSpatial
     {
         public RCRenderStateCollection RenderStates = new RCRenderStateCollection(false);
+
         private RCLightEffect _lightEffect = null;      
-        
-  
-        private RCIndexBuffer _iBuffer;     
-        private RCVertexBuffer _vBuffer;
+        private RCIndexBuffer _iBuffer = null;     
+        private RCVertexBuffer _vBuffer = null;
+        private IRCContentRequester _content = null;
+        private IGraphicsDeviceService _graphics = null;
 
         public RCIndexBuffer IBuffer
         {
             get { return _iBuffer; }
         }
-        
+
         public RCVertexBuffer VBuffer
         {
             get { return _vBuffer; }
         }
-        
 
-
-        public RCGeometry(RCIndexBuffer indexBuffer, RCVertexBuffer vertexBuffer)
+        public RCGeometry(IGraphicsDeviceService graphics, IRCContentRequester content, RCIndexBuffer indexBuffer, RCVertexBuffer vertexBuffer)
         {
+            _graphics = graphics;
+            _content = content;
             _iBuffer = indexBuffer;
             _vBuffer = vertexBuffer;
         }
-
-        public override void Load(GraphicsDevice device, ContentManager content)
-        {
-            base.Load(device, content);
-
-            IBuffer.Load(device);            
-            VBuffer.Load(device);
-        }
-
-        public override void Unload()
-        {
-            VBuffer.UnLoad();
-            IBuffer.UnLoad();
-        }
         
-
         public override void Draw(IRCRenderManager render)
         {
+            _iBuffer.Enabled = true;
+            _vBuffer.Enabled = true;
+
             render.Draw(this);
+
+            _iBuffer.Enabled = false;
+            _vBuffer.Enabled = false;
         }
 
         protected override void UpdateState(RCRenderStateStack stateStack, Stack<RCLight> lightStack)
@@ -73,7 +67,7 @@ namespace RC.Engine.GraphicsManagement
                 else
                 {
                     // Create a new light effect and put it to be rendered first in the list.
-                    _lightEffect = new RCLightEffect();
+                    _lightEffect = RCLightEffect.Create(_graphics, _content);
                     Effects.Insert(0, _lightEffect);
                 }
                 // Make sure the
@@ -98,6 +92,5 @@ namespace RC.Engine.GraphicsManagement
         {
             
         }
-       
     }
 }

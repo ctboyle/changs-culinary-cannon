@@ -1,20 +1,37 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
-using RC.Engine.Rendering;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Content;
+using RC.Engine.ContentManagement;
+using Ninject.Core;
+using RC.Engine.Rendering;
 
 namespace RC.Engine.SceneEffects
 {
     public class RCLightEffect : RCEffect
     {
-        List<RCLight> _lights = new List<RCLight>();
+        private List<RCLight> _lights = new List<RCLight>();
 
-        public RCLightEffect() { }
+        public static RCLightEffect Create(IGraphicsDeviceService graphics, IRCContentRequester content)
+        {
+            return (RCLightEffect) content.RequestContent<Effect>(
+                delegate(Guid id, IRCContentManager c) 
+                { 
+                    return new RCLightEffect(id, c); 
+                },
+                delegate(object[] parameters) 
+                { 
+                    return new BasicEffect(graphics.GraphicsDevice, null); 
+                },
+                null
+            );
+        }
 
-            
-
+        public RCLightEffect(Guid id, IRCContentManager contentMgr) 
+            : base(id, contentMgr)
+        { 
+        }
 
         public int MaxLights
         {
@@ -46,26 +63,26 @@ namespace RC.Engine.SceneEffects
 
         public override void CustomConfigure(IRCRenderManager render)
         {
-            ((BasicEffect)Effect).Projection = render.Projection;
-            ((BasicEffect)Effect).World = render.World;
-            ((BasicEffect)Effect).View = render.View;
+            ((BasicEffect)Content).Projection = render.Projection;
+            ((BasicEffect)Content).World = render.World;
+            ((BasicEffect)Content).View = render.View;
 
             RCMaterialState materialState = (RCMaterialState)render.GetRenderState(RCRenderState.StateType.Material);
 
-            ((BasicEffect)Effect).DiffuseColor = materialState.Diffuse.ToVector3();
-            ((BasicEffect)Effect).AmbientLightColor = materialState.Ambient.ToVector3();
-            ((BasicEffect)Effect).SpecularColor = materialState.Specular.ToVector3();
-            ((BasicEffect)Effect).SpecularPower = materialState.Shininess;
-            ((BasicEffect)Effect).Alpha = materialState.Alpha;
+            ((BasicEffect)Content).DiffuseColor = materialState.Diffuse.ToVector3();
+            ((BasicEffect)Content).AmbientLightColor = materialState.Ambient.ToVector3();
+            ((BasicEffect)Content).SpecularColor = materialState.Specular.ToVector3();
+            ((BasicEffect)Content).SpecularPower = materialState.Shininess;
+            ((BasicEffect)Content).Alpha = materialState.Alpha;
 
 
             if (_lights.Count > 0)
             {
-                ((BasicEffect)Effect).LightingEnabled = true;
+                ((BasicEffect)Content).LightingEnabled = true;
             }
             else
             {
-                ((BasicEffect)Effect).LightingEnabled = false;
+                ((BasicEffect)Content).LightingEnabled = false;
             }
         
             for (int i = 0; i < 3; i++)
@@ -92,13 +109,13 @@ namespace RC.Engine.SceneEffects
             switch (i)
             {
                 case 0:
-                    basicLight = ((BasicEffect)Effect).DirectionalLight0;
+                    basicLight = ((BasicEffect)Content).DirectionalLight0;
                     break;
                 case 1:
-                    basicLight = ((BasicEffect)Effect).DirectionalLight1;
+                    basicLight = ((BasicEffect)Content).DirectionalLight1;
                     break;
                 case 2:
-                    basicLight = ((BasicEffect)Effect).DirectionalLight2;
+                    basicLight = ((BasicEffect)Content).DirectionalLight2;
                     break;
                 default:
                     break;
@@ -106,11 +123,5 @@ namespace RC.Engine.SceneEffects
 
             return basicLight;
         }
-
-        protected override Effect LoadEffect(GraphicsDevice myDevice, ContentManager myLoader)
-        {
-            return new BasicEffect(myDevice, null);
-        }
-
     }
 }
