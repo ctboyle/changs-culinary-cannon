@@ -5,11 +5,12 @@ using System.Text;
 using RC.Engine.Rendering;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using RC.Engine.Utility;
+
+using Ninject.Core;
 
 namespace RC.Engine.Cameras
 {
-    public interface IRCCameraManager : IRCLoadable
+    public interface IRCCameraManager
     {
         RCCamera ActiveCamera { get; }
         void AddCamera(string cameraLabel, RCCamera newCamera);
@@ -18,7 +19,8 @@ namespace RC.Engine.Cameras
         RCCamera this[string cameraLabel] { get; set ; }
     }
 
-    public class RCCameraManager : IRCCameraManager
+    [Singleton]
+    internal class RCCameraManager : IRCCameraManager
     {
         #region RCCameraDictionary
 
@@ -134,21 +136,6 @@ namespace RC.Engine.Cameras
 
         private RCCameraDictionary _cameras = new RCCameraDictionary();
         private string _activeCameraLabel = String.Empty;
-        private Game _game = null;
-
-        public RCCameraManager(Game game)
-        {
-            _game = game;
-            _game.Services.AddService(typeof(IRCCameraManager), this);
-        }
-
-        public void Load()
-        {
-        }
-
-        public void Unload()
-        {
-        }
 
         public RCCamera ActiveCamera { get { return _cameras[_activeCameraLabel]; } }
 

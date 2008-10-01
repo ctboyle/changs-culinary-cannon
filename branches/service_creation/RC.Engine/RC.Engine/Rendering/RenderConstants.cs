@@ -15,7 +15,7 @@ namespace RC.Engine.Rendering
             Projection
         }
 
-        private Dictionary<Constant, GetValue> _constants;
+        //private Dictionary<Constant, GetValue> _constants;
 
 
     }

@@ -12,18 +12,27 @@ using RC.Engine.GraphicsManagement;
 using RC.Engine.Rendering;
 using RC.Engine.Cameras;
 
+using RC.Engine.ContentManagement;
+
 namespace RC.Engine.StateManagement
 {
-    public class RCGameState
+    public class RCGameState : IDisposable
     {
-        private IServiceProvider _services = null;
         private bool _isVisible = true;
         private bool _isUpdated = true;
 
-        public RCGameState(IServiceProvider services)
+        ~RCGameState()
         {
-            _services = services;
+            Dispose();
         }
+
+        #region IDisposable Members
+
+        public virtual void Dispose()
+        {
+        }
+
+        #endregion
 
         public bool IsVisible
         {
@@ -37,14 +46,6 @@ namespace RC.Engine.StateManagement
             set { _isUpdated = value; }
         }
 
-        public virtual void Load()
-        {
-        }
-
-        public virtual void Unload()
-        {
-        }
-
         public virtual void Initialize()
         {
         }
@@ -55,11 +56,6 @@ namespace RC.Engine.StateManagement
 
         public virtual void Update(GameTime gameTime)
         {
-        }
-
-        protected IServiceProvider Services
-        {
-            get { return _services; }
         }
 
         internal protected virtual void StateChanged(

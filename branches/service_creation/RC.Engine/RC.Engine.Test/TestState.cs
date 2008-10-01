@@ -9,31 +9,30 @@ using Microsoft.Xna.Framework.Graphics;
 using RC.Engine.Rendering;
 using Microsoft.Xna.Framework.Input;
 using RC.Engine.SceneEffects;
+using Ninject.Core;
+using RC.Engine.ContentManagement;
+using RC.Engine.StateManagement;
 
 namespace RC.Engine.Test
 {
     class TestState : RC.Engine.StateManagement.RCGameState
     {
         private RCSpatial _sceneRoot = null;
-
-
-        public TestState(IServiceProvider services)
-            : base(services)
-        {
-        }
+        private IRCCameraManager _cameraMgr = null;
+        private IRCRenderManager _renderMgr = null;
+        private IGraphicsDeviceService _graphics = null;
+        private IRCGameStateManager _stateMgr = null;
+        private IRCContentRequester _content = null;
 
         public override void Initialize()
         {
-            IRCCameraManager cameraMgr = Services.GetService(typeof(IRCCameraManager)) as IRCCameraManager;
-            IGraphicsDeviceService deviceMgr = Services.GetService(typeof(IGraphicsDeviceService)) as IGraphicsDeviceService;
-            IRCRenderManager renderMgr = Services.GetService(typeof(IRCRenderManager)) as IRCRenderManager;
-           
-            // Create the model
-            RCGeometry model = MeshCreator.CreateObject();
+            Graphics.GraphicsDevice.RenderState.CullMode = CullMode.None;
 
+            // Create the model
+            RCGeometry model = MeshCreator.CreateObject(Graphics, Content);
 
             // Create a camera and add it to the camera manageer
-            RCCamera camera = new RCPerspectiveCamera(deviceMgr.GraphicsDevice.Viewport);
+            RCCamera camera = new RCPerspectiveCamera(Graphics.GraphicsDevice.Viewport);
             camera.LocalTrans = Matrix.Invert(
                 Matrix.CreateLookAt(
                     new Vector3(0.0f, 0.0f, 3.0f),
@@ -42,16 +41,14 @@ namespace RC.Engine.Test
                 )
             );
 
-            cameraMgr.AddCamera("Test", camera);
+            CameraMgr.AddCamera("Test", camera);
 
-            
             // Create the directional light
             RCLightNode lightNode = new RCLightNode();
             RCLight light = new RCLight();
 
             light.Diffuse = new Vector3(1.2f);
             light.Specular = new Vector3(0.8f);
-
             light.Transform = Matrix.Invert(
                Matrix.CreateLookAt(
                    new Vector3(0.0f, 0.0f, 3.0f),
@@ -61,7 +58,6 @@ namespace RC.Engine.Test
 
             lightNode.SetLight(light);
             lightNode.AddLight(light);
-
 
             // Structure the scene graph and set the light node as the root
             lightNode.AddChild(camera);
@@ -78,24 +74,10 @@ namespace RC.Engine.Test
             base.Initialize();
         }
 
-        public override void Load()
-        {
-            _sceneRoot.Load(((IGraphicsDeviceService)this.Services.GetService(typeof(IGraphicsDeviceService))).GraphicsDevice, (ContentManager)Services.GetService(typeof(ContentManager)));
-        }
-
-        public override void Unload()
-        {
-            base.Unload();
-        }
-
         public override void Draw(GameTime gameTime)
-        {           
-            IRCRenderManager renderMgr = Services.GetService(typeof(IRCRenderManager)) as IRCRenderManager;
-            IRCCameraManager cameraMgr = Services.GetService(typeof(IRCCameraManager)) as IRCCameraManager;
-            
-            cameraMgr.SetActiveCamera("Test");
-
-            renderMgr.DrawScene(_sceneRoot);
+        {                       
+            CameraMgr.SetActiveCamera("Test");
+            RenderMgr.DrawScene(_sceneRoot);
         }
 
         public override void Update(GameTime gameTime)
@@ -104,9 +86,48 @@ namespace RC.Engine.Test
             _sceneRoot.UpdateGS(gameTime, true);
         }
 
+        [Inject]
+        public IRCContentRequester Content
+        {
+            get { return _content; }
+            set { _content = value; }
+        }
+
+        [Inject]
+        public IRCGameStateManager StateMgr
+        {
+            get { return _stateMgr; }
+            set { _stateMgr = value; }
+        }
+
+        [Inject]
+        public IRCCameraManager CameraMgr
+        {
+            get { return _cameraMgr; }
+            set { _cameraMgr = value; }
+        }
+
+        [Inject]
+        public IRCRenderManager RenderMgr
+        {
+            get { return _renderMgr; }
+            set { _renderMgr = value; }
+        }
+
+        [Inject]
+        public IGraphicsDeviceService Graphics
+        {
+            get { return _graphics; }
+            set { _graphics = value; }
+        }
+
         private void UpdateInput()
         {
-            
+            if (Keyboard.GetState().IsKeyDown(Keys.E))
+            {
+                StateMgr.PopState();
+                StateMgr.PushState("Test");
+            }
         }
     }
 }

@@ -3,9 +3,11 @@ using System.Collections.Generic;
 using System.Text;
 using Microsoft.Xna.Framework.Graphics;
 
+using RC.Engine.ContentManagement;
+
 namespace RC.Engine.Rendering
 {
-    public class RCIndexBuffer
+    public class RCIndexBuffer : RCDeviceResource
     {
         private int _numIndicies;
         private short[] _data;
@@ -20,6 +22,7 @@ namespace RC.Engine.Rendering
         {
             get {return _numIndicies;}
         }
+
         public int SizeInBytes
         {
             get { return _numIndicies * sizeof(short); }
@@ -30,17 +33,12 @@ namespace RC.Engine.Rendering
             get { return _indexBuffer; }
         }
 
-
-        public RCIndexBuffer(int numIndicies)
+        public RCIndexBuffer(IGraphicsDeviceService graphics, int numIndicies)
+            : base(graphics)
         {
 
             _numIndicies = numIndicies;
             _data = new short[_numIndicies];
-        }
-
-        public void Load(GraphicsDevice device)
-        {
-            _indexBuffer = CreateIndexBuffer(device);
         }
 
         public void SetData(short[] data)
@@ -55,16 +53,22 @@ namespace RC.Engine.Rendering
             data.CopyTo(_data, 0);
         }
 
-        public IndexBuffer CreateIndexBuffer(GraphicsDevice device)
+        protected override bool IsOnDevice
         {
-            IndexBuffer buffer = new IndexBuffer(device, SizeInBytes, BufferUsage.None, IndexElementSize.SixteenBits);
-            buffer.SetData<short>(_data);
-            return buffer;
+            get { return (_indexBuffer != null); }
         }
 
-        internal void UnLoad()
+        protected override void SetOnDevice()
         {
-            throw new Exception("The method or operation is not implemented.");
+            _indexBuffer = new IndexBuffer(Graphics.GraphicsDevice, SizeInBytes, BufferUsage.None, IndexElementSize.SixteenBits);
+            _indexBuffer.SetData<short>(_data);
+        }
+
+        protected override void RemoveFromDevice()
+        {
+            if (_indexBuffer == null) return;
+            _indexBuffer.Dispose();
+            _indexBuffer = null;
         }
     }
 }

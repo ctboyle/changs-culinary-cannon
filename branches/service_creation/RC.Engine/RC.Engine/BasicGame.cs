@@ -6,54 +6,53 @@ using Microsoft.Xna.Framework.Content;
 using RC.Engine.StateManagement;
 using RC.Engine.Rendering;
 using RC.Engine.Cameras;
-using RC.Engine.Utility;
+
+using Ninject.Core;
+using Ninject.Core.Binding.Syntax;
+using Microsoft.Xna.Framework.Graphics;
+using RC.Engine.ContentManagement;
 
 namespace RC.Engine
 {
+    [Singleton]
     public class RCBasicGame : Game
     {
-        private RCGameStateManager stateMgr;
-        private GraphicsDeviceManager graphics;
-        private RCLoadableCollection mgrs = new RCLoadableCollection();
+        private GraphicsDeviceManager _deviceMgr = null;
+        private IRCGameStateManager _stateMgr = null;
+        private IRCRenderManager _renderMgr = null;
+        private IRCContentRequester _content = null;
 
         public RCBasicGame()
         {
-            graphics = new GraphicsDeviceManager(this);
-            stateMgr = new RCGameStateManager(this);
-            mgrs.Add(new RCRenderManager(this));
-            mgrs.Add(new RCCameraManager(this));
-            Services.AddService(typeof(ContentManager), this.Content);
+            _deviceMgr = new GraphicsDeviceManager(this);
         }
 
-        protected IRCGameStateManager StateManager
-        {
-            get { return stateMgr; }
-        }
-        
         protected override void Initialize()
         {
-            Components.Add(stateMgr);
+            Components.Add(Content);
+            Components.Add(StateMgr);
             base.Initialize();
         }
 
-        protected override void LoadContent()
+        [Inject]
+        public IRCContentRequester Content
         {
-            foreach(IRCLoadable mgr in mgrs)
-            {
-                mgr.Load();
-            }
-
-            base.LoadContent();
+            get { return _content; }
+            set { _content = value; }
         }
 
-        protected override void UnloadContent()
+        [Inject]
+        public IRCRenderManager RenderMgr
         {
-            foreach (IRCLoadable mgr in mgrs)
-            {
-                mgr.Unload();
-            }
+            get { return _renderMgr; }
+            set { _renderMgr = value; }
+        }
 
-            base.UnloadContent();
+        [Inject]
+        public IRCGameStateManager StateMgr
+        {
+            get { return _stateMgr; }
+            set { _stateMgr = value; }
         }
     }
 }

@@ -4,6 +4,8 @@ using System.Text;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using RC.Engine.Rendering;
+using Ninject.Core;
+using RC.Engine.ContentManagement;
 
 namespace RC.Engine.StateManagement
 {
@@ -16,43 +18,40 @@ namespace RC.Engine.StateManagement
         RCGameState PeekState();
     }
 
-    public interface IRCGameStateManager : IRCGameStateStack
+    public interface IRCGameStateManager : IRCGameStateStack, IGameComponent
     {
         void AddState(string label, RCGameState state);
         void RemoveState(string label);
     }
 
+    [Singleton]
     internal class RCGameStateManager : DrawableGameComponent, IRCGameStateManager
     {
-        public delegate void LoadingFunc(RCGameState currentState, bool loading);
         public delegate void StateChangeFunc(RCGameState previousState, RCGameState newState);
 
         private Dictionary<string, RCGameState> _states = new Dictionary<string, RCGameState>();
         private List<RCGameState> _stateStack = new List<RCGameState>();
 
         public event StateChangeFunc StateChanged;
-        public event LoadingFunc StateLoading;
 
-        public RCGameStateManager(Game game)
+        public RCGameStateManager(RCBasicGame game)
             : base(game)
         {
-            game.Services.AddService(typeof(IRCGameStateManager), this);
-            game.Services.AddService(typeof(IRCGameStateStack), this);
+            this.DrawOrder = 1;
+            this.UpdateOrder = 1;
         }
 
         public void AddState(string label, RCGameState state)
         {
             _states.Add(label, state);
-            
             state.Initialize();
-            LoadState(state);
         }
 
         public void RemoveState(string label)
         {
             RCGameState removeState = _states[label];
+            removeState.Dispose();
             _states.Remove(label);
-            UnloadState(removeState);
         }
 
         public void PushState(string label)
@@ -64,7 +63,6 @@ namespace RC.Engine.StateManagement
                     StateChanged(_stateStack[0], _states[label]);
                 }
             }
-
             _stateStack.Insert(0, _states[label]);
         }
 
@@ -122,26 +120,8 @@ namespace RC.Engine.StateManagement
         
         protected override void UnloadContent()
         {
-            foreach (RCGameState state in _states.Values)
-            {
-                UnloadState(state);
-            }
-
             _states.Clear();
-
             base.UnloadContent();
-        }
-
-        private void LoadState(RCGameState state)
-        {
-            state.Load();
-            if (StateLoading != null) StateLoading(state, true);
-        }
-
-        private void UnloadState(RCGameState state)
-        {
-            state.Unload();
-            if (StateLoading != null) StateLoading(state, false);
         }
     }
 }

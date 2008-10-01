@@ -5,8 +5,8 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using RC.Engine.Cameras;
 using RC.Engine.GraphicsManagement;
-using RC.Engine.Utility;
 
+using Ninject.Core;
 
 namespace RC.Engine.Rendering
 {
@@ -20,24 +20,11 @@ namespace RC.Engine.Rendering
         Count
     }
 
-    public interface IRCRenderManager : IRCLoadable
+    public interface IRCRenderManager
     {
-        GraphicsDevice Graphics { get; }
-
-        Matrix World
-        {
-            get;
-        }
-
-        Matrix View
-        {
-            get;
-        }
-        Matrix Projection
-        {
-            get;
-        }
-
+        Matrix World { get; }
+        Matrix View { get; }
+        Matrix Projection { get; }
         void SetRenderState(RCRenderState renderState);
         RCRenderState GetRenderState(RCRenderState.StateType type);
         void Draw(RCGeometry geometry);
@@ -48,16 +35,14 @@ namespace RC.Engine.Rendering
     /// <summary>
     /// Central functionality for Rendering the Scene.
     /// </summary>
+    [Singleton]
     internal class RCRenderManager : IRCRenderManager
     {
+        private IGraphicsDeviceService _graphics = null;
         private IRCCameraManager _cameraMgr = null;
-        private Game _game = null;
-        private Matrix _world;
-
-
+        private Matrix _world = Matrix.Identity;
         private RCGeometry _geometry = null;
-
-        private RCRenderStateCollection _renderStates =
+        private RCRenderStateCollection _renderStates = 
             new RCRenderStateCollection(true);
 
         public Matrix World
@@ -67,35 +52,12 @@ namespace RC.Engine.Rendering
 
         public Matrix View
         {
-            get { return _cameraMgr.ActiveCamera.View; }
+            get { return CameraMgr.ActiveCamera.View; }
         }
+
         public Matrix Projection
         {
-            get { return _cameraMgr.ActiveCamera.Projection; }
-        }
-
-
-        public RCRenderManager(Game game)
-        {
-            _game = game;
-            _game.Services.AddService(typeof(IRCRenderManager), this);
-        }
-
-        public GraphicsDevice Graphics
-        {
-            get { return _game.GraphicsDevice; }
-        }
-
-        public void Load()
-        {
-            _cameraMgr = _game.Services.GetService(typeof(IRCCameraManager)) as IRCCameraManager;
-
-            IGraphicsDeviceService graphics = _game.Services.GetService(typeof(IGraphicsDeviceService)) as IGraphicsDeviceService;
-        }
-
-        public void Unload()
-        {
-
+            get { return CameraMgr.ActiveCamera.Projection; }
         }
 
         public void SetRenderState(RCRenderStateCollection renderStates)
@@ -114,7 +76,6 @@ namespace RC.Engine.Rendering
             }
         }
 
-
         public void SetRenderState(RCRenderState renderState)
         {
             if (renderState != null)
@@ -123,7 +84,7 @@ namespace RC.Engine.Rendering
                 _renderStates[renderState.GetStateType()] = renderState;
 
                 // Enable the state
-                renderState.ConfigureDevice(Graphics);
+                renderState.ConfigureDevice(Graphics.GraphicsDevice);
             }
         }
 
@@ -132,7 +93,6 @@ namespace RC.Engine.Rendering
             return _renderStates[type];
         }
 
-
         /// <summary>
         /// Use to render a scene.
         /// 
@@ -140,7 +100,7 @@ namespace RC.Engine.Rendering
         /// </summary>
         public void DrawScene(RCSpatial sceneRoot)
         {
-            if (_cameraMgr.ActiveCamera == null)
+            if (CameraMgr.ActiveCamera == null)
             {
                 throw new InvalidOperationException("Active camera must be set before drawing scene");
             }
@@ -148,13 +108,22 @@ namespace RC.Engine.Rendering
             UpdateSceneCameraParameters();
             
             // Clear screen using current clear color.
-            if (_cameraMgr.ActiveCamera.ClearScreen)
+            if (CameraMgr.ActiveCamera.ClearScreen)
             {
                 ClearScreen();
             }
-
-                            
+             
             sceneRoot.Draw(this);
+        }
+
+        public void ClearScreen()
+        {
+            Graphics.GraphicsDevice.Clear(
+                CameraMgr.ActiveCamera.ClearOptions,
+                CameraMgr.ActiveCamera.ClearColor,
+                1.0f,
+                0
+                );
         }
 
         public void Draw(RCGeometry geometry)
@@ -175,9 +144,31 @@ namespace RC.Engine.Rendering
             }
         }
 
+
+        [Inject]
+        public IRCCameraManager CameraMgr
+        {
+            get { return _cameraMgr; }
+            set { _cameraMgr = value; }
+        }
+
+        [Inject]
+        public IGraphicsDeviceService Graphics
+        {
+            get { return _graphics; }
+            set { _graphics = value; }
+        }
+
+        protected bool UpdateSceneCameraParameters()
+        {
+            // Ensure that the correct viewport is drawn to.
+            Graphics.GraphicsDevice.Viewport = CameraMgr.ActiveCamera.Viewport;
+            return true;
+        }
+
         private void ApplyEffect(RCEffect rcEffect, bool isPrimaryEffect)
         {
-            Effect shader = rcEffect.Effect;
+            Effect shader = rcEffect.Content;
 
             // Configure The Effect
             rcEffect.CustomConfigure(this);
@@ -206,39 +197,24 @@ namespace RC.Engine.Rendering
             RCVertexBuffer VBuffer = _geometry.VBuffer;
             RCIndexBuffer IBuffer = _geometry.IBuffer;
 
-            Graphics.VertexDeclaration = VBuffer.VertexDeclaration;
-            Graphics.Vertices[0].SetSource(
+            Graphics.GraphicsDevice.VertexDeclaration = VBuffer.VertexDeclaration;
+
+            Graphics.GraphicsDevice.Vertices[0].SetSource(
                 VBuffer.VertexBuffer,
                 0,
-                VBuffer.VertexSize);
+                VBuffer.VertexSize
+                );
 
-            Graphics.Indices = IBuffer.IndexBuffer;
+            Graphics.GraphicsDevice.Indices = IBuffer.IndexBuffer;
             
-
             // Finally draw the actual triangles on the screen
-            Graphics.DrawIndexedPrimitives(
+            Graphics.GraphicsDevice.DrawIndexedPrimitives(
                 PrimitiveType.TriangleList,
                 0, 0,
                 VBuffer.NumVertices,
                 0,
-                IBuffer.NumPrimitives);
-        }
-
-        public void ClearScreen()
-        {
-            Graphics.Clear(
-                _cameraMgr.ActiveCamera.ClearOptions,
-                _cameraMgr.ActiveCamera.ClearColor,
-                1.0f,
-                0
+                IBuffer.NumPrimitives
                 );
-        }
-
-        protected bool UpdateSceneCameraParameters()
-        {
-            // Ensure that the correct viewport is drawn to.
-            Graphics.Viewport = _cameraMgr.ActiveCamera.Viewport;
-            return true;
         }
     }
 }

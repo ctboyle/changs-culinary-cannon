@@ -41,9 +41,5 @@ namespace RC.Engine.SceneEffects
                 _light.Transform = WorldTrans;
             }
         }
-
-
-       
-
     }
 }

@@ -8,6 +8,7 @@ using Microsoft.Xna.Framework.Content;
 using RC.Engine.GraphicsManagement.BoundingVolumes;
 using RC.Engine.Rendering;
 using RC.Engine.SceneEffects;
+using RC.Engine.ContentManagement;
 #endregion
 
 namespace RC.Engine.GraphicsManagement
@@ -48,32 +49,6 @@ namespace RC.Engine.GraphicsManagement
                 removed = _listChildren.Remove(removeChild);
             }
             return removed;
-        }
-
-        /// <summary>
-        /// Invokes all children's LoadGraphicsContent.
-        /// </summary>
-        public override void Load(GraphicsDevice device, ContentManager content)
-        {
-            base.Load(device, content);
-
-            foreach (RCSpatial child in _listChildren)
-            {
-                child.Load(device, content);
-            }
-        }
-
-        /// <summary>
-        /// Invokes all children's UnloadGraphicsContent.
-        /// </summary>
-        public override void Unload()
-        {
-            base.Unload();
-
-            foreach (RCSpatial child in _listChildren)
-            {
-                child.Unload();
-            }
         }
 
         /// <summary>

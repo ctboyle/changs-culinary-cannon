@@ -11,6 +11,8 @@ using RC.Engine.GraphicsManagement.BoundingVolumes;
 using RC.Engine.Rendering;
 using RC.Engine.SceneEffects;
 
+using RC.Engine.ContentManagement;
+
 #endregion
 
 namespace RC.Engine.GraphicsManagement
@@ -106,28 +108,6 @@ namespace RC.Engine.GraphicsManagement
                 Vector3.Zero,
                 0.0f
                 );
-        }
-
-        /// <summary>
-        /// Abstract method for loading graphic content.
-        /// </summary>
-        public virtual void Load(GraphicsDevice device, ContentManager content)
-        {
-            foreach (RCEffect effect in Effects)
-            {
-                effect.LoadContent(device, content);
-            }
-        }
-
-        /// <summary>
-        /// Abstract method for un-loading graphic content.
-        /// </summary>
-        public virtual void Unload()
-        {
-            foreach (RCEffect effect in Effects)
-            {
-                //effect.Unload();
-            }
         }
 
         /// <summary>

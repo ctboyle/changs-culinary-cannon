@@ -46,7 +46,6 @@ namespace RC.Engine.Test
                 moveVector += _controlledItem.LocalTrans.Right;
             }
 
-
             if (newState.IsKeyDown(Keys.A))
             {
                 yAxisRot += 1.0f;
@@ -67,8 +66,6 @@ namespace RC.Engine.Test
                 xAxisRot += 1.0f;
             }
 
-
-
             float time = (float)gameTime.ElapsedGameTime.TotalSeconds;
 
             Vector3 saveTranslation = _controlledItem.LocalTrans.Translation;
@@ -79,9 +76,6 @@ namespace RC.Engine.Test
                 Matrix.CreateFromAxisAngle(Vector3.Up, yAxisRot * _rotateSpeed * time);
 
             _controlledItem.LocalTrans *= Matrix.CreateTranslation(saveTranslation+moveVector * _travelSpeed * time);
-
-            
-
         }
     }
 }

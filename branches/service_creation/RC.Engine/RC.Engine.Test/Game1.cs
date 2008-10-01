@@ -8,27 +8,36 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Net;
 using Microsoft.Xna.Framework.Storage;
+using RC.Engine.StateManagement;
+using Ninject.Core;
 
 namespace RC.Engine.Test
 {
-    /// <summary>
-    /// This is the main type for your game
-    /// </summary>
+    ///// <summary>
+    ///// This is the main type for your game
+    ///// </summary>
+    [Singleton]
     class Game1 : RC.Engine.RCBasicGame
     {
+        private RCGameState _startState = null;
+
         protected override void Initialize()
         {
-            StateManager.AddState("Test", new TestState(Services));
+            StateMgr.AddState("Test", StartState);
             base.Initialize();
         }
 
         protected override void BeginRun()
         {
-            StateManager.PushState("Test");
-
-            this.GraphicsDevice.RenderState.CullMode = CullMode.None;
-
+            StateMgr.PushState("Test");
             base.BeginRun();
+        }
+
+        [Inject, Tag("Start")]
+        public RCGameState StartState
+        {
+            get { return _startState; }
+            set { _startState = value; }
         }
     }
 }
