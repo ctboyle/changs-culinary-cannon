@@ -8,7 +8,6 @@ namespace RC.Engine.ContentManagement
     public abstract class RCDeviceResource : IDisposable
     {
         private IGraphicsDeviceService _graphics = null;
-        private bool _isEnabled = false;
 
         public RCDeviceResource(IGraphicsDeviceService graphics)
         {

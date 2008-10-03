@@ -32,8 +32,8 @@ namespace RC.Engine.Rendering
             }
         }
 
-        public RCEffect(Guid id, IRCContentManager contentMgr)
-            : base(id, contentMgr)
+        public RCEffect(IRCContentRequester contentRqst)
+            : base(contentRqst)
         {
             UpdateTechniqueInfo();
         }
@@ -98,5 +98,7 @@ namespace RC.Engine.Rendering
                 _alphaStates[iPass] = savedState;
             }
         }
+
+        public override abstract object CreateType(IGraphicsDeviceService graphics, ContentManager content);
     } 
 }

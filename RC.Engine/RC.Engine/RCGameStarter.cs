@@ -59,7 +59,6 @@ namespace RC.Engine
             m.Bind<IRCGameStateManager>().To<RCGameStateManager>();
             m.Bind<IRCRenderManager>().To<RCRenderManager>();
             m.Bind<IRCCameraManager>().To<RCCameraManager>();
-            m.Bind<IRCContentManager>().To<RCContentManager>();
             m.Bind<IRCContentRequester>().To<RCContentManager>();
         }
 

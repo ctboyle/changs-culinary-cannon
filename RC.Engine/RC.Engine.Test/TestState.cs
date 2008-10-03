@@ -29,7 +29,7 @@ namespace RC.Engine.Test
             Graphics.GraphicsDevice.RenderState.CullMode = CullMode.None;
 
             // Create the model
-            RCGeometry model = MeshCreator.CreateObject(Graphics, Content);
+            RCGeometry model = MeshCreator.CreateObject(Graphics, ContentRqst);
 
             // Create a camera and add it to the camera manageer
             RCCamera camera = new RCPerspectiveCamera(Graphics.GraphicsDevice.Viewport);
@@ -87,7 +87,7 @@ namespace RC.Engine.Test
         }
 
         [Inject]
-        public IRCContentRequester Content
+        public IRCContentRequester ContentRqst
         {
             get { return _content; }
             set { _content = value; }

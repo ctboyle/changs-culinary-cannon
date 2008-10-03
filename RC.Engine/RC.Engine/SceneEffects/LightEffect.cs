@@ -13,24 +13,9 @@ namespace RC.Engine.SceneEffects
     {
         private List<RCLight> _lights = new List<RCLight>();
 
-        public static RCLightEffect Create(IGraphicsDeviceService graphics, IRCContentRequester content)
+        public RCLightEffect(IRCContentRequester contentRqst)
+            : base(contentRqst)
         {
-            return (RCLightEffect) content.RequestContent<Effect>(
-                delegate(Guid id, IRCContentManager c) 
-                { 
-                    return new RCLightEffect(id, c); 
-                },
-                delegate(object[] parameters) 
-                { 
-                    return new BasicEffect(graphics.GraphicsDevice, null); 
-                },
-                null
-            );
-        }
-
-        public RCLightEffect(Guid id, IRCContentManager contentMgr) 
-            : base(id, contentMgr)
-        { 
         }
 
         public int MaxLights
@@ -122,6 +107,11 @@ namespace RC.Engine.SceneEffects
             }
 
             return basicLight;
+        }
+
+        public override object CreateType(IGraphicsDeviceService graphics, ContentManager content)
+        {
+            return new BasicEffect(graphics.GraphicsDevice, null); 
         }
     }
 }

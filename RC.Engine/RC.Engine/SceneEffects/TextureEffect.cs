@@ -14,22 +14,11 @@ namespace RC.Engine.SceneEffects
 
         private RCContent<Texture2D> _texture = null;
 
-        public static RCTextureEffect Create(IRCContentRequester content, RCContent<Texture2D> texture)
-        {
-            return (RCTextureEffect)content.RequestContent<Effect>(
-                delegate(Guid id, IRCContentManager c) 
-                { 
-                    return new RCTextureEffect(id, c, texture); 
-                },
-                RCTextureEffect.EffectPath
-            );
-        }
-
         public RCTextureEffect(
-            Guid id, 
-            IRCContentManager contentMgr, 
+            IRCContentRequester contentRqst,
             RCContent<Texture2D> texture
-            ) : base(id, contentMgr)
+            ) 
+            : base(contentRqst)
         {
             _texture = texture;
         }
@@ -41,6 +30,11 @@ namespace RC.Engine.SceneEffects
                 Content.Parameters["xTexture"].SetValue(_texture.Content);
                 Content.Parameters["xWorldViewProjection"].SetValue(render.World * render.View * render.Projection);
             }
+        }
+
+        public override object CreateType(IGraphicsDeviceService graphics, ContentManager content)
+        {
+            return content.Load<Effect>(EffectPath);
         }
     }
 }

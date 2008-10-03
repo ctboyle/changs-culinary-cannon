@@ -29,13 +29,13 @@ namespace RC.Engine
 
         protected override void Initialize()
         {
-            Components.Add(Content);
+            Components.Add(ContentRqst);
             Components.Add(StateMgr);
             base.Initialize();
         }
 
         [Inject]
-        public IRCContentRequester Content
+        public IRCContentRequester ContentRqst
         {
             get { return _content; }
             set { _content = value; }
