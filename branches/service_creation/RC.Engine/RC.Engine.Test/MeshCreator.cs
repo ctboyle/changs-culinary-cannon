@@ -12,7 +12,7 @@ namespace RC.Engine.Test
 {
     class MeshCreator
     {
-        public static RCGeometry CreateObject(IGraphicsDeviceService graphics, IRCContentRequester content)
+        public static RCGeometry CreateObject(IGraphicsDeviceService graphics, IRCContentRequester contentRqst)
         {
             short[] indicies = new short[] { 0, 2, 3, 0, 1, 2 };
 
@@ -53,7 +53,7 @@ namespace RC.Engine.Test
             RCIndexBuffer iBuffer = new RCIndexBuffer(graphics, 6);
             iBuffer.SetData(indicies);
 
-            RCGeometry geometry = new RCGeometry(graphics, content, iBuffer, vBuffer);
+            RCGeometry geometry = new RCGeometry(graphics, contentRqst, iBuffer, vBuffer);
 
             RCMaterialState material = new RCMaterialState();
             material.Ambient = new Color(255, 0, 0, 255);
@@ -62,11 +62,10 @@ namespace RC.Engine.Test
             material.Shininess = 15.0f;
             material.Alpha = 0.0f;
 
-            RCContent<Texture2D> texture1 = content.RequestContent<Texture2D>("Content\\Textures\\seattle");
-            RCContent<Texture2D> texture2 = content.RequestContent<Texture2D>("Content\\Textures\\smiley");
-            
-            RCTextureEffect effect1 = RCTextureEffect.Create(content, texture1);
-            RCTextureEffect effect2 = RCTextureEffect.Create(content, texture2);
+            RCContent<Texture2D> texture1 = new RCDefaultContent<Texture2D>(contentRqst, "Content\\Textures\\smiley");
+            RCContent<Texture2D> texture2 = new RCDefaultContent<Texture2D>(contentRqst, "Content\\Textures\\seattle");
+            RCTextureEffect effect1 = new RCTextureEffect(contentRqst, texture1);
+            RCTextureEffect effect2 = new RCTextureEffect(contentRqst, texture2);
 
             geometry.AddEffect(effect1);
             geometry.AddEffect(effect2);

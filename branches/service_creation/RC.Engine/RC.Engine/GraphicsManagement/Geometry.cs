@@ -18,7 +18,7 @@ namespace RC.Engine.GraphicsManagement
         private RCLightEffect _lightEffect = null;      
         private RCIndexBuffer _iBuffer = null;     
         private RCVertexBuffer _vBuffer = null;
-        private IRCContentRequester _content = null;
+        private IRCContentRequester _contentRqst = null;
         private IGraphicsDeviceService _graphics = null;
 
         public RCIndexBuffer IBuffer
@@ -31,10 +31,10 @@ namespace RC.Engine.GraphicsManagement
             get { return _vBuffer; }
         }
 
-        public RCGeometry(IGraphicsDeviceService graphics, IRCContentRequester content, RCIndexBuffer indexBuffer, RCVertexBuffer vertexBuffer)
+        public RCGeometry(IGraphicsDeviceService graphics, IRCContentRequester contentRqst, RCIndexBuffer indexBuffer, RCVertexBuffer vertexBuffer)
         {
             _graphics = graphics;
-            _content = content;
+            _contentRqst = contentRqst;
             _iBuffer = indexBuffer;
             _vBuffer = vertexBuffer;
         }
@@ -67,7 +67,7 @@ namespace RC.Engine.GraphicsManagement
                 else
                 {
                     // Create a new light effect and put it to be rendered first in the list.
-                    _lightEffect = RCLightEffect.Create(_graphics, _content);
+                    _lightEffect = new RCLightEffect(_contentRqst);
                     Effects.Insert(0, _lightEffect);
                 }
                 // Make sure the
