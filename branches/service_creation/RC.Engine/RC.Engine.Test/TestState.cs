@@ -18,9 +18,19 @@ namespace RC.Engine.Test
     class TestState : RC.Engine.StateManagement.RCGameState
     {
         private RCSpatial _sceneRoot = null;
+        private TimeSpan _lastFrameReportTime = TimeSpan.Zero;
+        private int _frameCount = 0;
+        private int _framesPerSecond = 0;
+        private RCSpriteBatch _spriteBatch = null;
+        private RCContent<SpriteFont> _spriteFont = null;
 
         public override void Initialize()
         {
+            // Load SpriteBatch Stuff
+            _spriteBatch = new RCSpriteBatch(Graphics);
+            _spriteBatch.Enabled = true;
+            _spriteFont = new RCDefaultContent<SpriteFont>(ContentRqst, "Content\\Fonts\\DefaultFont");
+
             Graphics.GraphicsDevice.RenderState.CullMode = CullMode.None;
 
             // Create the model
@@ -70,9 +80,26 @@ namespace RC.Engine.Test
         }
 
         public override void Draw(GameTime gameTime)
-        {                    
+        {
+            _lastFrameReportTime += gameTime.ElapsedGameTime;
+            _frameCount++;
+
+            if (_lastFrameReportTime.TotalSeconds >= 1.0f)
+            {
+                _framesPerSecond = _frameCount;
+                _frameCount = 0;
+                _lastFrameReportTime = TimeSpan.Zero;
+            }
+
             CameraMgr.SetActiveCamera("Test");
             RenderMgr.DrawScene(_sceneRoot);
+
+            // Draw the scene statistics
+            string message = string.Format("FPS: {0}\n", _framesPerSecond);
+
+            _spriteBatch.SpriteBatch.Begin(SpriteBlendMode.AlphaBlend, SpriteSortMode.Texture, SaveStateMode.SaveState);
+            _spriteBatch.SpriteBatch.DrawString(_spriteFont.Content, message, Vector2.Zero, Color.Yellow);
+            _spriteBatch.SpriteBatch.End();
         }
 
         public override void Update(GameTime gameTime)

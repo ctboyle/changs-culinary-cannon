@@ -24,7 +24,7 @@ namespace RC.Engine.ContentManagement
     /// The content loaded from the IRCContentManager.
     /// </summary>
     /// <typeparam name="T">The underlying content type.</typeparam>
-    interface IRCContent<T> : IDisposable where T : class, IDisposable
+    interface IRCContent<T> : IDisposable where T : class
     {
         /// <summary>
         /// The underlying content.
@@ -32,7 +32,7 @@ namespace RC.Engine.ContentManagement
         T Content { get; }
     }
 
-    public class RCDefaultContent<T> : RCContent<T> where T : class,IDisposable
+    public class RCDefaultContent<T> : RCContent<T> where T : class
     {
         private string _assetName = string.Empty;
 
@@ -48,7 +48,7 @@ namespace RC.Engine.ContentManagement
         }
     }
 
-    public abstract class RCContent<T> : IRCCreateType, IRCContent<T> where T : class, IDisposable
+    public abstract class RCContent<T> : IRCCreateType, IRCContent<T> where T : class
     {
         private Guid _id = Guid.Empty;
         private IRCContentManager _contentMgr = null;

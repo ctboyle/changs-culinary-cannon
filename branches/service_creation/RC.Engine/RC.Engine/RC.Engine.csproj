@@ -89,6 +89,7 @@
     <Compile Include="Rendering\Effect.cs" />
     <Compile Include="Rendering\IndexBuffer.cs" />
     <Compile Include="Rendering\MaterialState.cs" />
+    <Compile Include="Rendering\SpriteBatch.cs" />
     <Compile Include="Rendering\RenderConstants.cs" />
     <Compile Include="Rendering\RenderState.cs" />
     <Compile Include="Rendering\RenderStateDictionary.cs" />
