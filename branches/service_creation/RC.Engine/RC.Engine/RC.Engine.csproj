@@ -47,6 +47,10 @@
     <Reference Include="mscorlib">
       <Private>False</Private>
     </Reference>
+    <Reference Include="Ninject.Conditions, Version=1.0.0.82, Culture=neutral, PublicKeyToken=c7192dc5380945e7, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\Ninject .NET 2.0  Debug\Ninject.Conditions.dll</HintPath>
+    </Reference>
     <Reference Include="Ninject.Core, Version=1.0.0.82, Culture=neutral, PublicKeyToken=c7192dc5380945e7, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\Ninject .NET 2.0  Debug\Ninject.Core.dll</HintPath>
@@ -77,6 +81,7 @@
     <Compile Include="GraphicsManagement\Node.cs" />
     <Compile Include="GraphicsManagement\SceneInterfaces.cs" />
     <Compile Include="GraphicsManagement\Spatial.cs" />
+    <Compile Include="Game.cs" />
     <Compile Include="RCGameStarter.cs" />
     <Compile Include="Rendering\AlphaState.cs" />
     <Compile Include="Rendering\Atributes.cs" />

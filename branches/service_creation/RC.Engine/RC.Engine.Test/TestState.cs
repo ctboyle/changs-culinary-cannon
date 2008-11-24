@@ -18,11 +18,6 @@ namespace RC.Engine.Test
     class TestState : RC.Engine.StateManagement.RCGameState
     {
         private RCSpatial _sceneRoot = null;
-        private IRCCameraManager _cameraMgr = null;
-        private IRCRenderManager _renderMgr = null;
-        private IGraphicsDeviceService _graphics = null;
-        private IRCGameStateManager _stateMgr = null;
-        private IRCContentRequester _content = null;
 
         public override void Initialize()
         {
@@ -68,14 +63,14 @@ namespace RC.Engine.Test
 
             FlyCameraController cameraController = new FlyCameraController(5.0f, MathHelper.PiOver2);
             cameraController.AttachToObject(camera);
-
+            
             _sceneRoot.UpdateRS();
 
             base.Initialize();
         }
 
         public override void Draw(GameTime gameTime)
-        {                       
+        {                    
             CameraMgr.SetActiveCamera("Test");
             RenderMgr.DrawScene(_sceneRoot);
         }
@@ -84,41 +79,6 @@ namespace RC.Engine.Test
         {
             UpdateInput();
             _sceneRoot.UpdateGS(gameTime, true);
-        }
-
-        [Inject]
-        public IRCContentRequester ContentRqst
-        {
-            get { return _content; }
-            set { _content = value; }
-        }
-
-        [Inject]
-        public IRCGameStateManager StateMgr
-        {
-            get { return _stateMgr; }
-            set { _stateMgr = value; }
-        }
-
-        [Inject]
-        public IRCCameraManager CameraMgr
-        {
-            get { return _cameraMgr; }
-            set { _cameraMgr = value; }
-        }
-
-        [Inject]
-        public IRCRenderManager RenderMgr
-        {
-            get { return _renderMgr; }
-            set { _renderMgr = value; }
-        }
-
-        [Inject]
-        public IGraphicsDeviceService Graphics
-        {
-            get { return _graphics; }
-            set { _graphics = value; }
         }
 
         private void UpdateInput()

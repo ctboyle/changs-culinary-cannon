@@ -11,7 +11,9 @@ namespace RC.Engine.Test
     {
         public override void Load()
         {
-            Bind<RCBasicGame>().To<Game1>();
+            Bind<RCBasicGame>()
+                .To<Game1>();
+
             Bind<RCGameState>().
                 To<TestState>().
                 Only(When.Context.Target.Tag.EqualTo("Start"));

@@ -13,23 +13,51 @@ using Microsoft.Xna.Framework.Content;
 using RC.Engine.Rendering;
 using RC.Engine.Cameras;
 using RC.Engine.ContentManagement;
+using Ninject.Conditions;
+using System.Diagnostics;
 
 namespace RC.Engine
 {
+    /// <summary>
+    /// I the Game Starter.  I start the game.
+    /// </summary>
     public class RCGameStarter
     {
         private IKernel _kernel = null;
 
-        public RCGameStarter(params IModule[] modules)
+        /// <summary>
+        /// I construct the game starter.  I get pissy if you give me crap.
+        /// </summary>
+        /// <param name="game">I am the game type.  Not the game, the type.</param>
+        /// <param name="states">I am all of the game state types with labels.</param>
+        public RCGameStarter(Type game, KeyValuePair<String, Type>[] states)
         {
-            SetupKernel(modules);
+            IModule module = new InlineModule(
+                delegate(InlineModule m)
+                {
+                    m.Bind<RCBasicGame>().To(game);
+
+                    Array.ForEach<KeyValuePair<String, Type>>(
+                        states,
+                        delegate(KeyValuePair<String, Type> state)
+                        {
+                            m.Bind<RCGameState>().
+                                To(state.Value).
+                                Only(When.Context.Target.Tag.EqualTo(state.Key));
+                        }
+                    );
+                }
+            );
+
+            SetupKernel(new IModule[] { module });
         }
 
         public void Start()
         {
             using (_kernel.BeginScope())
             {
-                _kernel.Get<RCBasicGame>().Run();
+                RCGame game = _kernel.Get<RCGame>();
+                game.Run();
             }
         }
 
@@ -64,13 +92,13 @@ namespace RC.Engine
 
         private IGraphicsDeviceService IGraphicsDeviceServiceFactory()
         {
-            Game game = _kernel.Get<RCBasicGame>();
+            RCGame game = _kernel.Get<RCGame>();
             return game.Services.GetService(typeof(IGraphicsDeviceService)) as IGraphicsDeviceService;
         }
 
         private ContentManager ContentManagerFactory()
         {
-            Game game = _kernel.Get<RCBasicGame>();
+            RCGame game = _kernel.Get<RCGame>();
             return game.Content;
         }
     }

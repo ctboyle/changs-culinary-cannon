@@ -34,7 +34,7 @@ namespace RC.Engine.StateManagement
 
         public event StateChangeFunc StateChanged;
 
-        public RCGameStateManager(RCBasicGame game)
+        public RCGameStateManager(RCGame game)
             : base(game)
         {
             this.DrawOrder = 1;
