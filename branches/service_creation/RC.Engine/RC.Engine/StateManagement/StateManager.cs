@@ -6,6 +6,7 @@ using Microsoft.Xna.Framework.Graphics;
 using RC.Engine.Rendering;
 using Ninject.Core;
 using RC.Engine.ContentManagement;
+using Ninject.Core.Parameters;
 
 namespace RC.Engine.StateManagement
 {
@@ -20,7 +21,7 @@ namespace RC.Engine.StateManagement
 
     public interface IRCGameStateManager : IRCGameStateStack, IGameComponent
     {
-        void AddState(string label, RCGameState state);
+        void AddState(string label, Type stateType);
         void RemoveState(string label);
     }
 
@@ -41,8 +42,9 @@ namespace RC.Engine.StateManagement
             this.UpdateOrder = 1;
         }
 
-        public void AddState(string label, RCGameState state)
+        public void AddState(string label, Type stateType)
         {
+            RCGameState state = RCGameStarter.BindTagObject<RCGameState>(label, stateType);
             _states.Add(label, state);
             state.Initialize();
         }
