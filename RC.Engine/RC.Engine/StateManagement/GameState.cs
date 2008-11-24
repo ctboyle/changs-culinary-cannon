@@ -24,7 +24,7 @@ namespace RC.Engine.StateManagement
         private IRCCameraManager _cameraMgr = null;
         private IRCRenderManager _renderMgr = null;
         private IGraphicsDeviceService _graphics = null;
-        private IRCGameStateManager _stateMgr = null;
+        private IRCGameStateStack _stateStack = null;
         private IRCContentRequester _content = null;
 
         ~RCGameState()
@@ -72,10 +72,10 @@ namespace RC.Engine.StateManagement
         }
 
         [Inject]
-        public IRCGameStateManager StateMgr
+        public IRCGameStateStack StateStack
         {
-            get { return _stateMgr; }
-            set { _stateMgr = value; }
+            get { return _stateStack; }
+            set { _stateStack = value; }
         }
 
         [Inject]

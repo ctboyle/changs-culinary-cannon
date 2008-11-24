@@ -5,7 +5,6 @@ using RC.Engine.GraphicsManagement;
 using Microsoft.Xna.Framework.Graphics;
 using RC.Engine.Rendering;
 using RC.Engine.SceneEffects;
-using Ninject.Core;
 using RC.Engine.ContentManagement;
 
 namespace RC.Engine.Test

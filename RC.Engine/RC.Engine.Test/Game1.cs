@@ -9,35 +9,39 @@ using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Net;
 using Microsoft.Xna.Framework.Storage;
 using RC.Engine.StateManagement;
-using Ninject.Core;
 
 namespace RC.Engine.Test
 {
     ///// <summary>
     ///// This is the main type for your game
     ///// </summary>
-    [Singleton]
     class Game1 : RC.Engine.RCBasicGame
     {
-        private RCGameState _startState = null;
+        private static String GameStart = "Start";
+
+        private static KeyValuePair<String, Type>[] StateTypes =
+            new KeyValuePair<string, Type>[]
+            {
+                new KeyValuePair<String, Type>(GameStart, typeof(TestState))
+            };
 
         public override void Initialize()
         {
-            StateMgr.AddState("Test", StartState);
+            Array.ForEach<KeyValuePair<String, Type>>(
+                StateTypes,
+                delegate(KeyValuePair<String, Type> state)
+                {
+                    StateMgr.AddState(state.Key, state.Value);
+                }
+            );
+
             base.Initialize();
         }
 
         public override void BeginRun()
         {
-            StateMgr.PushState("Test");
+            StateMgr.PushState(GameStart);
             base.BeginRun();
-        }
-
-        [Inject, Tag("Start")]
-        public RCGameState StartState
-        {
-            get { return _startState; }
-            set { _startState = value; }
         }
     }
 }

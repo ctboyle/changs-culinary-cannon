@@ -9,7 +9,6 @@ using Microsoft.Xna.Framework.Graphics;
 using RC.Engine.Rendering;
 using Microsoft.Xna.Framework.Input;
 using RC.Engine.SceneEffects;
-using Ninject.Core;
 using RC.Engine.ContentManagement;
 using RC.Engine.StateManagement;
 
@@ -112,8 +111,8 @@ namespace RC.Engine.Test
         {
             if (Keyboard.GetState().IsKeyDown(Keys.E))
             {
-                StateMgr.PopState();
-                StateMgr.PushState("Test");
+                StateStack.PopState();
+                StateStack.PushState("Test");
             }
         }
     }
