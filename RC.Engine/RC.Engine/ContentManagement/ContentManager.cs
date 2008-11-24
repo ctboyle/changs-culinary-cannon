@@ -22,7 +22,7 @@ namespace RC.Engine.ContentManagement
         void RequestContent<T>(
             RCContent<T> content
             )
-            where T : class, IDisposable;
+            where T : class;
     }
 
     /// <summary>
@@ -39,7 +39,7 @@ namespace RC.Engine.ContentManagement
         T LoadContent<T>(
             Guid id
             ) 
-            where T : class,IDisposable;
+            where T : class;
 
         /// <summary>
         /// Unloads content by id.
@@ -60,7 +60,7 @@ namespace RC.Engine.ContentManagement
     {
         private class ContentStore
         {
-            public IDisposable Content;
+            public object Content;
             public IRCCreateType TypeCreator;
         }
 
@@ -106,7 +106,7 @@ namespace RC.Engine.ContentManagement
         public void RequestContent<T>(
             RCContent<T> content
             )
-            where T : class,IDisposable
+            where T : class
         {
             Guid id = this.CreateNewId();
 
@@ -123,7 +123,7 @@ namespace RC.Engine.ContentManagement
         public T LoadContent<T>(
             Guid id
             ) 
-            where T : class,IDisposable
+            where T : class
         {
             T content = (T)_content[id].Content;
 
@@ -144,7 +144,7 @@ namespace RC.Engine.ContentManagement
         {
             // Get the content and try to dispose it, in order
             // to immediately release the resources.
-            IDisposable content = _content[id].Content;
+            IDisposable content = _content[id].Content as IDisposable;
             if (content != null && content.GetType() != typeof(Effect))
                 content.Dispose();
             
@@ -165,10 +165,11 @@ namespace RC.Engine.ContentManagement
             // Get a list of all content and dispose it.
             ContentStore[] disposeMe = new ContentStore[_content.Values.Count];
             _content.Values.CopyTo(disposeMe, 0);
-            foreach (ContentStore disposable in disposeMe)
+            foreach (ContentStore content in disposeMe)
             {
-                if (disposable.Content == null || disposable.Content.GetType() == typeof(Effect)) continue;
-                disposable.Content.Dispose();
+                IDisposable disposible = content.Content as IDisposable;
+                if (disposible == null || disposible.GetType() == typeof(Effect)) continue;
+                disposible.Dispose();
             }
 
             // Set all of the content to null.
