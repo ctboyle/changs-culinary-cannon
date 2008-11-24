@@ -29,7 +29,7 @@ namespace RC.Engine.Test
             _spriteBatch = new RCSpriteBatch(Graphics);
             _spriteBatch.Enabled = true;
             _spriteFont = new RCDefaultContent<SpriteFont>(ContentRqst, "Content\\Fonts\\DefaultFont");
-
+            
             Graphics.GraphicsDevice.RenderState.CullMode = CullMode.None;
 
             // Create the model
@@ -44,7 +44,7 @@ namespace RC.Engine.Test
                     Vector3.Up
                 )
             );
-
+            
             CameraMgr.AddCamera("Test", camera);
 
             // Create the directional light

@@ -108,6 +108,11 @@ namespace RC.Engine.StateManagement
 
         public override void Update(GameTime gameTime)
         {
+            if (_stateStack.Count == 0)
+            {
+                Game.Exit();
+            }
+
             for (int i = _stateStack.Count - 1; i >= 0; --i)
             {
                 RCGameState currentState = _stateStack[i];
