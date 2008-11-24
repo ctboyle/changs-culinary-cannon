@@ -19,22 +19,9 @@ namespace RC.Engine.Test
     {
         private static String GameStart = "Start";
 
-        private static KeyValuePair<String, Type>[] StateTypes =
-            new KeyValuePair<string, Type>[]
-            {
-                new KeyValuePair<String, Type>(GameStart, typeof(TestState))
-            };
-
         public override void Initialize()
         {
-            Array.ForEach<KeyValuePair<String, Type>>(
-                StateTypes,
-                delegate(KeyValuePair<String, Type> state)
-                {
-                    StateMgr.AddState(state.Key, state.Value);
-                }
-            );
-
+            StateMgr.AddState(GameStart, typeof(TestState));
             base.Initialize();
         }
 

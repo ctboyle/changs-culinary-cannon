@@ -73,6 +73,7 @@
     <Compile Include="ContentManagement\Content.cs" />
     <Compile Include="ContentManagement\ContentManager.cs" />
     <Compile Include="ContentManagement\DeviceResource.cs" />
+    <Compile Include="GameStarter.cs" />
     <Compile Include="GraphicsManagement\BoundingVolumes\BoundingBox.cs" />
     <Compile Include="GraphicsManagement\BoundingVolumes\BoundingRect.cs" />
     <Compile Include="GraphicsManagement\BoundingVolumes\BoundingSphere.cs" />
@@ -82,7 +83,6 @@
     <Compile Include="GraphicsManagement\SceneInterfaces.cs" />
     <Compile Include="GraphicsManagement\Spatial.cs" />
     <Compile Include="Game.cs" />
-    <Compile Include="RCGameStarter.cs" />
     <Compile Include="Rendering\AlphaState.cs" />
     <Compile Include="Rendering\Atributes.cs" />
     <Compile Include="Rendering\DepthBufferState.cs" />
