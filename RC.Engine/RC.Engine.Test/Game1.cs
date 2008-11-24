@@ -21,13 +21,13 @@ namespace RC.Engine.Test
     {
         private RCGameState _startState = null;
 
-        protected override void Initialize()
+        public override void Initialize()
         {
             StateMgr.AddState("Test", StartState);
             base.Initialize();
         }
 
-        protected override void BeginRun()
+        public override void BeginRun()
         {
             StateMgr.PushState("Test");
             base.BeginRun();

@@ -1,6 +1,7 @@
 using System;
 using Ninject.Core;
 using RC.Engine.StateManagement;
+using System.Collections.Generic;
 
 namespace RC.Engine.Test
 {
@@ -11,7 +12,14 @@ namespace RC.Engine.Test
         /// </summary>
         static void Main(string[] args)
         {
-            RCGameStarter g = new RCGameStarter(new GameModule());
+            RCGameStarter g = new RCGameStarter(
+                typeof(Game1),
+                new KeyValuePair<String, Type>[] 
+                { 
+                    new KeyValuePair<String, Type>("Start", typeof(TestState))
+                }
+            );
+
             g.Start();
         }
     }

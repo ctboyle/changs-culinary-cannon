@@ -79,7 +79,7 @@ namespace RC.Engine.ContentManagement
         /// </summary>
         private ContentManager _contentMgr = null;
 
-        public RCContentManager(RCBasicGame game)
+        public RCContentManager(RCGame game)
             : base(game)
         {
         }

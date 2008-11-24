@@ -43,7 +43,7 @@ namespace RC.Engine.GraphicsManagement
         {
             _iBuffer.Enabled = true;
             _vBuffer.Enabled = true;
-
+            
             render.Draw(this);
 
             _iBuffer.Enabled = false;
