@@ -13,6 +13,12 @@ using RC.Engine.ContentManagement;
 
 namespace RC.Engine
 {
+    /// <summary>
+    /// I am the basic game class that all games must provide to
+    /// the <see cref="RCGameStarter"/>.  I am here to do any
+    /// initialization to be performed.  The initialization includes
+    /// setting up the states with state manager, etc. 
+    /// </summary>
     [Singleton]
     public class RCBasicGame
     {
@@ -20,10 +26,17 @@ namespace RC.Engine
         private IRCGameStateManager _stateMgr = null;
         private IRCContentRequester _content = null;
 
+        /// <summary>
+        /// I am used to initialize anything that needs to be initialized.
+        /// </summary>
         public virtual void Initialize()
         {
         }
 
+        /// <summary>
+        /// I am used to do any last minute initialization before the
+        /// Update and Draw loops start.
+        /// </summary>
         public virtual void BeginRun()
         {
         }

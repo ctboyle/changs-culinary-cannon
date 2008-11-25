@@ -8,6 +8,10 @@ using RC.Engine.ContentManagement;
 
 namespace RC.Engine
 {
+    /// <summary>
+    /// I am the real XNA game instance.  I am hidden to the
+    /// user of the actual RC framework.
+    /// </summary>
     [Singleton]
     internal class RCGame : Game
     {
@@ -16,11 +20,17 @@ namespace RC.Engine
         private IRCContentRequester _content = null;
         private RCBasicGame _game = null;
 
+        /// <summary>
+        /// I am a contructor that will setup the graphics device manager.
+        /// </summary>
         public RCGame()
         {
             _deviceMgr = new GraphicsDeviceManager(this);
         }
 
+        /// <summary>
+        /// I initialize stuff.
+        /// </summary>
         protected override void Initialize()
         {
             Components.Add(_content);
@@ -29,6 +39,9 @@ namespace RC.Engine
             base.Initialize();
         }
 
+        /// <summary>
+        /// I initialize more stuff.
+        /// </summary>
         protected override void BeginRun()
         {
             Game.BeginRun();
