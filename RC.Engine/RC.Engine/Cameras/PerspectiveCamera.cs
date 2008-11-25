@@ -29,7 +29,7 @@ namespace RC.Engine.Cameras
             : base(newViewport)
         {
             _FOV = MathHelper.PiOver4;
-            
+  
         }
 
         protected override Matrix UpdateProjection()
