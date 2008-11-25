@@ -25,54 +25,57 @@ namespace RC.Engine.Test
 
         public override void Initialize()
         {
-            // Load SpriteBatch Stuff
+            /////////////////////////////////////////////////////////////////////
+            // Setup the graphics device
+            /////////////////////////////////////////////////////////////////////
+            Graphics.GraphicsDevice.RenderState.CullMode = CullMode.None;
+
+            /////////////////////////////////////////////////////////////////////
+            // Setup the SpriteBatch content for displaying the FPS text
+            /////////////////////////////////////////////////////////////////////
             _spriteBatch = new RCSpriteBatch(Graphics);
             _spriteBatch.Enabled = true;
             _spriteFont = new RCDefaultContent<SpriteFont>(ContentRqst, "Content\\Fonts\\DefaultFont");
-            
-            Graphics.GraphicsDevice.RenderState.CullMode = CullMode.None;
 
-            // Create the model
-            RCGeometry model = MeshCreator.CreateObject(Graphics, ContentRqst);
-
-            // Create a camera and add it to the camera manageer
+            /////////////////////////////////////////////////////////////////////
+            // Create and setup the camera
+            /////////////////////////////////////////////////////////////////////
             RCCamera camera = new RCPerspectiveCamera(Graphics.GraphicsDevice.Viewport);
-            camera.LocalTrans = Matrix.Invert(
-                Matrix.CreateLookAt(
-                    new Vector3(0.0f, 0.0f, 3.0f),
-                    Vector3.Zero,
-                    Vector3.Up
-                )
-            );
-            
+            Matrix cameraLookAt = Matrix.CreateLookAt(new Vector3(0.0f, 0.0f, 3.0f), Vector3.Zero, Vector3.Up);
+            camera.LocalTrans = Matrix.Invert(cameraLookAt);
+            camera.Near = 0.05f;
             CameraMgr.AddCamera("Test", camera);
 
-            // Create the directional light
+            /////////////////////////////////////////////////////////////////////
+            // Add a controller for the camera
+            /////////////////////////////////////////////////////////////////////
+            FlyCameraController cameraController = new FlyCameraController(5.0f, MathHelper.PiOver2);
+            cameraController.AttachToObject(camera);
+
+            /////////////////////////////////////////////////////////////////////
+            // Create and setup the light
+            /////////////////////////////////////////////////////////////////////
             RCLightNode lightNode = new RCLightNode();
             RCLight light = new RCLight();
-
             light.Diffuse = new Vector3(1.2f);
             light.Specular = new Vector3(0.8f);
-            light.Transform = Matrix.Invert(
-               Matrix.CreateLookAt(
-                   new Vector3(0.0f, 0.0f, 3.0f),
-                   Vector3.Zero,
-                   Vector3.Up
-               ));
-
+            Matrix lightLookAt = Matrix.CreateLookAt(new Vector3(0.0f, 0.0f, 3.0f), Vector3.Zero, Vector3.Up);
+            light.Transform = Matrix.Invert(lightLookAt);
             lightNode.SetLight(light);
             lightNode.AddLight(light);
 
-            // Structure the scene graph and set the light node as the root
+            /////////////////////////////////////////////////////////////////////
+            // Create the model
+            /////////////////////////////////////////////////////////////////////
+            RCGeometry model = MeshCreator.CreateObject(Graphics, ContentRqst);
+
+            /////////////////////////////////////////////////////////////////////
+            // Setup the light node as the root and setup its children
+            /////////////////////////////////////////////////////////////////////
             lightNode.AddChild(camera);
             lightNode.AddChild(model);
             _sceneRoot = lightNode;
 
-            camera.Near = 0.05f;
-
-            FlyCameraController cameraController = new FlyCameraController(5.0f, MathHelper.PiOver2);
-            cameraController.AttachToObject(camera);
-            
             _sceneRoot.UpdateRS();
 
             base.Initialize();
@@ -99,12 +102,15 @@ namespace RC.Engine.Test
             _spriteBatch.SpriteBatch.Begin(SpriteBlendMode.AlphaBlend, SpriteSortMode.Texture, SaveStateMode.SaveState);
             _spriteBatch.SpriteBatch.DrawString(_spriteFont.Content, message, Vector2.Zero, Color.Yellow);
             _spriteBatch.SpriteBatch.End();
+
+            base.Draw(gameTime);
         }
 
         public override void Update(GameTime gameTime)
         {
             UpdateInput();
             _sceneRoot.UpdateGS(gameTime, true);
+            base.Update(gameTime);
         }
 
         private void UpdateInput()
@@ -112,7 +118,6 @@ namespace RC.Engine.Test
             if (Keyboard.GetState().IsKeyDown(Keys.E))
             {
                 StateStack.PopState();
-                StateStack.PushState("Test");
             }
         }
     }
