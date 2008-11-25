@@ -12,13 +12,38 @@ namespace RC.Engine.StateManagement
 {
     public delegate void StateChangeHandler(RCGameState newState, RCGameState oldState);
 
+    /// <summary>
+    /// I am the game state stack and maintain the current stack.  I have 
+    /// the ability to push, pop, and peek states from the stack.
+    /// </summary>
     public interface IRCGameStateStack
     {
+        /// <summary>
+        /// I push states onto the stack by name.
+        /// </summary>
+        /// <param name="label">The state name.</param>
         void PushState(string label);
+
+        /// <summary>
+        /// I pop the top state off the stack.
+        /// </summary>
+        /// <returns>The state.</returns>
         RCGameState PopState();
+
+        /// <summary>
+        /// I peek the top state on the stack.  I do not alter the stack.
+        /// </summary>
+        /// <returns>The state.</returns>
         RCGameState PeekState();
     }
 
+    /// <summary>
+    /// I am the game state manager and maintain the current stack.  I have 
+    /// the ability to push, pop, and peek states from the stack.
+    /// Because states are not pushed, poped, etc. directly
+    /// but instead by a String name, I control the pool of states are 
+    /// used with the stack.
+    /// </summary>
     public interface IRCGameStateManager : IRCGameStateStack, IGameComponent
     {
         void AddState(string label, Type stateType);

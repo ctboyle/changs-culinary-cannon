@@ -20,15 +20,53 @@ namespace RC.Engine.Rendering
         Count
     }
 
+    /// <summary>
+    /// I am the render manager and allow rendering of geometry and scenes.
+    /// </summary>
     public interface IRCRenderManager
     {
+        /// <summary>
+        /// The current world transformation.
+        /// </summary>
         Matrix World { get; }
+
+        /// <summary>
+        /// The current view transformation.
+        /// </summary>
         Matrix View { get; }
+
+        /// <summary>
+        /// The current projection transformation.
+        /// </summary>
         Matrix Projection { get; }
+
+        /// <summary>
+        /// I set the render state.
+        /// </summary>
+        /// <param name="renderState">The render state.</param>
         void SetRenderState(RCRenderState renderState);
+
+        /// <summary>
+        /// I get the render state for a render state type.
+        /// </summary>
+        /// <param name="type">The render state type.</param>
         RCRenderState GetRenderState(RCRenderState.StateType type);
+
+        /// <summary>
+        /// I draw a geometric object to the screen.
+        /// </summary>
+        /// <param name="geometry">The geometric object.</param>
         void Draw(RCGeometry geometry);
+
+        /// <summary>
+        /// I draw a scene to the screen.
+        /// </summary>
+        /// <param name="sceneRoot">The scene root.</param>
         void DrawScene(RCSpatial sceneRoot);
+
+        /// <summary>
+        /// I clear the screen.
+        /// </summary>
         void ClearScreen();
     }
 

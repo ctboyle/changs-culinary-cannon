@@ -10,12 +10,41 @@ using Ninject.Core;
 
 namespace RC.Engine.Cameras
 {
+    /// <summary>
+    /// I am the camera mananager.  I keep a set of cameras and maintain
+    /// an active camera.
+    /// </summary>
     public interface IRCCameraManager
     {
+        /// <summary>
+        /// The active camera.
+        /// </summary>
         RCCamera ActiveCamera { get; }
+
+        /// <summary>
+        /// I add a new camera to the set of cameras.
+        /// </summary>
+        /// <param name="cameraLabel">The camera label.</param>
+        /// <param name="newCamera">The camera instance.</param>
         void AddCamera(string cameraLabel, RCCamera newCamera);
+
+        /// <summary>
+        /// I remove from the set of cameras by label.
+        /// </summary>
+        /// <param name="cameraLabel">The camera label.</param>
         void RemoveCamera(string cameraLabel);
+
+        /// <summary>
+        /// I set the active camera by label.
+        /// </summary>
+        /// <param name="cameraLabel">The camera label.</param>
         void SetActiveCamera(string cameraLabel);
+
+        /// <summary>
+        /// I give access to the cameras by label.
+        /// </summary>
+        /// <param name="cameraLabel">The camera label.</param>
+        /// <returns>The camera.</returns>
         RCCamera this[string cameraLabel] { get; set ; }
     }
 
