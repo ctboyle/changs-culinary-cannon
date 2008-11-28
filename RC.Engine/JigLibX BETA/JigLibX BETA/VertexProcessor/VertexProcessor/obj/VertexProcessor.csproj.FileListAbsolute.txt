@@ -1,5 +1,0 @@
-C:\Codeplex\JigLibX BETA\VertexProcessor\VertexProcessor\bin\x86\Debug\VertexProcessor.dll
-C:\Codeplex\JigLibX BETA\VertexProcessor\VertexProcessor\bin\x86\Debug\VertexProcessor.pdb
-C:\Codeplex\JigLibX BETA\VertexProcessor\VertexProcessor\obj\x86\Debug\ResolveAssemblyReference.cache
-C:\Codeplex\JigLibX BETA\VertexProcessor\VertexProcessor\obj\x86\Debug\VertexProcessor.dll
-C:\Codeplex\JigLibX BETA\VertexProcessor\VertexProcessor\obj\x86\Debug\VertexProcessor.pdb
