@@ -11,21 +11,20 @@ using RC.Engine.StateManagement;
 using RC.Engine.GraphicsManagement;
 using RC.Engine.Rendering;
 using RC.Engine.Cameras;
-
 using RC.Engine.ContentManagement;
-using Ninject.Core;
+using RC.Engine.Base;
 
 namespace RC.Engine.StateManagement
 {
-    public class RCGameState : IDisposable
+    public class RCGameState : RCBase, IDisposable
     {
         private bool _isVisible = true;
         private bool _isUpdated = true;
-        private IRCCameraManager _cameraMgr = null;
-        private IRCRenderManager _renderMgr = null;
-        private IGraphicsDeviceService _graphics = null;
-        private IRCGameStateStack _stateStack = null;
-        private IRCContentRequester _content = null;
+
+        public RCGameState(RCGameContext gameCtx) 
+            : base(gameCtx)
+        {
+        }
 
         ~RCGameState()
         {
@@ -62,41 +61,6 @@ namespace RC.Engine.StateManagement
 
         public virtual void Update(GameTime gameTime)
         {
-        }
-
-        [Inject]
-        public IRCContentRequester ContentRqst
-        {
-            get { return _content; }
-            set { _content = value; }
-        }
-
-        [Inject]
-        public IRCGameStateStack StateStack
-        {
-            get { return _stateStack; }
-            set { _stateStack = value; }
-        }
-
-        [Inject]
-        public IRCCameraManager CameraMgr
-        {
-            get { return _cameraMgr; }
-            set { _cameraMgr = value; }
-        }
-
-        [Inject]
-        public IRCRenderManager RenderMgr
-        {
-            get { return _renderMgr; }
-            set { _renderMgr = value; }
-        }
-
-        [Inject]
-        public IGraphicsDeviceService Graphics
-        {
-            get { return _graphics; }
-            set { _graphics = value; }
         }
 
         internal protected virtual void StateChanged(

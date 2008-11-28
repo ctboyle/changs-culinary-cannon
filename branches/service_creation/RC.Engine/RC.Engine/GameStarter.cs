@@ -15,6 +15,7 @@ using RC.Engine.Cameras;
 using RC.Engine.ContentManagement;
 using Ninject.Conditions;
 using System.Diagnostics;
+using Ninject.Integration.DynamicProxy2;
 
 namespace RC.Engine
 {
@@ -22,7 +23,7 @@ namespace RC.Engine
     /// I am the Game Starter.  I start the game and bind new dependencies
     /// to the game kernel.  
     /// </summary>
-    public static class RCGameStarter
+    public class RCGameStarter
     {
         /// <summary>
         /// I am the sole game kernel and control all the dependencies 
@@ -30,22 +31,30 @@ namespace RC.Engine
         /// </summary>
         private static IKernel GameKernel = null;
 
+        public RCGameStarter()
+        {
+            GameKernel = new StandardKernel(
+                new DynamicProxy2Module(), 
+                new InlineModule(ModuleBind)
+            );
+        }
+
         /// <summary>
         /// I start a new game, given a <paramref name="gameType"/> that is 
         /// an instance of <typeparamref name="RCBasicGame"/>.
         /// </summary>
         /// <param name="gameType">The game type.</param>
-        public static void Start(Type gameType)
+        public void Start(Type gameType)
         {
-            SetupKernel(new InlineModule(delegate(InlineModule m)
+            GameKernel.Load((new InlineModule(delegate(InlineModule m)
             {
                 m.Bind<RCBasicGame>().
                     To(gameType);
-            }));
+            })));
 
             using (GameKernel.BeginScope())
             {
-                RCGame game = GameKernel.Get<RCGame>();
+                Game game = GameKernel.Get<Game>();
                 game.Run();
             }
         }
@@ -58,7 +67,7 @@ namespace RC.Engine
         /// <param name="tag">A string tag to represent.</param>
         /// <param name="bindType">The actual type.</param>
         /// <returns>An instance of the binded object.</returns>
-        public static T BindTagObject<T>(String tag, Type bindType) where T : class
+        public T BindTagObject<T>(String tag, Type bindType) where T : class
         {
             GameKernel.Load(new InlineModule(delegate(InlineModule m)
             {
@@ -75,41 +84,19 @@ namespace RC.Engine
             return GameKernel.Get(bindType) as T;
         }
 
-        /// <summary>
-        /// I setup a new kernel for a new game's set of dependencies.  The
-        /// modules setup in the kernel are provided here, plus the internal
-        /// modules that are to be used for all games.
-        /// </summary>
-        /// <param name="modules">The modules.</param>
-        private static void SetupKernel(params IModule[] modules)
+        public void LoadNewModule(RCModule module)
         {
-            List<IModule> moduleList = new List<IModule>();
-
-            if (modules != null)
-            {
-                moduleList.AddRange(modules);
-            }
-
-            SetupInternalModules(moduleList);
-
-            GameKernel = new StandardKernel(moduleList.ToArray());
-        }
-
-        /// <summary>
-        /// I setup the depedency modules for all games.
-        /// </summary>
-        /// <param name="moduleList"></param>
-        private static void SetupInternalModules(List<IModule> moduleList)
-        {
-            moduleList.Add(new InlineModule(ModuleBind));
+            ModuleImpl ninjectModule = new ModuleImpl(module);
+            GameKernel.Load(ninjectModule);
         }
 
         /// <summary>
         /// I bind default dependencies for a inline module.
         /// </summary>
         /// <param name="m">The inline module.</param>
-        private static void ModuleBind(InlineModule m)
+        private void ModuleBind(InlineModule m)
         {
+            m.Bind<Game>().To<RCGame>();
             m.Bind<IGraphicsDeviceService>().ToFactoryMethod<IGraphicsDeviceService>(IGraphicsDeviceServiceFactory);
             m.Bind<ContentManager>().ToFactoryMethod<ContentManager>(ContentManagerFactory);
             m.Bind<IRCGameStateManager>().To<RCGameStateManager>();
@@ -117,13 +104,19 @@ namespace RC.Engine
             m.Bind<IRCRenderManager>().To<RCRenderManager>();
             m.Bind<IRCCameraManager>().To<RCCameraManager>();
             m.Bind<IRCContentRequester>().To<RCContentManager>();
+            m.Bind<RCGameStarter>().ToFactoryMethod<RCGameStarter>(RCGameStarterFactory);
+        }
+
+        private RCGameStarter RCGameStarterFactory()
+        {
+            return this;
         }
 
         /// <summary>
         /// I act as a factory to provide an instance of the graphice device.
         /// </summary>
         /// <returns>The graphics device.</returns>
-        private static IGraphicsDeviceService IGraphicsDeviceServiceFactory()
+        private IGraphicsDeviceService IGraphicsDeviceServiceFactory()
         {
             RCGame game = GameKernel.Get<RCGame>();
             return game.Services.GetService(typeof(IGraphicsDeviceService)) as IGraphicsDeviceService;
@@ -133,7 +126,7 @@ namespace RC.Engine
         /// I act as a factory to provide an instance of the content manager.
         /// </summary>
         /// <returns>The content manager.</returns>
-        private static ContentManager ContentManagerFactory()
+        private ContentManager ContentManagerFactory()
         {
             RCGame game = GameKernel.Get<RCGame>();
             return game.Content;

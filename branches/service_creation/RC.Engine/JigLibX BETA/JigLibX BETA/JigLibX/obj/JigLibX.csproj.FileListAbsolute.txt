@@ -1,0 +1,7 @@
+C:\Users\Chris\Documents\UofL\Classes\CECS 628\cannon\branches\service_creation\RC.Engine\JigLibX BETA\JigLibX BETA\JigLibX\bin\x86\Debug\JigLibX.dll
+C:\Users\Chris\Documents\UofL\Classes\CECS 628\cannon\branches\service_creation\RC.Engine\JigLibX BETA\JigLibX BETA\JigLibX\bin\x86\Debug\JigLibX.pdb
+C:\Users\Chris\Documents\UofL\Classes\CECS 628\cannon\branches\service_creation\RC.Engine\JigLibX BETA\JigLibX BETA\JigLibX\obj\x86\Debug\ResolveAssemblyReference.cache
+C:\Users\Chris\Documents\UofL\Classes\CECS 628\cannon\branches\service_creation\RC.Engine\JigLibX BETA\JigLibX BETA\JigLibX\obj\x86\Debug\Microsoft.Xna.Framework.RuntimeProfile.txt
+C:\Users\Chris\Documents\UofL\Classes\CECS 628\cannon\branches\service_creation\RC.Engine\JigLibX BETA\JigLibX BETA\JigLibX\obj\x86\Debug\JigLibX.obj.x86.Debug.Microsoft.Xna.Framework.RuntimeProfile.txt
+C:\Users\Chris\Documents\UofL\Classes\CECS 628\cannon\branches\service_creation\RC.Engine\JigLibX BETA\JigLibX BETA\JigLibX\obj\x86\Debug\JigLibX.dll
+C:\Users\Chris\Documents\UofL\Classes\CECS 628\cannon\branches\service_creation\RC.Engine\JigLibX BETA\JigLibX BETA\JigLibX\obj\x86\Debug\JigLibX.pdb

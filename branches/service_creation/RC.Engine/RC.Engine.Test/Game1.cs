@@ -9,25 +9,31 @@ using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Net;
 using Microsoft.Xna.Framework.Storage;
 using RC.Engine.StateManagement;
+using RC.Engine.Base;
 
 namespace RC.Engine.Test
 {
     ///// <summary>
     ///// This is the main type for your game
     ///// </summary>
-    class Game1 : RC.Engine.RCBasicGame
+    public class Game1 : RCBasicGame
     {
         private static String GameStart = "Start";
 
+        public Game1(RCGameContext gameCtx)
+            : base(gameCtx)
+        {
+        }
+
         public override void Initialize()
         {
-            StateMgr.AddState(GameStart, typeof(TestState));
+            Ctx.StateMgr.AddState(GameStart, typeof(TestState));
             base.Initialize();
         }
 
         public override void BeginRun()
         {
-            StateMgr.PushState(GameStart);
+            Ctx.StateStack.PushState(GameStart);
             base.BeginRun();
         }
     }

@@ -107,8 +107,6 @@ C:\Users\Chris\Documents\UofL\Classes\CECS 628\cannon\branches\service_creation\
 C:\Users\Chris\Documents\UofL\Classes\CECS 628\cannon\branches\service_creation\RC.Engine\RC.Engine.Test\obj\x86\Debug\RC.Engine.Test.exe
 C:\Users\Chris\Documents\UofL\Classes\CECS 628\cannon\branches\service_creation\RC.Engine\RC.Engine.Test\obj\x86\Debug\RC.Engine.Test.pdb
 C:\Users\Chris\Documents\UofL\Classes\CECS 628\cannon\branches\service_creation\RC.Engine\RC.Engine.Test\bin\x86\Debug\Content\Fonts\DefaultFont.xnb
-C:\Users\Chris\Documents\UofL\Classes\CECS 628\cannon\branches\service_creation\RC.Engine\RC.Engine.Test\bin\x86\Debug\Content\M1A1_v04.xnb
-C:\Users\Chris\Documents\UofL\Classes\CECS 628\cannon\branches\service_creation\RC.Engine\RC.Engine.Test\bin\x86\Debug\Content\Arm_Gren%0.xnb
 C:\Users\TabletPC\Documents\Projects\changs-culinary-cannon\branches\service_creation\RC.Engine\RC.Engine.Test\bin\x86\Debug\Content\ShaderEffects\Texture.xnb
 C:\Users\TabletPC\Documents\Projects\changs-culinary-cannon\branches\service_creation\RC.Engine\RC.Engine.Test\bin\x86\Debug\Content\Models\enemy.xnb
 C:\Users\TabletPC\Documents\Projects\changs-culinary-cannon\branches\service_creation\RC.Engine\RC.Engine.Test\bin\x86\Debug\Content\Models\treasure_chest.xnb
@@ -122,3 +120,14 @@ C:\Users\TabletPC\Documents\Projects\changs-culinary-cannon\branches\service_cre
 C:\Users\TabletPC\Documents\Projects\changs-culinary-cannon\branches\service_creation\RC.Engine\RC.Engine.Test\bin\x86\Debug\Ninject.Conditions.xml
 C:\Users\TabletPC\Documents\Projects\changs-culinary-cannon\branches\service_creation\RC.Engine\RC.Engine.Test\bin\x86\Debug\Ninject.Core.pdb
 C:\Users\TabletPC\Documents\Projects\changs-culinary-cannon\branches\service_creation\RC.Engine\RC.Engine.Test\bin\x86\Debug\Ninject.Core.xml
+C:\Users\Chris\Documents\UofL\Classes\CECS 628\cannon\branches\service_creation\RC.Engine\RC.Engine.Test\bin\x86\Debug\RC.Physics.dll
+C:\Users\Chris\Documents\UofL\Classes\CECS 628\cannon\branches\service_creation\RC.Engine\RC.Engine.Test\bin\x86\Debug\Castle.DynamicProxy2.dll
+C:\Users\Chris\Documents\UofL\Classes\CECS 628\cannon\branches\service_creation\RC.Engine\RC.Engine.Test\bin\x86\Debug\Castle.Core.dll
+C:\Users\Chris\Documents\UofL\Classes\CECS 628\cannon\branches\service_creation\RC.Engine\RC.Engine.Test\bin\x86\Debug\Ninject.Integration.DynamicProxy2.dll
+C:\Users\Chris\Documents\UofL\Classes\CECS 628\cannon\branches\service_creation\RC.Engine\RC.Engine.Test\bin\x86\Debug\RC.Physics.pdb
+C:\Users\Chris\Documents\UofL\Classes\CECS 628\cannon\branches\service_creation\RC.Engine\RC.Engine.Test\bin\x86\Debug\Castle.DynamicProxy2.pdb
+C:\Users\Chris\Documents\UofL\Classes\CECS 628\cannon\branches\service_creation\RC.Engine\RC.Engine.Test\bin\x86\Debug\Castle.DynamicProxy2.xml
+C:\Users\Chris\Documents\UofL\Classes\CECS 628\cannon\branches\service_creation\RC.Engine\RC.Engine.Test\bin\x86\Debug\Castle.Core.pdb
+C:\Users\Chris\Documents\UofL\Classes\CECS 628\cannon\branches\service_creation\RC.Engine\RC.Engine.Test\bin\x86\Debug\Castle.Core.xml
+C:\Users\Chris\Documents\UofL\Classes\CECS 628\cannon\branches\service_creation\RC.Engine\RC.Engine.Test\bin\x86\Debug\Ninject.Integration.DynamicProxy2.pdb
+C:\Users\Chris\Documents\UofL\Classes\CECS 628\cannon\branches\service_creation\RC.Engine\RC.Engine.Test\bin\x86\Debug\Ninject.Integration.DynamicProxy2.xml

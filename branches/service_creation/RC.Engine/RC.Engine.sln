@@ -13,57 +13,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RC.Engine", "RC.Engine\RC.E
 		Release.AspNetCompiler.Debug = "False"
 	EndProjectSection
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Dependecies", "Dependecies", "{17669AC0-6280-4967-A3F6-759561AD2DCC}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RC.Physics", "RC.Physics\RC.Physics.csproj", "{4E77F49A-22A6-4275-A5F9-E929D9078DE9}"
 	ProjectSection(WebsiteProperties) = preProject
 		Debug.AspNetCompiler.Debug = "True"
 		Release.AspNetCompiler.Debug = "False"
-	EndProjectSection
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Ninject .NET 2.0  Debug", "Ninject .NET 2.0  Debug", "{525633A8-758A-4611-9BFF-09DA9B8802AE}"
-	ProjectSection(WebsiteProperties) = preProject
-		Debug.AspNetCompiler.Debug = "True"
-		Release.AspNetCompiler.Debug = "False"
-	EndProjectSection
-	ProjectSection(SolutionItems) = preProject
-		Ninject .NET 2.0  Debug\Ninject.Conditions.dll = Ninject .NET 2.0  Debug\Ninject.Conditions.dll
-		Ninject .NET 2.0  Debug\Ninject.Conditions.pdb = Ninject .NET 2.0  Debug\Ninject.Conditions.pdb
-		Ninject .NET 2.0  Debug\Ninject.Conditions.xml = Ninject .NET 2.0  Debug\Ninject.Conditions.xml
-		Ninject .NET 2.0  Debug\Ninject.Core.dll = Ninject .NET 2.0  Debug\Ninject.Core.dll
-		Ninject .NET 2.0  Debug\Ninject.Core.pdb = Ninject .NET 2.0  Debug\Ninject.Core.pdb
-		Ninject .NET 2.0  Debug\Ninject.Core.xml = Ninject .NET 2.0  Debug\Ninject.Core.xml
-		Ninject .NET 2.0  Debug\Ninject.Extensions.AutoWiring.dll = Ninject .NET 2.0  Debug\Ninject.Extensions.AutoWiring.dll
-		Ninject .NET 2.0  Debug\Ninject.Extensions.AutoWiring.pdb = Ninject .NET 2.0  Debug\Ninject.Extensions.AutoWiring.pdb
-		Ninject .NET 2.0  Debug\Ninject.Extensions.AutoWiring.xml = Ninject .NET 2.0  Debug\Ninject.Extensions.AutoWiring.xml
-		Ninject .NET 2.0  Debug\Ninject.Extensions.Cache.dll = Ninject .NET 2.0  Debug\Ninject.Extensions.Cache.dll
-		Ninject .NET 2.0  Debug\Ninject.Extensions.Cache.pdb = Ninject .NET 2.0  Debug\Ninject.Extensions.Cache.pdb
-		Ninject .NET 2.0  Debug\Ninject.Extensions.Cache.xml = Ninject .NET 2.0  Debug\Ninject.Extensions.Cache.xml
-		Ninject .NET 2.0  Debug\Ninject.Extensions.MessageBroker.dll = Ninject .NET 2.0  Debug\Ninject.Extensions.MessageBroker.dll
-		Ninject .NET 2.0  Debug\Ninject.Extensions.MessageBroker.pdb = Ninject .NET 2.0  Debug\Ninject.Extensions.MessageBroker.pdb
-		Ninject .NET 2.0  Debug\Ninject.Extensions.MessageBroker.xml = Ninject .NET 2.0  Debug\Ninject.Extensions.MessageBroker.xml
-		Ninject .NET 2.0  Debug\Ninject.Framework.Web.dll = Ninject .NET 2.0  Debug\Ninject.Framework.Web.dll
-		Ninject .NET 2.0  Debug\Ninject.Framework.Web.pdb = Ninject .NET 2.0  Debug\Ninject.Framework.Web.pdb
-		Ninject .NET 2.0  Debug\Ninject.Framework.Web.xml = Ninject .NET 2.0  Debug\Ninject.Framework.Web.xml
-		Ninject .NET 2.0  Debug\Ninject.Framework.WinForms.dll = Ninject .NET 2.0  Debug\Ninject.Framework.WinForms.dll
-		Ninject .NET 2.0  Debug\Ninject.Framework.WinForms.pdb = Ninject .NET 2.0  Debug\Ninject.Framework.WinForms.pdb
-		Ninject .NET 2.0  Debug\Ninject.Framework.WinForms.xml = Ninject .NET 2.0  Debug\Ninject.Framework.WinForms.xml
-		Ninject .NET 2.0  Debug\Ninject.Integration.AjaxPro.dll = Ninject .NET 2.0  Debug\Ninject.Integration.AjaxPro.dll
-		Ninject .NET 2.0  Debug\Ninject.Integration.AjaxPro.pdb = Ninject .NET 2.0  Debug\Ninject.Integration.AjaxPro.pdb
-		Ninject .NET 2.0  Debug\Ninject.Integration.AjaxPro.xml = Ninject .NET 2.0  Debug\Ninject.Integration.AjaxPro.xml
-		Ninject .NET 2.0  Debug\Ninject.Integration.DynamicProxy2.dll = Ninject .NET 2.0  Debug\Ninject.Integration.DynamicProxy2.dll
-		Ninject .NET 2.0  Debug\Ninject.Integration.DynamicProxy2.pdb = Ninject .NET 2.0  Debug\Ninject.Integration.DynamicProxy2.pdb
-		Ninject .NET 2.0  Debug\Ninject.Integration.DynamicProxy2.xml = Ninject .NET 2.0  Debug\Ninject.Integration.DynamicProxy2.xml
-		Ninject .NET 2.0  Debug\Ninject.Integration.LinFu.dll = Ninject .NET 2.0  Debug\Ninject.Integration.LinFu.dll
-		Ninject .NET 2.0  Debug\Ninject.Integration.LinFu.pdb = Ninject .NET 2.0  Debug\Ninject.Integration.LinFu.pdb
-		Ninject .NET 2.0  Debug\Ninject.Integration.LinFu.xml = Ninject .NET 2.0  Debug\Ninject.Integration.LinFu.xml
-		Ninject .NET 2.0  Debug\Ninject.Integration.Log4net.dll = Ninject .NET 2.0  Debug\Ninject.Integration.Log4net.dll
-		Ninject .NET 2.0  Debug\Ninject.Integration.Log4net.pdb = Ninject .NET 2.0  Debug\Ninject.Integration.Log4net.pdb
-		Ninject .NET 2.0  Debug\Ninject.Integration.Log4net.xml = Ninject .NET 2.0  Debug\Ninject.Integration.Log4net.xml
-		Ninject .NET 2.0  Debug\Ninject.Integration.MonoRail.dll = Ninject .NET 2.0  Debug\Ninject.Integration.MonoRail.dll
-		Ninject .NET 2.0  Debug\Ninject.Integration.MonoRail.pdb = Ninject .NET 2.0  Debug\Ninject.Integration.MonoRail.pdb
-		Ninject .NET 2.0  Debug\Ninject.Integration.MonoRail.xml = Ninject .NET 2.0  Debug\Ninject.Integration.MonoRail.xml
-		Ninject .NET 2.0  Debug\Ninject.Integration.NLog.dll = Ninject .NET 2.0  Debug\Ninject.Integration.NLog.dll
-		Ninject .NET 2.0  Debug\Ninject.Integration.NLog.pdb = Ninject .NET 2.0  Debug\Ninject.Integration.NLog.pdb
-		Ninject .NET 2.0  Debug\Ninject.Integration.NLog.xml = Ninject .NET 2.0  Debug\Ninject.Integration.NLog.xml
 	EndProjectSection
 EndProject
 Global
@@ -96,6 +49,16 @@ Global
 		{8618CBBD-9108-493E-A4FC-BE6D6EDE0771}.Release|Mixed Platforms.Build.0 = Release|x86
 		{8618CBBD-9108-493E-A4FC-BE6D6EDE0771}.Release|x86.ActiveCfg = Release|x86
 		{8618CBBD-9108-493E-A4FC-BE6D6EDE0771}.Release|x86.Build.0 = Release|x86
+		{4E77F49A-22A6-4275-A5F9-E929D9078DE9}.Debug|Any CPU.ActiveCfg = Debug|x86
+		{4E77F49A-22A6-4275-A5F9-E929D9078DE9}.Debug|Mixed Platforms.ActiveCfg = Debug|x86
+		{4E77F49A-22A6-4275-A5F9-E929D9078DE9}.Debug|Mixed Platforms.Build.0 = Debug|x86
+		{4E77F49A-22A6-4275-A5F9-E929D9078DE9}.Debug|x86.ActiveCfg = Debug|x86
+		{4E77F49A-22A6-4275-A5F9-E929D9078DE9}.Debug|x86.Build.0 = Debug|x86
+		{4E77F49A-22A6-4275-A5F9-E929D9078DE9}.Release|Any CPU.ActiveCfg = Release|x86
+		{4E77F49A-22A6-4275-A5F9-E929D9078DE9}.Release|Mixed Platforms.ActiveCfg = Release|x86
+		{4E77F49A-22A6-4275-A5F9-E929D9078DE9}.Release|Mixed Platforms.Build.0 = Release|x86
+		{4E77F49A-22A6-4275-A5F9-E929D9078DE9}.Release|x86.ActiveCfg = Release|x86
+		{4E77F49A-22A6-4275-A5F9-E929D9078DE9}.Release|x86.Build.0 = Release|x86
 		{1C02D323-1712-414B-B515-444B3A311149}.Debug|Any CPU.ActiveCfg = Debug|x86
 		{1C02D323-1712-414B-B515-444B3A311149}.Debug|Mixed Platforms.ActiveCfg = Debug|x86
 		{1C02D323-1712-414B-B515-444B3A311149}.Debug|x86.ActiveCfg = Debug|x86
@@ -108,12 +71,15 @@ Global
 		{77F6EF9A-E976-4D9B-A105-C68532A2C39E}.Release|Any CPU.ActiveCfg = Release|x86
 		{77F6EF9A-E976-4D9B-A105-C68532A2C39E}.Release|Mixed Platforms.ActiveCfg = Release|x86
 		{77F6EF9A-E976-4D9B-A105-C68532A2C39E}.Release|x86.ActiveCfg = Release|x86
+		{9EED4821-893E-4ABE-9390-BCB6365539C8}.Debug|Any CPU.ActiveCfg = Debug|x86
+		{9EED4821-893E-4ABE-9390-BCB6365539C8}.Debug|Mixed Platforms.ActiveCfg = Debug|x86
+		{9EED4821-893E-4ABE-9390-BCB6365539C8}.Debug|x86.ActiveCfg = Debug|x86
+		{9EED4821-893E-4ABE-9390-BCB6365539C8}.Release|Any CPU.ActiveCfg = Release|x86
+		{9EED4821-893E-4ABE-9390-BCB6365539C8}.Release|Mixed Platforms.ActiveCfg = Release|x86
+		{9EED4821-893E-4ABE-9390-BCB6365539C8}.Release|x86.ActiveCfg = Release|x86
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
-	EndGlobalSection
-	GlobalSection(NestedProjects) = preSolution
-		{525633A8-758A-4611-9BFF-09DA9B8802AE} = {17669AC0-6280-4967-A3F6-759561AD2DCC}
 	EndGlobalSection
 	GlobalSection(TestCaseManagementSettings) = postSolution
 		CategoryFile = Unity.vsmdi

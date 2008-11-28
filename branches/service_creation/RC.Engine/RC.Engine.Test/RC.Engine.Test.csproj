@@ -78,6 +78,10 @@
       <Project>{8618CBBD-9108-493E-A4FC-BE6D6EDE0771}</Project>
       <Name>RC.Engine</Name>
     </ProjectReference>
+    <ProjectReference Include="..\RC.Physics\RC.Physics.csproj">
+      <Project>{4E77F49A-22A6-4275-A5F9-E929D9078DE9}</Project>
+      <Name>RC.Physics</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <Import Project="$(MSBuildExtensionsPath)\Microsoft\XNA Game Studio\v2.0\Microsoft.Xna.GameStudio.Common.targets" />
