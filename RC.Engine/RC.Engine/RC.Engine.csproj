@@ -36,6 +36,10 @@
     <PlatformTarget>x86</PlatformTarget>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="CastleDynProxy2, Version=0.0.0.0, Culture=neutral, PublicKeyToken=a621a9e7e5c32e69, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\Castle-net-2.0-debug-2007-9-20\bin\CastleDynProxy2.dll</HintPath>
+    </Reference>
     <Reference Include="Microsoft.Xna.Framework, Version=2.0.0.0, Culture=neutral, PublicKeyToken=6d5c3888ef60e27d, processorArchitecture=x86">
       <Private>False</Private>
       <SpecificVersion>True</SpecificVersion>
@@ -55,6 +59,10 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\Ninject .NET 2.0  Debug\Ninject.Core.dll</HintPath>
     </Reference>
+    <Reference Include="Ninject.Integration.DynamicProxy2, Version=1.0.0.82, Culture=neutral, PublicKeyToken=c7192dc5380945e7, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\Ninject .NET 2.0  Debug\Ninject.Integration.DynamicProxy2.dll</HintPath>
+    </Reference>
     <Reference Include="System">
       <Private>False</Private>
     </Reference>
@@ -65,7 +73,9 @@
     <Compile Include="Animation\Controller.cs" />
     <Compile Include="Animation\DurationController.cs" />
     <Compile Include="Animation\KeyFrameController.cs" />
+    <Compile Include="Base\Base.cs" />
     <Compile Include="BasicGame.cs" />
+    <Compile Include="Base\XnaGame.cs" />
     <Compile Include="Cameras\Camera.cs" />
     <Compile Include="Cameras\CameraManager.cs" />
     <Compile Include="Cameras\OrthographicCamera.cs" />
@@ -73,7 +83,10 @@
     <Compile Include="ContentManagement\Content.cs" />
     <Compile Include="ContentManagement\ContentManager.cs" />
     <Compile Include="ContentManagement\DeviceResource.cs" />
-    <Compile Include="GameStarter.cs" />
+    <Compile Include="DefaultGameManagerFactory.cs" />
+    <Compile Include="Base\GameContext.cs" />
+    <Compile Include="Base\GameManager.cs" />
+    <Compile Include="GameManagerFactory.cs" />
     <Compile Include="GraphicsManagement\BoundingVolumes\BoundingBox.cs" />
     <Compile Include="GraphicsManagement\BoundingVolumes\BoundingRect.cs" />
     <Compile Include="GraphicsManagement\BoundingVolumes\BoundingSphere.cs" />
@@ -82,7 +95,14 @@
     <Compile Include="GraphicsManagement\Node.cs" />
     <Compile Include="GraphicsManagement\SceneInterfaces.cs" />
     <Compile Include="GraphicsManagement\Spatial.cs" />
-    <Compile Include="Game.cs" />
+    <Compile Include="Ninject\NinjectUpdatePlugin.cs" />
+    <Compile Include="Plugin\IModule.cs" />
+    <Compile Include="Ninject\NinjectGame.cs" />
+    <Compile Include="Ninject\NinjectGameContext.cs" />
+    <Compile Include="Ninject\NinjectGameManager.cs" />
+    <Compile Include="Ninject\NinjectUpdatePluginAttribute.cs" />
+    <Compile Include="Ninject\NinjectUpdatePluginInterceptor.cs" />
+    <Compile Include="Plugin\PluginManager.cs" />
     <Compile Include="Rendering\AlphaState.cs" />
     <Compile Include="Rendering\Atributes.cs" />
     <Compile Include="Rendering\DepthBufferState.cs" />

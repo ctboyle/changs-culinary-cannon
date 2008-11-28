@@ -6,10 +6,9 @@ using Microsoft.Xna.Framework.Content;
 using RC.Engine.StateManagement;
 using RC.Engine.Rendering;
 using RC.Engine.Cameras;
-using Ninject.Core;
-using Ninject.Core.Binding.Syntax;
 using Microsoft.Xna.Framework.Graphics;
 using RC.Engine.ContentManagement;
+using RC.Engine.Base;
 
 namespace RC.Engine
 {
@@ -19,12 +18,12 @@ namespace RC.Engine
     /// initialization to be performed.  The initialization includes
     /// setting up the states with state manager, etc. 
     /// </summary>
-    [Singleton]
-    public class RCBasicGame
+    public class RCBasicGame : RCBase
     {
-        private IRCCameraManager _cameraMgr = null;
-        private IRCGameStateManager _stateMgr = null;
-        private IRCContentRequester _content = null;
+        public RCBasicGame(RCGameContext gameCtx)
+            : base(gameCtx)
+        {
+        }
 
         /// <summary>
         /// I am used to initialize anything that needs to be initialized.
@@ -39,27 +38,6 @@ namespace RC.Engine
         /// </summary>
         public virtual void BeginRun()
         {
-        }
-
-        [Inject]
-        public IRCContentRequester ContentRqst
-        {
-            get { return _content; }
-            set { _content = value; }
-        }
-
-        [Inject]
-        public IRCGameStateManager StateMgr
-        {
-            get { return _stateMgr; }
-            set { _stateMgr = value; }
-        }
-
-        [Inject]
-        public IRCCameraManager CameraMgr
-        {
-            get { return _cameraMgr; }
-            set { _cameraMgr = value; }
         }
     }
 }

@@ -1,0 +1,26 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 9.00
+# Visual C# Express 2005
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VertexProcessor", "VertexProcessor\VertexProcessor.csproj", "{3D3C9BCE-5C0B-4AB3-9732-0DBE43C8656E}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|x86 = Debug|x86
+		Debug|Xbox 360 = Debug|Xbox 360
+		Release|x86 = Release|x86
+		Release|Xbox 360 = Release|Xbox 360
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{3D3C9BCE-5C0B-4AB3-9732-0DBE43C8656E}.Debug|x86.ActiveCfg = Debug|x86
+		{3D3C9BCE-5C0B-4AB3-9732-0DBE43C8656E}.Debug|x86.Build.0 = Debug|x86
+		{3D3C9BCE-5C0B-4AB3-9732-0DBE43C8656E}.Debug|Xbox 360.ActiveCfg = Debug|Xbox 360
+		{3D3C9BCE-5C0B-4AB3-9732-0DBE43C8656E}.Debug|Xbox 360.Build.0 = Debug|Xbox 360
+		{3D3C9BCE-5C0B-4AB3-9732-0DBE43C8656E}.Release|x86.ActiveCfg = Release|x86
+		{3D3C9BCE-5C0B-4AB3-9732-0DBE43C8656E}.Release|x86.Build.0 = Release|x86
+		{3D3C9BCE-5C0B-4AB3-9732-0DBE43C8656E}.Release|Xbox 360.ActiveCfg = Release|Xbox 360
+		{3D3C9BCE-5C0B-4AB3-9732-0DBE43C8656E}.Release|Xbox 360.Build.0 = Release|Xbox 360
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

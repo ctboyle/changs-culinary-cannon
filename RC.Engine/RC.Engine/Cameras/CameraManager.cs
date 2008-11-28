@@ -1,12 +1,9 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
-
 using RC.Engine.Rendering;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-
-using Ninject.Core;
 
 namespace RC.Engine.Cameras
 {
@@ -48,7 +45,6 @@ namespace RC.Engine.Cameras
         RCCamera this[string cameraLabel] { get; set ; }
     }
 
-    [Singleton]
     internal class RCCameraManager : IRCCameraManager
     {
         #region RCCameraDictionary

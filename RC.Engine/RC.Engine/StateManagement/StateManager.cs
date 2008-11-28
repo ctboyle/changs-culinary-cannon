@@ -4,9 +4,8 @@ using System.Text;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using RC.Engine.Rendering;
-using Ninject.Core;
 using RC.Engine.ContentManagement;
-using Ninject.Core.Parameters;
+using RC.Engine.Base;
 
 namespace RC.Engine.StateManagement
 {
@@ -44,32 +43,34 @@ namespace RC.Engine.StateManagement
     /// but instead by a String name, I control the pool of states are 
     /// used with the stack.
     /// </summary>
-    public interface IRCGameStateManager : IRCGameStateStack, IGameComponent
+    public interface IRCGameStateManager : IGameComponent
     {
         void AddState(string label, Type stateType);
         void RemoveState(string label);
     }
 
-    [Singleton]
-    internal class RCGameStateManager : DrawableGameComponent, IRCGameStateManager
+    internal class RCGameStateManager : DrawableGameComponent, IRCGameStateManager, IRCGameStateStack
     {
         public delegate void StateChangeFunc(RCGameState previousState, RCGameState newState);
 
         private Dictionary<string, RCGameState> _states = new Dictionary<string, RCGameState>();
         private List<RCGameState> _stateStack = new List<RCGameState>();
+        private RCGameManager _gameMgr = null;
 
         public event StateChangeFunc StateChanged;
 
-        public RCGameStateManager(RCGame game)
+        public RCGameStateManager(Game game, RCGameManager gameMgr)
             : base(game)
         {
+            _gameMgr = gameMgr;
+
             this.DrawOrder = 1;
             this.UpdateOrder = 1;
         }
 
         public void AddState(string label, Type stateType)
         {
-            RCGameState state = RCGameStarter.BindTagObject<RCGameState>(label, stateType);
+            RCGameState state = _gameMgr.RegisterBaseType<RCGameState>(label, stateType);
             _states.Add(label, state);
             state.Initialize();
         }
@@ -149,7 +150,7 @@ namespace RC.Engine.StateManagement
 
             base.Update(gameTime);
         }
-        
+
         protected override void UnloadContent()
         {
             _states.Clear();

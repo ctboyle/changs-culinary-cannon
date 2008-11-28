@@ -4,7 +4,7 @@ using System.Text;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
-using Ninject.Core;
+using RC.Engine.Base;
 
 namespace RC.Engine.ContentManagement
 {
@@ -55,7 +55,6 @@ namespace RC.Engine.ContentManagement
     /// of content to be loaded.  If exception occur when all content may need to 
     /// reload and unload, the content manager will take responsibility.
     /// </summary>
-    [Singleton]
     internal class RCContentManager : DrawableGameComponent, IRCContentManager, IDisposable
     {
         private class ContentStore
@@ -79,28 +78,20 @@ namespace RC.Engine.ContentManagement
         /// </summary>
         private ContentManager _contentMgr = null;
 
-        public RCContentManager(RCGame game)
+        public RCContentManager(
+            Game game, 
+            ContentManager contentMgr, 
+            IGraphicsDeviceService graphics
+        )
             : base(game)
         {
+            _contentMgr = contentMgr;
+            _graphics = graphics;
         }
 
         ~RCContentManager()
         {
             Dispose();
-        }
-
-        [Inject]
-        public ContentManager ContentMgr
-        {
-            get { return _contentMgr; }
-            set { _contentMgr = value; }
-        }
-
-        [Inject]
-        public IGraphicsDeviceService Graphics
-        {
-            get { return _graphics; }
-            set { _graphics = value; }
         }
 
         public void RequestContent<T>(
@@ -131,7 +122,7 @@ namespace RC.Engine.ContentManagement
             // null, then we must try to load it
             if (content == null)
             {
-                content = (T)_content[id].TypeCreator.CreateType(Graphics, ContentMgr);
+                content = (T)_content[id].TypeCreator.CreateType(_graphics, _contentMgr);
                 _content[id].Content = content;
             }
 

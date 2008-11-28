@@ -11,10 +11,11 @@ using Microsoft.Xna.Framework.Input;
 using RC.Engine.SceneEffects;
 using RC.Engine.ContentManagement;
 using RC.Engine.StateManagement;
+using RC.Engine.Base;
 
 namespace RC.Engine.Test
 {
-    class TestState : RC.Engine.StateManagement.RCGameState
+    class TestState : RCGameState
     {
         private RCSpatial _sceneRoot = null;
         private TimeSpan _lastFrameReportTime = TimeSpan.Zero;
@@ -23,28 +24,33 @@ namespace RC.Engine.Test
         private RCSpriteBatch _spriteBatch = null;
         private RCContent<SpriteFont> _spriteFont = null;
 
+        public TestState(RCGameContext gameCtx)
+            : base(gameCtx)
+        {
+        }
+
         public override void Initialize()
         {
             /////////////////////////////////////////////////////////////////////
             // Setup the graphics device
             /////////////////////////////////////////////////////////////////////
-            Graphics.GraphicsDevice.RenderState.CullMode = CullMode.None;
+            Ctx.Graphics.GraphicsDevice.RenderState.CullMode = CullMode.None;
 
             /////////////////////////////////////////////////////////////////////
             // Setup the SpriteBatch content for displaying the FPS text
             /////////////////////////////////////////////////////////////////////
-            _spriteBatch = new RCSpriteBatch(Graphics);
+            _spriteBatch = new RCSpriteBatch(Ctx.Graphics);
             _spriteBatch.Enabled = true;
-            _spriteFont = new RCDefaultContent<SpriteFont>(ContentRqst, "Content\\Fonts\\DefaultFont");
+            _spriteFont = new RCDefaultContent<SpriteFont>(Ctx.ContentRqst, "Content\\Fonts\\DefaultFont");
 
             /////////////////////////////////////////////////////////////////////
             // Create and setup the camera
             /////////////////////////////////////////////////////////////////////
-            RCCamera camera = new RCPerspectiveCamera(Graphics.GraphicsDevice.Viewport);
+            RCCamera camera = new RCPerspectiveCamera(Ctx.Graphics.GraphicsDevice.Viewport);
             Matrix cameraLookAt = Matrix.CreateLookAt(new Vector3(0.0f, 0.0f, 3.0f), Vector3.Zero, Vector3.Up);
             camera.LocalTrans = Matrix.Invert(cameraLookAt);
             camera.Near = 0.05f;
-            CameraMgr.AddCamera("Test", camera);
+            Ctx.CameraMgr.AddCamera("Test", camera);
 
             /////////////////////////////////////////////////////////////////////
             // Add a controller for the camera
@@ -67,7 +73,7 @@ namespace RC.Engine.Test
             /////////////////////////////////////////////////////////////////////
             // Create the model
             /////////////////////////////////////////////////////////////////////
-            RCGeometry model = MeshCreator.CreateObject(Graphics, ContentRqst);
+            RCGeometry model = MeshCreator.CreateObject(Ctx.Graphics, Ctx.ContentRqst);
 
             /////////////////////////////////////////////////////////////////////
             // Setup the light node as the root and setup its children
@@ -93,8 +99,8 @@ namespace RC.Engine.Test
                 _lastFrameReportTime = TimeSpan.Zero;
             }
 
-            CameraMgr.SetActiveCamera("Test");
-            RenderMgr.DrawScene(_sceneRoot);
+            Ctx.CameraMgr.SetActiveCamera("Test");
+            Ctx.RenderMgr.DrawScene(_sceneRoot);
 
             // Draw the scene statistics
             string message = string.Format("FPS: {0}\n", _framesPerSecond);
@@ -117,7 +123,7 @@ namespace RC.Engine.Test
         {
             if (Keyboard.GetState().IsKeyDown(Keys.E))
             {
-                StateStack.PopState();
+                Ctx.StateStack.PopState();
             }
         }
     }

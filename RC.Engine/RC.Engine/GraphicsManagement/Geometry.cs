@@ -7,7 +7,6 @@ using RC.Engine.SceneEffects;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Content;
 using RC.Engine.ContentManagement;
-using Ninject.Core;
 
 namespace RC.Engine.GraphicsManagement
 {

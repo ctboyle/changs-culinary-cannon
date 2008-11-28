@@ -6,8 +6,6 @@ using Microsoft.Xna.Framework.Graphics;
 using RC.Engine.Cameras;
 using RC.Engine.GraphicsManagement;
 
-using Ninject.Core;
-
 namespace RC.Engine.Rendering
 {
     public delegate void RenderFunc(IRCRenderManager render);
@@ -73,7 +71,6 @@ namespace RC.Engine.Rendering
     /// <summary>
     /// Central functionality for Rendering the Scene.
     /// </summary>
-    [Singleton]
     internal class RCRenderManager : IRCRenderManager
     {
         private IGraphicsDeviceService _graphics = null;
@@ -83,6 +80,15 @@ namespace RC.Engine.Rendering
         private RCRenderStateCollection _renderStates = 
             new RCRenderStateCollection(true);
 
+        public RCRenderManager(
+            IRCCameraManager cameraMgr, 
+            IGraphicsDeviceService graphics
+        )
+        {
+            _cameraMgr = cameraMgr;
+            _graphics = graphics;
+        }
+
         public Matrix World
         {
             get { return _world; }
@@ -90,12 +96,12 @@ namespace RC.Engine.Rendering
 
         public Matrix View
         {
-            get { return CameraMgr.ActiveCamera.View; }
+            get { return _cameraMgr.ActiveCamera.View; }
         }
 
         public Matrix Projection
         {
-            get { return CameraMgr.ActiveCamera.Projection; }
+            get { return _cameraMgr.ActiveCamera.Projection; }
         }
 
         public void SetRenderState(RCRenderStateCollection renderStates)
@@ -122,7 +128,7 @@ namespace RC.Engine.Rendering
                 _renderStates[renderState.GetStateType()] = renderState;
 
                 // Enable the state
-                renderState.ConfigureDevice(Graphics.GraphicsDevice);
+                renderState.ConfigureDevice(_graphics.GraphicsDevice);
             }
         }
 
@@ -138,7 +144,7 @@ namespace RC.Engine.Rendering
         /// </summary>
         public void DrawScene(RCSpatial sceneRoot)
         {
-            if (CameraMgr.ActiveCamera == null)
+            if (_cameraMgr.ActiveCamera == null)
             {
                 throw new InvalidOperationException("Active camera must be set before drawing scene");
             }
@@ -146,7 +152,7 @@ namespace RC.Engine.Rendering
             UpdateSceneCameraParameters();
             
             // Clear screen using current clear color.
-            if (CameraMgr.ActiveCamera.ClearScreen)
+            if (_cameraMgr.ActiveCamera.ClearScreen)
             {
                 ClearScreen();
             }
@@ -156,9 +162,9 @@ namespace RC.Engine.Rendering
 
         public void ClearScreen()
         {
-            Graphics.GraphicsDevice.Clear(
-                CameraMgr.ActiveCamera.ClearOptions,
-                CameraMgr.ActiveCamera.ClearColor,
+            _graphics.GraphicsDevice.Clear(
+                _cameraMgr.ActiveCamera.ClearOptions,
+                _cameraMgr.ActiveCamera.ClearColor,
                 1.0f,
                 0
                 );
@@ -182,25 +188,10 @@ namespace RC.Engine.Rendering
             }
         }
 
-
-        [Inject]
-        public IRCCameraManager CameraMgr
-        {
-            get { return _cameraMgr; }
-            set { _cameraMgr = value; }
-        }
-
-        [Inject]
-        public IGraphicsDeviceService Graphics
-        {
-            get { return _graphics; }
-            set { _graphics = value; }
-        }
-
         protected bool UpdateSceneCameraParameters()
         {
             // Ensure that the correct viewport is drawn to.
-            Graphics.GraphicsDevice.Viewport = CameraMgr.ActiveCamera.Viewport;
+            _graphics.GraphicsDevice.Viewport = _cameraMgr.ActiveCamera.Viewport;
             return true;
         }
 
@@ -235,18 +226,18 @@ namespace RC.Engine.Rendering
             RCVertexBuffer VBuffer = _geometry.VBuffer;
             RCIndexBuffer IBuffer = _geometry.IBuffer;
 
-            Graphics.GraphicsDevice.VertexDeclaration = VBuffer.VertexDeclaration;
+            _graphics.GraphicsDevice.VertexDeclaration = VBuffer.VertexDeclaration;
 
-            Graphics.GraphicsDevice.Vertices[0].SetSource(
+            _graphics.GraphicsDevice.Vertices[0].SetSource(
                 VBuffer.VertexBuffer,
                 0,
                 VBuffer.VertexSize
                 );
 
-            Graphics.GraphicsDevice.Indices = IBuffer.IndexBuffer;
+            _graphics.GraphicsDevice.Indices = IBuffer.IndexBuffer;
             
             // Finally draw the actual triangles on the screen
-            Graphics.GraphicsDevice.DrawIndexedPrimitives(
+            _graphics.GraphicsDevice.DrawIndexedPrimitives(
                 PrimitiveType.TriangleList,
                 0, 0,
                 VBuffer.NumVertices,

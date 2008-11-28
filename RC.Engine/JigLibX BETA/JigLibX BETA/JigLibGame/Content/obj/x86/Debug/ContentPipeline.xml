@@ -1,0 +1,287 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<XnaContent xmlns:Pipeline="Microsoft.Xna.Framework.Content.Pipeline" xmlns:Graphics="Microsoft.Xna.Framework.Graphics" xmlns:Processors="Microsoft.Xna.Framework.Content.Pipeline.Processors">
+  <Asset Type="Pipeline:BuildItemCollection">
+    <Item>
+      <Source>box.x</Source>
+      <Name>box</Name>
+      <Importer>XImporter</Importer>
+      <Processor>ModelProcessor</Processor>
+      <Options>None</Options>
+      <Output>C:\Users\Chris\Documents\UofL\Classes\CECS 628\cannon\branches\service_creation\RC.Engine\JigLibX BETA\JigLibX BETA\JigLibGame\bin\x86\Debug\Content\box.xnb</Output>
+      <Time>2008-04-30T15:00:30-04:00</Time>
+      <Dependency>
+        <Key>obj\x86\Debug\box%0.xml</Key>
+        <Value>2008-11-26T00:35:27.265-05:00</Value>
+      </Dependency>
+    </Item>
+    <Item>
+      <Source>capsule.x</Source>
+      <Name>capsule</Name>
+      <Importer>XImporter</Importer>
+      <Processor>ModelProcessor</Processor>
+      <Options>None</Options>
+      <Output>C:\Users\Chris\Documents\UofL\Classes\CECS 628\cannon\branches\service_creation\RC.Engine\JigLibX BETA\JigLibX BETA\JigLibGame\bin\x86\Debug\Content\capsule.xnb</Output>
+      <Time>2008-04-30T15:00:30-04:00</Time>
+      <Dependency>
+        <Key>obj\x86\Debug\capsule%0.xml</Key>
+        <Value>2008-11-26T00:35:27.753-05:00</Value>
+      </Dependency>
+    </Item>
+    <Item>
+      <Source>sphere.x</Source>
+      <Name>sphere</Name>
+      <Importer>XImporter</Importer>
+      <Processor>ModelProcessor</Processor>
+      <Options>None</Options>
+      <Output>C:\Users\Chris\Documents\UofL\Classes\CECS 628\cannon\branches\service_creation\RC.Engine\JigLibX BETA\JigLibX BETA\JigLibGame\bin\x86\Debug\Content\sphere.xnb</Output>
+      <Time>2008-04-30T15:01:46-04:00</Time>
+      <Dependency>
+        <Key>obj\x86\Debug\sphere%0.xml</Key>
+        <Value>2008-11-26T00:35:28.116-05:00</Value>
+      </Dependency>
+    </Item>
+    <Item>
+      <Source>StaticMesh.x</Source>
+      <Name>StaticMesh</Name>
+      <Importer>XImporter</Importer>
+      <Processor>VertexProcessor</Processor>
+      <Options>None</Options>
+      <Output>C:\Users\Chris\Documents\UofL\Classes\CECS 628\cannon\branches\service_creation\RC.Engine\JigLibX BETA\JigLibX BETA\JigLibGame\bin\x86\Debug\Content\StaticMesh.xnb</Output>
+      <Time>2008-04-30T15:01:48-04:00</Time>
+      <Dependency>
+        <Key>obj\x86\Debug\StaticMesh%0.xml</Key>
+        <Value>2008-11-26T00:35:28.592-05:00</Value>
+      </Dependency>
+    </Item>
+    <Item>
+      <Source>plane.x</Source>
+      <Name>plane</Name>
+      <Importer>XImporter</Importer>
+      <Processor>ModelProcessor</Processor>
+      <Options>None</Options>
+      <Output>C:\Users\Chris\Documents\UofL\Classes\CECS 628\cannon\branches\service_creation\RC.Engine\JigLibX BETA\JigLibX BETA\JigLibGame\bin\x86\Debug\Content\plane.xnb</Output>
+      <Time>2008-04-30T15:01:46-04:00</Time>
+      <Dependency>
+        <Key>obj\x86\Debug\plane%0.xml</Key>
+        <Value>2008-11-26T00:35:28.902-05:00</Value>
+      </Dependency>
+    </Item>
+    <Item>
+      <Source>combined.x</Source>
+      <Name>combined</Name>
+      <Importer>XImporter</Importer>
+      <Processor>ModelProcessor</Processor>
+      <Options>None</Options>
+      <Output>C:\Users\Chris\Documents\UofL\Classes\CECS 628\cannon\branches\service_creation\RC.Engine\JigLibX BETA\JigLibX BETA\JigLibGame\bin\x86\Debug\Content\combined.xnb</Output>
+      <Time>2008-04-30T15:01:40-04:00</Time>
+      <Dependency>
+        <Key>obj\x86\Debug\combined%0.xml</Key>
+        <Value>2008-11-26T00:35:29.165-05:00</Value>
+      </Dependency>
+    </Item>
+    <Item>
+      <Source>pin.x</Source>
+      <Name>pin</Name>
+      <Importer>XImporter</Importer>
+      <Processor>ModelProcessor</Processor>
+      <Parameters>
+        <Data Key="RotationX">90</Data>
+      </Parameters>
+      <Options>None</Options>
+      <Output>C:\Users\Chris\Documents\UofL\Classes\CECS 628\cannon\branches\service_creation\RC.Engine\JigLibX BETA\JigLibX BETA\JigLibGame\bin\x86\Debug\Content\pin.xnb</Output>
+      <Time>2008-04-30T15:01:44-04:00</Time>
+      <Dependency>
+        <Key>obj\x86\Debug\pin%0.xml</Key>
+        <Value>2008-11-26T00:35:29.72-05:00</Value>
+      </Dependency>
+    </Item>
+    <Item>
+      <Source>car.fbx</Source>
+      <Name>car</Name>
+      <Importer>FbxImporter</Importer>
+      <Processor>ModelProcessor</Processor>
+      <Options>None</Options>
+      <Output>C:\Users\Chris\Documents\UofL\Classes\CECS 628\cannon\branches\service_creation\RC.Engine\JigLibX BETA\JigLibX BETA\JigLibGame\bin\x86\Debug\Content\car.xnb</Output>
+      <Time>2008-04-30T15:00:36-04:00</Time>
+      <Dependency>
+        <Key>obj\x86\Debug\car%0.xml</Key>
+        <Value>2008-11-26T00:35:30.798-05:00</Value>
+      </Dependency>
+      <Request>C:\Users\Chris\Documents\UofL\Classes\CECS 628\cannon\branches\service_creation\RC.Engine\JigLibX BETA\JigLibX BETA\JigLibGame\bin\x86\Debug\Content\Car%0.xnb</Request>
+    </Item>
+    <Item>
+      <Source>wheel.fbx</Source>
+      <Name>wheel</Name>
+      <Importer>FbxImporter</Importer>
+      <Processor>ModelProcessor</Processor>
+      <Options>None</Options>
+      <Output>C:\Users\Chris\Documents\UofL\Classes\CECS 628\cannon\branches\service_creation\RC.Engine\JigLibX BETA\JigLibX BETA\JigLibGame\bin\x86\Debug\Content\wheel.xnb</Output>
+      <Time>2008-04-30T15:01:52-04:00</Time>
+      <Dependency>
+        <Key>obj\x86\Debug\wheel%0.xml</Key>
+        <Value>2008-11-26T00:35:34.962-05:00</Value>
+      </Dependency>
+      <Request>C:\Users\Chris\Documents\UofL\Classes\CECS 628\cannon\branches\service_creation\RC.Engine\JigLibX BETA\JigLibX BETA\JigLibGame\bin\x86\Debug\Content\Car%0.xnb</Request>
+    </Item>
+    <Item>
+      <Source>Font.spritefont</Source>
+      <Name>Font</Name>
+      <Importer>FontDescriptionImporter</Importer>
+      <Processor>FontDescriptionProcessor</Processor>
+      <Options>None</Options>
+      <Output>C:\Users\Chris\Documents\UofL\Classes\CECS 628\cannon\branches\service_creation\RC.Engine\JigLibX BETA\JigLibX BETA\JigLibGame\bin\x86\Debug\Content\Font.xnb</Output>
+      <Time>2008-04-30T15:01:42-04:00</Time>
+    </Item>
+    <Item>
+      <Source>Checker.bmp</Source>
+      <Name>Checker</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+      <Options>None</Options>
+      <Output>C:\Users\Chris\Documents\UofL\Classes\CECS 628\cannon\branches\service_creation\RC.Engine\JigLibX BETA\JigLibX BETA\JigLibGame\bin\x86\Debug\Content\Checker.xnb</Output>
+      <Time>2008-04-30T15:01:40-04:00</Time>
+    </Item>
+    <Item>
+      <Source>terrain.bmp</Source>
+      <Name>terrain</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TerrainProcessor</Processor>
+      <Options>None</Options>
+      <Output>C:\Users\Chris\Documents\UofL\Classes\CECS 628\cannon\branches\service_creation\RC.Engine\JigLibX BETA\JigLibX BETA\JigLibGame\bin\x86\Debug\Content\terrain.xnb</Output>
+      <Time>2008-04-30T15:01:50-04:00</Time>
+      <Request>C:\Users\Chris\Documents\UofL\Classes\CECS 628\cannon\branches\service_creation\RC.Engine\JigLibX BETA\JigLibX BETA\JigLibGame\bin\x86\Debug\Content\Checker%0.xnb</Request>
+    </Item>
+    <Item>
+      <Source>box.x</Source>
+      <Importer>XImporter</Importer>
+      <Options>IntermediateFile, DontCacheImportedData</Options>
+      <Output>obj\x86\Debug\box%0.xml</Output>
+      <Time>2008-04-30T15:00:30-04:00</Time>
+    </Item>
+    <Item>
+      <Source>capsule.x</Source>
+      <Importer>XImporter</Importer>
+      <Options>IntermediateFile, DontCacheImportedData</Options>
+      <Output>obj\x86\Debug\capsule%0.xml</Output>
+      <Time>2008-04-30T15:00:30-04:00</Time>
+    </Item>
+    <Item>
+      <Source>sphere.x</Source>
+      <Importer>XImporter</Importer>
+      <Options>IntermediateFile, DontCacheImportedData</Options>
+      <Output>obj\x86\Debug\sphere%0.xml</Output>
+      <Time>2008-04-30T15:01:46-04:00</Time>
+    </Item>
+    <Item>
+      <Source>StaticMesh.x</Source>
+      <Importer>XImporter</Importer>
+      <Options>IntermediateFile, DontCacheImportedData</Options>
+      <Output>obj\x86\Debug\StaticMesh%0.xml</Output>
+      <Time>2008-04-30T15:01:48-04:00</Time>
+    </Item>
+    <Item>
+      <Source>plane.x</Source>
+      <Importer>XImporter</Importer>
+      <Options>IntermediateFile, DontCacheImportedData</Options>
+      <Output>obj\x86\Debug\plane%0.xml</Output>
+      <Time>2008-04-30T15:01:46-04:00</Time>
+    </Item>
+    <Item>
+      <Source>combined.x</Source>
+      <Importer>XImporter</Importer>
+      <Options>IntermediateFile, DontCacheImportedData</Options>
+      <Output>obj\x86\Debug\combined%0.xml</Output>
+      <Time>2008-04-30T15:01:40-04:00</Time>
+    </Item>
+    <Item>
+      <Source>pin.x</Source>
+      <Importer>XImporter</Importer>
+      <Options>IntermediateFile, DontCacheImportedData</Options>
+      <Output>obj\x86\Debug\pin%0.xml</Output>
+      <Time>2008-04-30T15:01:44-04:00</Time>
+    </Item>
+    <Item>
+      <Source>car.fbx</Source>
+      <Importer>FbxImporter</Importer>
+      <Options>IntermediateFile, DontCacheImportedData</Options>
+      <Output>obj\x86\Debug\car%0.xml</Output>
+      <Time>2008-04-30T15:00:36-04:00</Time>
+    </Item>
+    <Item>
+      <Source>Car.tga</Source>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+      <Parameters>
+        <Data Key="ColorKeyColor" Type="Graphics:Color">FFFF00FF</Data>
+        <Data Key="ColorKeyEnabled" Type="bool">true</Data>
+        <Data Key="TextureFormat" Type="Processors:TextureProcessorOutputFormat">DxtCompressed</Data>
+        <Data Key="GenerateMipmaps" Type="bool">true</Data>
+        <Data Key="ResizeToPowerOfTwo" Type="bool">false</Data>
+      </Parameters>
+      <Options>None</Options>
+      <Output>C:\Users\Chris\Documents\UofL\Classes\CECS 628\cannon\branches\service_creation\RC.Engine\JigLibX BETA\JigLibX BETA\JigLibGame\bin\x86\Debug\Content\Car%0.xnb</Output>
+      <Time>2008-04-30T15:01:40-04:00</Time>
+    </Item>
+    <Item>
+      <Source>wheel.fbx</Source>
+      <Importer>FbxImporter</Importer>
+      <Options>IntermediateFile, DontCacheImportedData</Options>
+      <Output>obj\x86\Debug\wheel%0.xml</Output>
+      <Time>2008-04-30T15:01:52-04:00</Time>
+    </Item>
+    <Item>
+      <Source>Checker.bmp</Source>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+      <Parameters>
+        <Data Key="ColorKeyColor" Type="Graphics:Color">FFFF00FF</Data>
+        <Data Key="ColorKeyEnabled" Type="bool">true</Data>
+        <Data Key="TextureFormat" Type="Processors:TextureProcessorOutputFormat">DxtCompressed</Data>
+        <Data Key="GenerateMipmaps" Type="bool">true</Data>
+        <Data Key="ResizeToPowerOfTwo" Type="bool">false</Data>
+      </Parameters>
+      <Options>None</Options>
+      <Output>C:\Users\Chris\Documents\UofL\Classes\CECS 628\cannon\branches\service_creation\RC.Engine\JigLibX BETA\JigLibX BETA\JigLibGame\bin\x86\Debug\Content\Checker%0.xnb</Output>
+      <Time>2008-04-30T15:01:40-04:00</Time>
+    </Item>
+    <BuildSuccessful>true</BuildSuccessful>
+    <Settings>
+      <TargetPlatform>Windows</TargetPlatform>
+      <BuildConfiguration>Debug</BuildConfiguration>
+      <RootDirectory>C:\Users\Chris\Documents\UofL\Classes\CECS 628\cannon\branches\service_creation\RC.Engine\JigLibX BETA\JigLibX BETA\JigLibGame\Content\</RootDirectory>
+      <LoggerRootDirectory>C:\Users\Chris\Documents\UofL\Classes\CECS 628\cannon\branches\service_creation\RC.Engine\JigLibX BETA\JigLibX BETA\JigLibGame\</LoggerRootDirectory>
+      <IntermediateDirectory>C:\Users\Chris\Documents\UofL\Classes\CECS 628\cannon\branches\service_creation\RC.Engine\JigLibX BETA\JigLibX BETA\JigLibGame\Content\obj\x86\Debug\</IntermediateDirectory>
+      <OutputDirectory>C:\Users\Chris\Documents\UofL\Classes\CECS 628\cannon\branches\service_creation\RC.Engine\JigLibX BETA\JigLibX BETA\JigLibGame\bin\x86\Debug\Content\</OutputDirectory>
+    </Settings>
+    <Assemblies>
+      <Assembly>
+        <Key>C:\Users\Chris\Documents\UofL\Classes\CECS 628\cannon\branches\service_creation\RC.Engine\JigLibX BETA\JigLibX BETA\VertexProcessor\VertexProcessor\bin\x86\Debug\VertexProcessor.dll</Key>
+        <Value>2008-04-30T15:39:00-04:00</Value>
+      </Assembly>
+      <Assembly>
+        <Key>c:\Program Files\Microsoft XNA\XNA Game Studio\v2.0\References\Windows\x86\Microsoft.Xna.Framework.Content.Pipeline.XImporter.dll</Key>
+        <Value>2007-11-28T12:08:00-05:00</Value>
+      </Assembly>
+      <Assembly>
+        <Key>c:\Program Files\Microsoft XNA\XNA Game Studio\v2.0\References\Windows\x86\Microsoft.Xna.Framework.Content.Pipeline.TextureImporter.dll</Key>
+        <Value>2007-11-28T12:08:42-05:00</Value>
+      </Assembly>
+      <Assembly>
+        <Key>c:\Program Files\Microsoft XNA\XNA Game Studio\v2.0\References\Windows\x86\Microsoft.Xna.Framework.Content.Pipeline.FBXImporter.dll</Key>
+        <Value>2007-11-28T12:08:30-05:00</Value>
+      </Assembly>
+      <Assembly>
+        <Key>c:\Program Files\Microsoft XNA\XNA Game Studio\v2.0\References\Windows\x86\Microsoft.Xna.Framework.Content.Pipeline.EffectImporter.dll</Key>
+        <Value>2007-11-28T12:07:44-05:00</Value>
+      </Assembly>
+      <Assembly>
+        <Key>C:\Users\Chris\Documents\UofL\Classes\CECS 628\cannon\branches\service_creation\RC.Engine\JigLibX BETA\JigLibX BETA\HeightmapProcessor\HeightmapProcessor\bin\x86\Debug\HeightmapProcessor.dll</Key>
+        <Value>2008-04-30T15:38:56-04:00</Value>
+      </Assembly>
+      <Assembly>
+        <Key>C:\Windows\assembly\GAC_32\Microsoft.Xna.Framework.Content.Pipeline\2.0.0.0__6d5c3888ef60e27d\Microsoft.Xna.Framework.Content.Pipeline.dll</Key>
+        <Value>2008-09-26T19:30:45.1184079-04:00</Value>
+      </Assembly>
+    </Assemblies>
+  </Asset>
+</XnaContent>

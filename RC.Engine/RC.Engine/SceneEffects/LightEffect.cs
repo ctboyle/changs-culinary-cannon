@@ -4,7 +4,6 @@ using System.Text;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Content;
 using RC.Engine.ContentManagement;
-using Ninject.Core;
 using RC.Engine.Rendering;
 
 namespace RC.Engine.SceneEffects

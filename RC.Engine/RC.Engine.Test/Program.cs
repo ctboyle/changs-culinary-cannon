@@ -1,6 +1,8 @@
 using System;
 using RC.Engine.StateManagement;
 using System.Collections.Generic;
+using RC.Engine.Base;
+using RC.Physics;
 
 namespace RC.Engine.Test
 {
@@ -13,7 +15,10 @@ namespace RC.Engine.Test
         /// </summary>
         static void Main(string[] args)
         {
-            RCGameStarter.Start(GameType);
+            RCGameManagerFactory factory = new RCDefaultGameManagerFactory();
+            RCGameManager mgr = factory.GetInstance();
+            mgr.LoadModule(new RCPhysicsModule());
+            mgr.Start(GameType);
         }
     }
 }
