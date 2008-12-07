@@ -14,10 +14,13 @@ namespace RC.Engine.SceneEffects
 
         private RCContent<Texture2D> _texture = null;
 
-        public RCTextureEffect(
-            IRCContentRequester contentRqst,
-            RCContent<Texture2D> texture
-            ) 
+        public RCTextureEffect(RCContent<Texture2D> texture) 
+            : base()
+        {
+            _texture = texture;
+        }
+
+        public RCTextureEffect(IRCContentRequester contentRqst, RCContent<Texture2D> texture)
             : base(contentRqst)
         {
             _texture = texture;

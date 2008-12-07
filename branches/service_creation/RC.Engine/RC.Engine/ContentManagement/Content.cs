@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Content;
+using System.Diagnostics;
 
 namespace RC.Engine.ContentManagement
 {
@@ -27,9 +28,20 @@ namespace RC.Engine.ContentManagement
     interface IRCContent<T> : IDisposable where T : class
     {
         /// <summary>
-        /// The underlying content.
+        /// The loaded content.
         /// </summary>
         T Content { get; }
+        
+        /// <summary>
+        /// Initializes the underlying content.
+        /// </summary>
+        /// <param name="contentRqst">The content requester (if needed).</param>
+        void Initialize(IRCContentRequester contentRqst);
+
+        /// <summary>
+        /// Returns if the content is initialized.
+        /// </summary>
+        bool IsInitialized { get; }
     }
 
     public class RCDefaultContent<T> : RCContent<T> where T : class
@@ -38,6 +50,12 @@ namespace RC.Engine.ContentManagement
 
         public RCDefaultContent(IRCContentRequester contentRqst, string assetName)
             : base(contentRqst)
+        {
+            _assetName = assetName;
+        }
+
+        public RCDefaultContent(string assetName)
+            : base()
         {
             _assetName = assetName;
         }
@@ -53,9 +71,13 @@ namespace RC.Engine.ContentManagement
         private Guid _id = Guid.Empty;
         private IRCContentManager _contentMgr = null;
 
+        public RCContent()
+        {
+        }
+
         public RCContent(IRCContentRequester contentRqst)
         {
-            contentRqst.RequestContent(this);
+            Initialize(contentRqst);
         }
 
         public RCContent(RCContent<T> copy)
@@ -82,17 +104,34 @@ namespace RC.Engine.ContentManagement
 
         #endregion
 
-        public void Init(Guid id, IRCContentManager contentMgr)
-        {
-            _id = id;
-            _contentMgr = contentMgr;
-        }
-
         public T Content
         {
-            get { return (_contentMgr == null) ? null : _contentMgr.LoadContent<T>(_id); }
+            get
+            {
+                if (!IsInitialized)
+                {
+                    throw new InvalidOperationException("The content has not been initialized.");
+                }
+
+                return _contentMgr.LoadContent<T>(_id);
+            }
+        }
+
+        public void Initialize(IRCContentRequester contentRqst)
+        {
+            contentRqst.RequestContent<T>(this, out _id, out _contentMgr);
+            OnInitialize();
+        }
+
+        public bool IsInitialized 
+        { 
+            get { return (_contentMgr != null && _id != Guid.Empty); }
         }
 
         public abstract object CreateType(IGraphicsDeviceService graphics, ContentManager content);
+
+        protected virtual void OnInitialize()
+        {
+        }
     }
 }

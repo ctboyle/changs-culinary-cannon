@@ -24,19 +24,20 @@ namespace RC.Engine.GraphicsManagement.BoundingVolumes
         }
 
         public RCBoundingSphere()
+            : this(new BoundingSphere())
         {
-            _sphere = new BoundingSphere();
         }
 
         public RCBoundingSphere(
             Vector3 center,
             float radius
-        )
+        ) : this(new BoundingSphere(center, radius))
         {
-            _sphere = new BoundingSphere(
-                center,
-                radius
-                );
+        }
+
+        public RCBoundingSphere(BoundingSphere sphere)
+        {
+            _sphere = sphere;
         }
 
         public static RCBoundingSphere CreateMerged(
@@ -78,7 +79,13 @@ namespace RC.Engine.GraphicsManagement.BoundingVolumes
 
         public RCBoundingSphere ToBoundingShpere()
         {
-            return this;
+            return new RCBoundingSphere(_sphere);
+        }
+
+        public RCAxisAlignedBoundingBox ToBoundingBox()
+        {
+            BoundingBox box = BoundingBox.CreateFromSphere(_sphere);
+            return new RCAxisAlignedBoundingBox(box);
         }
 
         #endregion

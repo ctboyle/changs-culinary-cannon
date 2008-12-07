@@ -12,6 +12,8 @@ using RC.Engine.SceneEffects;
 using RC.Engine.ContentManagement;
 using RC.Engine.StateManagement;
 using RC.Engine.Base;
+using RC.Physics;
+using RC.Engine.GraphicsManagement.BoundingVolumes;
 
 namespace RC.Engine.Test
 {
@@ -74,12 +76,15 @@ namespace RC.Engine.Test
             // Create the model
             /////////////////////////////////////////////////////////////////////
             RCGeometry model = MeshCreator.CreateObject(Ctx.Graphics, Ctx.ContentRqst);
+            //RCPhysicsObject physicsModel = new RCPhysicsObject(Vector3.Zero, model);
+            //physicsModel.AddDefaultPhysicsBoundingBox();
 
             /////////////////////////////////////////////////////////////////////
             // Setup the light node as the root and setup its children
             /////////////////////////////////////////////////////////////////////
             lightNode.AddChild(camera);
             lightNode.AddChild(model);
+            
             _sceneRoot = lightNode;
 
             _sceneRoot.UpdateRS();
@@ -100,7 +105,7 @@ namespace RC.Engine.Test
             }
 
             Ctx.CameraMgr.SetActiveCamera("Test");
-            Ctx.RenderMgr.DrawScene(_sceneRoot);
+            Ctx.RenderMgr.Draw(_sceneRoot);
 
             // Draw the scene statistics
             string message = string.Format("FPS: {0}\n", _framesPerSecond);

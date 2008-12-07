@@ -169,6 +169,11 @@ namespace RC.Engine.GraphicsManagement.BoundingVolumes
             
         }
 
+        public RCAxisAlignedBoundingBox ToBoundingBox()
+        {
+            throw new NotImplementedException();
+        }
+
         #endregion
     }
 }

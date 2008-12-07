@@ -200,7 +200,7 @@ namespace RC.Engine.GraphicsManagement
         /// <summary>
         /// Override for specific behavior on the draw pass.
         /// </summary>
-        public abstract void Draw(IRCRenderManager render);
+        public abstract void Draw(IRCRenderManager render, IRCContentRequester contentRqst);
 
         public bool AddController(IController controller)
         {
@@ -320,7 +320,5 @@ namespace RC.Engine.GraphicsManagement
                 ParentNode.PropigateBVToRoot();
             }
         }
-
-        
     }
 }

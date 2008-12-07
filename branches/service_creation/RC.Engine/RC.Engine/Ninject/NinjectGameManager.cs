@@ -82,7 +82,7 @@ namespace RC.Engine.Ninject
         public void LoadModule(IRCModule module)
         {
             RCPluginManager pluginMgr = GameKernel.Get<RCPluginManager>();
-            module.Plugin(pluginMgr);
+            module.Plugin(this, pluginMgr);
         }
 
         /// <summary>
