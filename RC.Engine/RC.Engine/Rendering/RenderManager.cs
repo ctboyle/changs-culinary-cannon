@@ -5,6 +5,7 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using RC.Engine.Cameras;
 using RC.Engine.GraphicsManagement;
+using RC.Engine.ContentManagement;
 
 namespace RC.Engine.Rendering
 {
@@ -60,7 +61,7 @@ namespace RC.Engine.Rendering
         /// I draw a scene to the screen.
         /// </summary>
         /// <param name="sceneRoot">The scene root.</param>
-        void DrawScene(RCSpatial sceneRoot);
+        void Draw(RCSpatial sceneRoot);
 
         /// <summary>
         /// I clear the screen.
@@ -75,6 +76,7 @@ namespace RC.Engine.Rendering
     {
         private IGraphicsDeviceService _graphics = null;
         private IRCCameraManager _cameraMgr = null;
+        private IRCContentRequester _contentRqst = null;
         private Matrix _world = Matrix.Identity;
         private RCGeometry _geometry = null;
         private RCRenderStateCollection _renderStates = 
@@ -82,11 +84,13 @@ namespace RC.Engine.Rendering
 
         public RCRenderManager(
             IRCCameraManager cameraMgr, 
-            IGraphicsDeviceService graphics
+            IGraphicsDeviceService graphics,
+            IRCContentRequester contentRqst
         )
         {
             _cameraMgr = cameraMgr;
             _graphics = graphics;
+            _contentRqst = contentRqst;
         }
 
         public Matrix World
@@ -142,7 +146,7 @@ namespace RC.Engine.Rendering
         /// 
         /// Will ensure that the Correct camera and viewport are used!
         /// </summary>
-        public void DrawScene(RCSpatial sceneRoot)
+        public void Draw(RCSpatial sceneRoot)
         {
             if (_cameraMgr.ActiveCamera == null)
             {
@@ -157,7 +161,7 @@ namespace RC.Engine.Rendering
                 ClearScreen();
             }
              
-            sceneRoot.Draw(this);
+            sceneRoot.Draw(this, _contentRqst);
         }
 
         public void ClearScreen()
@@ -226,23 +230,42 @@ namespace RC.Engine.Rendering
             RCVertexBuffer VBuffer = _geometry.VBuffer;
             RCIndexBuffer IBuffer = _geometry.IBuffer;
 
-            _graphics.GraphicsDevice.VertexDeclaration = VBuffer.VertexDeclaration;
-
-            _graphics.GraphicsDevice.Vertices[0].SetSource(
+            DrawElements(
+                VBuffer.VertexDeclaration,
                 VBuffer.VertexBuffer,
+                VBuffer.VertexSize,
+                IBuffer.IndexBuffer,
+                VBuffer.NumVertices,
+                IBuffer.NumPrimitives
+            );
+        }
+
+        private void DrawElements(
+            VertexDeclaration vd, 
+            VertexBuffer vb, 
+            int vertexStride, 
+            IndexBuffer ib, 
+            int numVertices, 
+            int numPrimitives
+        )
+        {
+            _graphics.GraphicsDevice.VertexDeclaration = vd;
+            
+            _graphics.GraphicsDevice.Vertices[0].SetSource(
+                vb,
                 0,
-                VBuffer.VertexSize
+                vertexStride
                 );
 
-            _graphics.GraphicsDevice.Indices = IBuffer.IndexBuffer;
-            
+            _graphics.GraphicsDevice.Indices = ib;
+
             // Finally draw the actual triangles on the screen
             _graphics.GraphicsDevice.DrawIndexedPrimitives(
                 PrimitiveType.TriangleList,
                 0, 0,
-                VBuffer.NumVertices,
+                numVertices,
                 0,
-                IBuffer.NumPrimitives
+                numPrimitives
                 );
         }
     }

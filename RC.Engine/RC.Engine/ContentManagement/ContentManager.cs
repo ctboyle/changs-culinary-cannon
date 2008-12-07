@@ -20,7 +20,9 @@ namespace RC.Engine.ContentManagement
         /// <param name="content">The content object.</param>
         /// <returns>The </returns>
         void RequestContent<T>(
-            RCContent<T> content
+            RCContent<T> content,
+            out Guid id,
+            out IRCContentManager contentMgr
             )
             where T : class;
     }
@@ -95,20 +97,20 @@ namespace RC.Engine.ContentManagement
         }
 
         public void RequestContent<T>(
-            RCContent<T> content
+            RCContent<T> content,
+            out Guid id,
+            out IRCContentManager contentMgr
             )
             where T : class
         {
-            Guid id = this.CreateNewId();
+            id = this.CreateNewId();
+            contentMgr = this;
 
             // Setup the content storage
             ContentStore store = new ContentStore();
             store.Content = null;
             store.TypeCreator = content;
             _content.Add(id, store);
-
-            // Setup the content object
-            content.Init(id, this);
         }
 
         public T LoadContent<T>(

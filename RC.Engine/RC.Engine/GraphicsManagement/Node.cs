@@ -54,11 +54,11 @@ namespace RC.Engine.GraphicsManagement
         /// <summary>
         /// Draws all children 
         /// </summary>
-        public override void Draw(IRCRenderManager render)
+        public override void Draw(IRCRenderManager render, IRCContentRequester contentRqst)
         {           
             foreach (RCSpatial child in _listChildren)
             {
-                child.Draw(render);
+                child.Draw(render, contentRqst);
             }
         }
 

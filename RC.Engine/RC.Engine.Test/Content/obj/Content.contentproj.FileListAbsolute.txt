@@ -4,3 +4,4 @@ D:\My Work\service_creation\RC.Engine\RC.Engine.Test\Content\obj\x86\Debug\Resol
 H:\My Work\service_creation\RC.Engine\RC.Engine.Test\Content\obj\x86\Debug\ResolveAssemblyReference.cache
 C:\Users\Chris\Documents\UofL\Classes\CECS 628\cannon\branches\service_creation\RC.Engine\RC.Engine.Test\Content\obj\x86\Debug\ResolveAssemblyReference.cache
 C:\Users\TabletPC\Documents\Projects\changs-culinary-cannon\branches\service_creation\RC.Engine\RC.Engine.Test\Content\obj\x86\Debug\ResolveAssemblyReference.cache
+C:\Users\Chris\Documents\UofL\Classes\CECS 628\cannonmock\branches\service_creation\RC.Engine\RC.Engine.Test\Content\obj\x86\Debug\ResolveAssemblyReference.cache

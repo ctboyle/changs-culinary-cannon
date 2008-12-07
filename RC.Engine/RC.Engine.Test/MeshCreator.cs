@@ -52,7 +52,7 @@ namespace RC.Engine.Test
             RCIndexBuffer iBuffer = new RCIndexBuffer(graphics, 6);
             iBuffer.SetData(indicies);
 
-            RCGeometry geometry = new RCGeometry(graphics, contentRqst, iBuffer, vBuffer);
+            RCGeometry geometry = new RCGeometry(iBuffer, vBuffer);
 
             RCMaterialState material = new RCMaterialState();
             material.Ambient = new Color(255, 0, 0, 255);
@@ -65,7 +65,7 @@ namespace RC.Engine.Test
             RCContent<Texture2D> texture2 = new RCDefaultContent<Texture2D>(contentRqst, "Content\\Textures\\seattle");
             RCTextureEffect effect1 = new RCTextureEffect(contentRqst, texture1);
             RCTextureEffect effect2 = new RCTextureEffect(contentRqst, texture2);
-
+           
             geometry.AddEffect(effect1);
             geometry.AddEffect(effect2);
 

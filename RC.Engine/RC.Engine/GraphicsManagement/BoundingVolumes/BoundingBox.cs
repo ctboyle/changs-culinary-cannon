@@ -24,19 +24,20 @@ namespace RC.Engine.GraphicsManagement.BoundingVolumes
         }
 
         public RCAxisAlignedBoundingBox()
+            : this(new BoundingBox())
         {
-            _aaBox = new BoundingBox();
         }
 
         public RCAxisAlignedBoundingBox(
             Vector3 min,
             Vector3 max
-            )
+            ) : this(new BoundingBox(min, max))
         {
-            _aaBox = new BoundingBox(
-                min,
-                max
-                );
+        }
+
+        public RCAxisAlignedBoundingBox(BoundingBox box)
+        {
+            _aaBox = box;
         }
 
         #region RCIBoundingVolume Members
@@ -126,6 +127,11 @@ namespace RC.Engine.GraphicsManagement.BoundingVolumes
                 radius
                 );
             
+        }
+
+        public RCAxisAlignedBoundingBox ToBoundingBox()
+        {
+            return new RCAxisAlignedBoundingBox(_aaBox);
         }
 
         #endregion

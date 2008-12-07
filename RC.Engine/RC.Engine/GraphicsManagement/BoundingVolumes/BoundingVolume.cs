@@ -12,5 +12,6 @@ namespace RC.Engine.GraphicsManagement.BoundingVolumes
         PlaneIntersectionType Intersects(Plane plane);
         IRCBoundingVolume Transform (Matrix transform);
         RCBoundingSphere ToBoundingShpere();
+        RCAxisAlignedBoundingBox ToBoundingBox();
     }
 }

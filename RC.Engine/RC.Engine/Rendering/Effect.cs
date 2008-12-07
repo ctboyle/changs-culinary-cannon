@@ -32,10 +32,14 @@ namespace RC.Engine.Rendering
             }
         }
 
+        public RCEffect()
+            : base()
+        {
+        }
+
         public RCEffect(IRCContentRequester contentRqst)
             : base(contentRqst)
         {
-            UpdateTechniqueInfo();
         }
 
         private void UpdateTechniqueInfo()
@@ -97,6 +101,12 @@ namespace RC.Engine.Rendering
                 render.SetRenderState(_alphaStates[iPass]);
                 _alphaStates[iPass] = savedState;
             }
+        }
+
+        protected override void OnInitialize()
+        {
+            UpdateTechniqueInfo();
+            base.OnInitialize();
         }
 
         public override abstract object CreateType(IGraphicsDeviceService graphics, ContentManager content);
