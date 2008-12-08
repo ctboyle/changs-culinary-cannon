@@ -14,6 +14,7 @@ using RC.Engine.StateManagement;
 using RC.Engine.Base;
 using RC.Physics;
 using RC.Engine.GraphicsManagement.BoundingVolumes;
+using RC.Content.Heightmap;
 
 namespace RC.Engine.Test
 {
@@ -75,7 +76,9 @@ namespace RC.Engine.Test
             /////////////////////////////////////////////////////////////////////
             // Create the model
             /////////////////////////////////////////////////////////////////////
-            RCGeometry model = MeshCreator.CreateObject(Ctx.Graphics, Ctx.ContentRqst);
+            //RCGeometry model = MeshCreator.CreateObject(Ctx.Graphics, Ctx.ContentRqst);
+            RCDefaultContent<RCHeightMap> heightMap = new RCDefaultContent<RCHeightMap>(Ctx.ContentRqst, "Content\\Textures\\heightmap4");
+            RCGeometry model = MeshCreator.CreateHeightMapObject(Ctx.Graphics, Ctx.ContentRqst, heightMap);
             //RCPhysicsObject physicsModel = new RCPhysicsObject(Vector3.Zero, model);
             //physicsModel.AddDefaultPhysicsBoundingBox();
 

@@ -71,6 +71,11 @@ namespace RC.Engine.ContentManagement
         private Guid _id = Guid.Empty;
         private IRCContentManager _contentMgr = null;
 
+        public static implicit operator T(RCContent<T> theContent)
+        {
+            return theContent.Content;
+        }
+
         public RCContent()
         {
         }
