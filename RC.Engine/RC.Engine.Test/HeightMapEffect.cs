@@ -13,14 +13,19 @@ namespace RC.Engine.SceneEffects
     {
         public const String EffectPath = "Content\\Effects\\Terrain";
 
-        private RCHeightMap _heightMap = null;
+        public static int NumIntervalsX = 120;
+        public static int NumIntervalsY = 120;
+        public static float SizeX = 2;
+        public static float SizeY = 2;
+
+        private RCContent<RCHeightMap> _heightMap = null;
         private RCContent<Texture2D> _grassTex = null;
         private RCContent<Texture2D> _rockTex = null;
         private RCContent<Texture2D> _snowTex = null;
 
         public HeightMapEffect(
             IRCContentRequester contentRqst, 
-            RCHeightMap heightMap,
+            RCContent<RCHeightMap> heightMap,
             RCContent<Texture2D> grassTex,
             RCContent<Texture2D> rockTex,
             RCContent<Texture2D> snowTex
@@ -41,7 +46,7 @@ namespace RC.Engine.SceneEffects
         {
             if (_heightMap != null)
             {
-                Content.Parameters["HeightMap"].SetValue(_heightMap.TextureMapping);
+                Content.Parameters["HeightMap"].SetValue(_heightMap.Content);
                 Content.Parameters["World"].SetValue(render.World);
                 Content.Parameters["View"].SetValue(render.View);
                 Content.Parameters["Projection"].SetValue(render.Projection);
@@ -56,10 +61,10 @@ namespace RC.Engine.SceneEffects
 
                 Content.Parameters["multiTextureEnabled"].SetValue(true);
 
-                Content.Parameters["du"].SetValue(1.0f / 1200);
-                Content.Parameters["dv"].SetValue(1.0f / 120);
-                Content.Parameters["dx"].SetValue(120 / 20000.0f);
-                Content.Parameters["dy"].SetValue(120 / 2.0f);
+                Content.Parameters["du"].SetValue(1.0f / SizeX);
+                Content.Parameters["dv"].SetValue(1.0f / SizeY);
+                Content.Parameters["dx"].SetValue(SizeX / NumIntervalsX);
+                Content.Parameters["dy"].SetValue(SizeY / NumIntervalsY);
             }
         }
         

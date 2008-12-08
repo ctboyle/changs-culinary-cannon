@@ -2,15 +2,16 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using Microsoft.Xna.Framework.Graphics;
-
 using RC.Engine.ContentManagement;
+
+using TPrimitive = System.Int32;
 
 namespace RC.Engine.Rendering
 {
     public class RCIndexBuffer : RCDeviceResource
     {
         private int _numIndicies;
-        private short[] _data;
+        private TPrimitive[] _data;
         private IndexBuffer _indexBuffer;
 
         public int NumPrimitives
@@ -25,7 +26,7 @@ namespace RC.Engine.Rendering
 
         public int SizeInBytes
         {
-            get { return _numIndicies * sizeof(short); }
+            get { return _numIndicies * sizeof(TPrimitive); }
         }
 
         public IndexBuffer IndexBuffer
@@ -38,10 +39,10 @@ namespace RC.Engine.Rendering
         {
 
             _numIndicies = numIndicies;
-            _data = new short[_numIndicies];
+            _data = new TPrimitive[_numIndicies];
         }
 
-        public void SetData(short[] data)
+        public void SetData(TPrimitive[] data)
         {
 
             // Check to see if there are exactly the right number of data elements in the array.
@@ -61,7 +62,7 @@ namespace RC.Engine.Rendering
         protected override void SetOnDevice()
         {
             _indexBuffer = new IndexBuffer(Graphics.GraphicsDevice, SizeInBytes, BufferUsage.None, IndexElementSize.SixteenBits);
-            _indexBuffer.SetData<short>(_data);
+            _indexBuffer.SetData<TPrimitive>(_data);
         }
 
         protected override void RemoveFromDevice()
