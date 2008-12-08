@@ -77,7 +77,7 @@ namespace RC.Engine.Test
             // Create the model
             /////////////////////////////////////////////////////////////////////
             //RCGeometry model = MeshCreator.CreateObject(Ctx.Graphics, Ctx.ContentRqst);
-            RCDefaultContent<RCHeightMap> heightMap = new RCDefaultContent<RCHeightMap>(Ctx.ContentRqst, "Content\\Textures\\heightmap4");
+            RCDefaultContent<RCHeightMap> heightMap = new RCDefaultContent<RCHeightMap>(Ctx.ContentRqst, "Content\\Textures\\heightmap");
             RCGeometry model = MeshCreator.CreateHeightMapObject(Ctx.Graphics, Ctx.ContentRqst, heightMap);
             //RCPhysicsObject physicsModel = new RCPhysicsObject(Vector3.Zero, model);
             //physicsModel.AddDefaultPhysicsBoundingBox();
@@ -114,7 +114,7 @@ namespace RC.Engine.Test
             string message = string.Format("FPS: {0}\n", _framesPerSecond);
 
             _spriteBatch.SpriteBatch.Begin(SpriteBlendMode.AlphaBlend, SpriteSortMode.Texture, SaveStateMode.SaveState);
-            _spriteBatch.SpriteBatch.DrawString(_spriteFont.Content, message, Vector2.Zero, Color.Yellow);
+            _spriteBatch.SpriteBatch.DrawString(_spriteFont, message, Vector2.Zero, Color.Yellow);
             _spriteBatch.SpriteBatch.End();
 
             base.Draw(gameTime);

@@ -30,7 +30,7 @@ namespace RC.Engine.SceneEffects
         {
             if (_texture != null)
             {
-                Content.Parameters["xTexture"].SetValue(_texture.Content);
+                Content.Parameters["xTexture"].SetValue(_texture);
                 Content.Parameters["xWorldViewProjection"].SetValue(render.World * render.View * render.Projection);
             }
         }
