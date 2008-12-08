@@ -111,6 +111,25 @@
       <Processor>RCHeightMapProcessor</Processor>
     </Compile>
   </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Textures\heightmap2.jpg">
+      <Name>heightmap2</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>RCHeightMapProcessor</Processor>
+    </Compile>
+    <Compile Include="Textures\HeightMap3.jpg">
+      <Name>heightmap3</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>RCHeightMapProcessor</Processor>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Textures\Height129.jpg">
+      <Name>Height129</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>RCHeightMapProcessor</Processor>
+    </Compile>
+  </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Microsoft\XNA Game Studio\v2.0\Microsoft.Xna.GameStudio.ContentPipeline.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
