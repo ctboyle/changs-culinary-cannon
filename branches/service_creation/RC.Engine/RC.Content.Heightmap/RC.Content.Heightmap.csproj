@@ -1,18 +1,16 @@
 ﻿<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
-    <ProjectGuid>{6BD73791-1D67-475A-A2E0-9AAFD92E641E}</ProjectGuid>
+    <ProjectGuid>{FBF1B902-649D-4537-9B8A-2932B0C76BF1}</ProjectGuid>
     <ProjectTypeGuids>{6D335F3A-9D43-41b4-9D22-F6F17C4BE596};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">x86</Platform>
-    <OutputType>WinExe</OutputType>
+    <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>RC.Engine.Test</RootNamespace>
-    <AssemblyName>RC.Engine.Test</AssemblyName>
+    <RootNamespace>RC.Content.Heightmap</RootNamespace>
+    <AssemblyName>RC.Content.Heightmap</AssemblyName>
     <XnaFrameworkVersion>v2.0</XnaFrameworkVersion>
     <XnaPlatform>Windows</XnaPlatform>
-    <XnaCrossPlatformGroupID>98d6e7a0-c71c-4413-9445-2d787a78dbe2</XnaCrossPlatformGroupID>
-    <ApplicationIcon>Game.ico</ApplicationIcon>
-    <Thumbnail>GameThumbnail.png</Thumbnail>
+    <XnaCrossPlatformGroupID>5789b0e9-2fb7-4f33-9bf4-6ff34b71e5fa</XnaCrossPlatformGroupID>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x86' ">
     <DebugSymbols>true</DebugSymbols>
@@ -52,41 +50,16 @@
     <Reference Include="System">
       <Private>False</Private>
     </Reference>
-    <Reference Include="System.Data" />
-    <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="FlyCameraController.cs" />
-    <Compile Include="Game1.cs" />
-    <Compile Include="HeightMapEffect.cs" />
-    <Compile Include="MeshCreator.cs" />
+    <Compile Include="HeightMap.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Program.cs" />
-    <Compile Include="TestState.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Game.ico" />
-    <Content Include="GameThumbnail.png" />
   </ItemGroup>
   <ItemGroup>
     <NestedContentProject Include="Content\Content.contentproj">
-      <Project>1c02d323-1712-414b-b515-444b3a311149</Project>
+      <Project>fc8c0204-62e2-4918-bd49-d414222169aa</Project>
       <Visible>False</Visible>
     </NestedContentProject>
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\RC.Content.Heightmap\RC.Content.Heightmap.csproj">
-      <Project>{FBF1B902-649D-4537-9B8A-2932B0C76BF1}</Project>
-      <Name>RC.Content.Heightmap</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\RC.Engine\RC.Engine.csproj">
-      <Project>{8618CBBD-9108-493E-A4FC-BE6D6EDE0771}</Project>
-      <Name>RC.Engine</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\RC.Physics\RC.Physics.csproj">
-      <Project>{4E77F49A-22A6-4275-A5F9-E929D9078DE9}</Project>
-      <Name>RC.Physics</Name>
-    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <Import Project="$(MSBuildExtensionsPath)\Microsoft\XNA Game Studio\v2.0\Microsoft.Xna.GameStudio.Common.targets" />

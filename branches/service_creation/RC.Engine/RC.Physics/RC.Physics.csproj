@@ -58,6 +58,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="HeightMapPhysics.cs" />
     <Compile Include="PhysicsObject.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="PhysicsModule.cs" />
@@ -69,6 +70,10 @@
     </NestedContentProject>
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\RC.Content.Heightmap\RC.Content.Heightmap.csproj">
+      <Project>{FBF1B902-649D-4537-9B8A-2932B0C76BF1}</Project>
+      <Name>RC.Content.Heightmap</Name>
+    </ProjectReference>
     <ProjectReference Include="..\RC.Engine\RC.Engine.csproj">
       <Project>{8618CBBD-9108-493E-A4FC-BE6D6EDE0771}</Project>
       <Name>RC.Engine</Name>
