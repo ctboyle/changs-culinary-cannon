@@ -87,9 +87,9 @@ namespace RC.Engine.Test
             float[] normals = new float[3 * numVertices];
 
             float dx = HeightMapEffect.SizeX / HeightMapEffect.NumIntervalsX;
-            float dy = HeightMapEffect.SizeY / HeightMapEffect.NumIntervalsX;
+            float dy = HeightMapEffect.SizeY / HeightMapEffect.NumIntervalsY;
             float txinc = 1.0f / HeightMapEffect.NumIntervalsX;
-            float tyinc = 1.0f / HeightMapEffect.NumIntervalsX;
+            float tyinc = 1.0f / HeightMapEffect.NumIntervalsY;
 
             Vector3 position, normal = Vector3.Zero;
             Vector2 texture = Vector2.Zero;
@@ -149,19 +149,12 @@ namespace RC.Engine.Test
             RCIndexBuffer iBuffer = new RCIndexBuffer(graphics, numIndices);
             iBuffer.SetData(indices);
 
-            RCGeometry geometry = new RCGeometry(iBuffer, vBuffer);
-
             RCContent<Texture2D> texture1 = new RCDefaultContent<Texture2D>(contentRqst, "Content\\Textures\\grass");
             RCContent<Texture2D> texture2 = new RCDefaultContent<Texture2D>(contentRqst, "Content\\Textures\\rock");
             RCContent<Texture2D> texture3 = new RCDefaultContent<Texture2D>(contentRqst, "Content\\Textures\\snow");
-            HeightMapEffect effect = new HeightMapEffect(
-                contentRqst, 
-                heightMap, 
-                texture1, 
-                texture2, 
-                texture3
-                );
-            
+            HeightMapEffect effect = new HeightMapEffect(contentRqst, heightMap, texture1, texture2, texture3);
+
+            RCGeometry geometry = new RCGeometry(iBuffer, vBuffer);
             geometry.AddEffect(effect);
 
             return geometry;
