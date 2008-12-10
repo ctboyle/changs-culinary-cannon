@@ -17,6 +17,7 @@ namespace RC.Engine.SceneEffects
         private RCContent<Texture2D> _grassTex = null;
         private RCContent<Texture2D> _rockTex = null;
         private RCContent<Texture2D> _snowTex = null;
+        private float scaling = 1;
 
         public HeightMapEffect(
             IRCContentRequester contentRqst, 
@@ -30,6 +31,7 @@ namespace RC.Engine.SceneEffects
             _grassTex = grassTex;
             _rockTex = rockTex;
             _snowTex = snowTex;
+            scaling = heightMap.Content.Scaling;
         }
 
         public override void CustomConfigure(IRCRenderManager render)
@@ -43,10 +45,10 @@ namespace RC.Engine.SceneEffects
                 Content.Parameters["multiTextureBottom"].SetValue(_grassTex);
                 Content.Parameters["multiTextureMiddle"].SetValue(_rockTex);
                 Content.Parameters["multiTextureTop"].SetValue(_snowTex);
-                Content.Parameters["bottomTextureUnblendedMax"].SetValue(.3f);
-                Content.Parameters["middleTextureUnblendedMin"].SetValue(.35f);
-                Content.Parameters["middleTextureUnblendedMax"].SetValue(.4f);
-                Content.Parameters["topTextureUnblendedMin"].SetValue(.45f);
+                Content.Parameters["bottomTextureUnblendedMax"].SetValue(.3f*scaling);
+                Content.Parameters["middleTextureUnblendedMin"].SetValue(.35f*scaling);
+                Content.Parameters["middleTextureUnblendedMax"].SetValue(.45f*scaling);
+                Content.Parameters["topTextureUnblendedMin"].SetValue(.55f*scaling);
             }
         }
         

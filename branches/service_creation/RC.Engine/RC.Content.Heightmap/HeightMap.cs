@@ -45,16 +45,16 @@ namespace RC.Content.Heightmap
             textureMap = input.ReadExternalReference<Texture2D>();
             //read the model here
             
-            return new RCHeightMap(textureMap, mapping);
+            return new RCHeightMap(textureMap, mapping, 1);
         }
     }
 
     public class RCHeightMap : RCSceneNode
     {
         public const int NumIntervalsX = 100;
-        public const int NumIntervalsY = 100;
+        public const int NumIntervalsZ = 100;
         public const float SizeX = 2;
-        public const float SizeY = 2;
+        public const float SizeZ = 2;
 
         private float[,] mapping = null;
         private RCGeometry geometry = null;
@@ -65,8 +65,15 @@ namespace RC.Content.Heightmap
         private float[] normals = null;
         private int numVertices = 0;
         private int numIndices = 0;
+        private float scaling = 1;
 
-        public RCHeightMap(Texture2D textureMap, float[,] heightMapping)
+        public float Scaling
+        {
+            get { return scaling; }
+            set { scaling = value; }
+        }
+
+        public RCHeightMap(Texture2D textureMap, float[,] heightMapping, float scaling)
         {
             mapping = heightMapping;
             textureMapping = textureMap;
@@ -144,17 +151,18 @@ namespace RC.Content.Heightmap
         private void SetupData()
         {
             float dx = SizeX / NumIntervalsX;
-            float dy = SizeY / NumIntervalsY;
+            float dz = SizeZ / NumIntervalsZ;
             float txinc = 1.0f / NumIntervalsX;
-            float tyinc = 1.0f / NumIntervalsY;
+            float tyinc = 1.0f / NumIntervalsZ;
+            //scaling = 1;
 
             Vector3 position, normal = Vector3.Zero;
             Vector2 texture = Vector2.Zero;
 
             int vertexIdx = 0, fvertexIdx = 0;
 
-            numVertices = (NumIntervalsX + 1) * (NumIntervalsY + 1);
-            numIndices = 6 * NumIntervalsX * NumIntervalsY;
+            numVertices = (NumIntervalsX + 1) * (NumIntervalsZ + 1);
+            numIndices = 6 * NumIntervalsX * NumIntervalsZ;
 
             indices = new int[numIndices];
             vertices = new float[3 * numVertices];
@@ -162,37 +170,38 @@ namespace RC.Content.Heightmap
             normals = new float[3 * numVertices];
 
             texture.X = 0.0f;
-            normal.Z = 1.0f;
-            position.Z = 0;
+            normal.Y = 1.0f;
+            position.Y = 0;
 
             for (int i = 0; i <= NumIntervalsX; i++)
             {
                 position.X = (-SizeX / 2.0f) + i * dx;
                 texture.Y = 1.0f;
 
-                for (int j = 0; j <= NumIntervalsY; j++)
+                for (int j = 0; j <= NumIntervalsZ; j++)
                 {
-                    position.Y = (-SizeY / 2.0f) + j * dy;
+                    position.Z = (-SizeZ / 2.0f) + j * dz;
 
-                    vertices[(3 * vertexIdx) + 0] = position.X;
-                    vertices[(3 * vertexIdx) + 1] = position.Y;
-                    vertices[(3 * vertexIdx) + 2] =
+                    vertices[(3 * vertexIdx) + 0] = scaling * position.X;
+                    vertices[(3 * vertexIdx) + 1] = scaling * 
                         Mapping[(int)(127 * texture.X), (int)(127 * texture.Y)];
+                    vertices[(3 * vertexIdx) + 2] = scaling * position.Z;
+                        
 
                     normals[(3 * vertexIdx) + 0] = normal.X;
                     normals[(3 * vertexIdx) + 1] = normal.Y;
                     normals[(3 * vertexIdx) + 2] = normal.Z;
 
-                    texCoords[(2 * vertexIdx) + 0] = texture.X;
-                    texCoords[(2 * vertexIdx) + 1] = texture.Y;
+                    texCoords[(2 * vertexIdx) + 0] = texture.X*2 * scaling;
+                    texCoords[(2 * vertexIdx) + 1] = texture.Y*2 * scaling;
 
-                    if (i < NumIntervalsX && j < NumIntervalsY)
+                    if (i < NumIntervalsX && j < NumIntervalsZ)
                     {
                         indices[fvertexIdx++] = (vertexIdx);
-                        indices[fvertexIdx++] = (vertexIdx + NumIntervalsY + 1);
-                        indices[fvertexIdx++] = (vertexIdx + NumIntervalsY + 2);
+                        indices[fvertexIdx++] = (vertexIdx + NumIntervalsZ + 1);
+                        indices[fvertexIdx++] = (vertexIdx + NumIntervalsZ + 2);
                         indices[fvertexIdx++] = (vertexIdx);
-                        indices[fvertexIdx++] = (vertexIdx + NumIntervalsY + 2);
+                        indices[fvertexIdx++] = (vertexIdx + NumIntervalsZ + 2);
                         indices[fvertexIdx++] = (vertexIdx + 1);
                     }
 
@@ -201,6 +210,8 @@ namespace RC.Content.Heightmap
                 }
                 texture.X += txinc;
             }
+
+            
         }
 
         private RCVertexRefrence SetupVertexReference(IGraphicsDeviceService graphics)
