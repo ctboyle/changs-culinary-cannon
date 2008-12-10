@@ -85,11 +85,11 @@ namespace RC.Engine.Test
             HeightMapEffect effect = new HeightMapEffect(Ctx.ContentRqst, heightMap, texture1, texture2, texture3);
             heightMap.Content.AddEffect(effect);
 
-            RCContent<RCSceneNode> modelContent = new RCDefaultContent<RCSceneNode>(Ctx.ContentRqst, @"Content\Models\enemy");
+            RCContent<RCSceneNode> enemy = new RCDefaultContent<RCSceneNode>(Ctx.ContentRqst, @"Content\Models\enemy");
 
             RCDepthBufferState depthState = new RCDepthBufferState();
             depthState.DepthTestingEnabled = true;
-            finallyModel.GlobalStates.Add(depthState);
+            enemy.Content.GlobalStates.Add(depthState);
             heightMap.Content.GlobalStates.Add(depthState);
 
             /////////////////////////////////////////////////////////////////////
@@ -97,7 +97,7 @@ namespace RC.Engine.Test
             /////////////////////////////////////////////////////////////////////
             lightNode.AddChild(camera);
             lightNode.AddChild(heightMap);
-            //lightNode.AddChild(modelContent);
+            //lightNode.AddChild(enemy);
 
             _sceneRoot = lightNode;
             _sceneRoot.UpdateRS();
