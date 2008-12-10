@@ -14,30 +14,23 @@ namespace RC.Engine.GraphicsManagement
     {
         public RCRenderStateCollection RenderStates = new RCRenderStateCollection(false);
 
-        private RCLightEffect _lightEffect = null;      
-        private RCIndexBuffer _iBuffer = null;     
-        private RCVertexBuffer _vBuffer = null;
+        private RCLightEffect _lightEffect = null;
+        private RCVertexRefrence _vertexRefrence;
 
-        public RCIndexBuffer IBuffer
+
+        public RCVertexRefrence PartData
         {
-            get { return _iBuffer; }
+            get { return _vertexRefrence; }
+            set { _vertexRefrence = value; }
         }
 
-        public RCVertexBuffer VBuffer
+        public RCGeometry()
         {
-            get { return _vBuffer; }
-        }
-
-        public RCGeometry(RCIndexBuffer indexBuffer, RCVertexBuffer vertexBuffer)
-        {
-            _iBuffer = indexBuffer;
-            _vBuffer = vertexBuffer;
+            
         }
         
         public override void Draw(IRCRenderManager render, IRCContentRequester contentRqst)
         {
-            _iBuffer.Enabled = true;
-            _vBuffer.Enabled = true;
 
             if (_lightEffect != null && !_lightEffect.IsInitialized)
             {
@@ -45,9 +38,6 @@ namespace RC.Engine.GraphicsManagement
             }
             
             render.Draw(this);
-
-            _iBuffer.Enabled = false;
-            _vBuffer.Enabled = false;
         }
 
         protected override void UpdateState(RCRenderStateStack stateStack, Stack<RCLight> lightStack)

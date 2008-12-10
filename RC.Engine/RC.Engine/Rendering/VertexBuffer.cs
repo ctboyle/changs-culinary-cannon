@@ -48,8 +48,8 @@ namespace RC.Engine.Rendering
             get { return _vertexDeclaration; }
         }
           
-        public RCVertexBuffer(IGraphicsDeviceService graphics, RCVertexAttributes attributes, int numVertices)
-            : base(graphics)
+        public RCVertexBuffer(RCVertexAttributes attributes, int numVertices)
+            : base()
         {
             _attributes = attributes;
             _numVertices = numVertices;

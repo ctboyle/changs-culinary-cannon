@@ -15,6 +15,7 @@ using RC.Engine.Base;
 using RC.Physics;
 using RC.Engine.GraphicsManagement.BoundingVolumes;
 using RC.Content.Heightmap;
+using RC.Engine.ContentManagement.ModelReader;
 
 namespace RC.Engine.Test
 {
@@ -34,6 +35,8 @@ namespace RC.Engine.Test
 
         public override void Initialize()
         {
+            RCSceneNode localNode = new RCSceneNode();
+
             /////////////////////////////////////////////////////////////////////
             // Setup the graphics device
             /////////////////////////////////////////////////////////////////////
@@ -42,8 +45,8 @@ namespace RC.Engine.Test
             /////////////////////////////////////////////////////////////////////
             // Setup the SpriteBatch content for displaying the FPS text
             /////////////////////////////////////////////////////////////////////
-            _spriteBatch = new RCSpriteBatch(Ctx.Graphics);
-            _spriteBatch.Enabled = true;
+            _spriteBatch = new RCSpriteBatch();
+            _spriteBatch.Enable(Ctx.Graphics);
             _spriteFont = new RCDefaultContent<SpriteFont>(Ctx.ContentRqst, "Content\\Fonts\\DefaultFont");
 
             /////////////////////////////////////////////////////////////////////
@@ -82,15 +85,32 @@ namespace RC.Engine.Test
             //RCPhysicsObject physicsModel = new RCPhysicsObject(Vector3.Zero, model);
             //physicsModel.AddDefaultPhysicsBoundingBox();
 
+
+
+            RCDefaultContent<RCSceneNode> modelContent = new RCDefaultContent<RCSceneNode>(Ctx.ContentRqst, @"Content\Models\enemy");
+            RCSceneNode finallyModel = modelContent.Content;
+
+            RCDepthBufferState depthState = new RCDepthBufferState();
+            depthState.DepthTestingEnabled = true;
+            finallyModel.GlobalStates.Add(depthState);
+            model.GlobalStates.Add(depthState);
+
+         
             /////////////////////////////////////////////////////////////////////
             // Setup the light node as the root and setup its children
             /////////////////////////////////////////////////////////////////////
-            lightNode.AddChild(camera);
-            lightNode.AddChild(model);
+            //lightNode.AddChild(camera);
+            //lightNode.AddChild(model);
+
+           // localNode.AddChild(lightNode);
+            localNode.AddChild(model);
+            localNode.AddChild(camera);
             
-            _sceneRoot = lightNode;
+            _sceneRoot = localNode;
 
             _sceneRoot.UpdateRS();
+
+            
 
             base.Initialize();
         }

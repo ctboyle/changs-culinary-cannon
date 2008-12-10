@@ -34,14 +34,14 @@
     <Compile Include="Models\enemy.X">
       <Name>enemy</Name>
       <Importer>XImporter</Importer>
-      <Processor>ModelProcessor</Processor>
+      <Processor>RCModelProcessor</Processor>
     </Compile>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Models\treasure_chest.x">
       <Name>treasure_chest</Name>
       <Importer>XImporter</Importer>
-      <Processor>ModelProcessor</Processor>
+      <Processor>RCModelProcessor</Processor>
     </Compile>
   </ItemGroup>
   <ItemGroup>
@@ -76,6 +76,10 @@
     <ProjectReference Include="..\..\RC.Content.Pipeline.HeightMap\RC.Content.Pipeline.HeightMap.csproj">
       <Project>{DECF90BA-D636-4003-8833-B2C55E0149FF}</Project>
       <Name>RC.Content.Pipeline.HeightMap</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\RC.ModelProcessor\RC.ModelProcessor.csproj">
+      <Project>{F2340025-6AE9-4CA5-92C3-53C3E4FD42DF}</Project>
+      <Name>RC.ModelProcessor</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

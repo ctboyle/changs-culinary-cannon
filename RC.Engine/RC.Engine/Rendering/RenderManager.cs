@@ -206,6 +206,8 @@ namespace RC.Engine.Rendering
             // Configure The Effect
             rcEffect.CustomConfigure(this);
 
+            //_graphics.GraphicsDevice.RenderState.FillMode = FillMode.WireFrame;
+            
             shader.Begin();
 
             EffectPassCollection passes = shader.CurrentTechnique.Passes;
@@ -215,7 +217,7 @@ namespace RC.Engine.Rendering
 
                 passes[iPass].Begin();
 
-                DrawElements();
+                DrawElements(_geometry.PartData);
 
                 passes[iPass].End();
 
@@ -225,48 +227,27 @@ namespace RC.Engine.Rendering
             shader.End();
         }
 
-        private void DrawElements()
+        private void DrawElements(RCVertexRefrence partData)
         {
-            RCVertexBuffer VBuffer = _geometry.VBuffer;
-            RCIndexBuffer IBuffer = _geometry.IBuffer;
-
-            DrawElements(
-                VBuffer.VertexDeclaration,
-                VBuffer.VertexBuffer,
-                VBuffer.VertexSize,
-                IBuffer.IndexBuffer,
-                VBuffer.NumVertices,
-                IBuffer.NumPrimitives
-            );
-        }
-
-        private void DrawElements(
-            VertexDeclaration vd, 
-            VertexBuffer vb, 
-            int vertexStride, 
-            IndexBuffer ib, 
-            int numVertices, 
-            int numPrimitives
-        )
-        {
-            _graphics.GraphicsDevice.VertexDeclaration = vd;
+            _graphics.GraphicsDevice.VertexDeclaration = partData.VertexDeclaration;
             
             _graphics.GraphicsDevice.Vertices[0].SetSource(
-                vb,
-                0,
-                vertexStride
+                partData.VertexBuffer,
+                partData.StreamOffset,
+                partData.Stride
                 );
 
-            _graphics.GraphicsDevice.Indices = ib;
+            _graphics.GraphicsDevice.Indices = partData.IndexBuffer;
 
             // Finally draw the actual triangles on the screen
             _graphics.GraphicsDevice.DrawIndexedPrimitives(
                 PrimitiveType.TriangleList,
-                0, 0,
-                numVertices,
-                0,
-                numPrimitives
+                partData.BaseVertex, 0,
+                partData.NumVertices,
+                partData.StartIndex,
+                partData.NumPrimitives
                 );
+             
         }
     }
 }
