@@ -35,8 +35,6 @@ namespace RC.Engine.Test
 
         public override void Initialize()
         {
-            RCSceneNode localNode = new RCSceneNode();
-
             /////////////////////////////////////////////////////////////////////
             // Setup the graphics device
             /////////////////////////////////////////////////////////////////////
@@ -81,11 +79,11 @@ namespace RC.Engine.Test
             /////////////////////////////////////////////////////////////////////
             //RCGeometry model = MeshCreator.CreateObject(Ctx.Graphics, Ctx.ContentRqst);
             RCDefaultContent<RCHeightMap> heightMap = new RCDefaultContent<RCHeightMap>(Ctx.ContentRqst, "Content\\Textures\\heightmap");
-            RCGeometry model = MeshCreator.CreateHeightMapObject(Ctx.Graphics, Ctx.ContentRqst, heightMap);
-            //RCPhysicsObject physicsModel = new RCPhysicsObject(Vector3.Zero, model);
-            //physicsModel.AddDefaultPhysicsBoundingBox();
-
-
+            RCContent<Texture2D> texture1 = new RCDefaultContent<Texture2D>(Ctx.ContentRqst, "Content\\Textures\\grass");
+            RCContent<Texture2D> texture2 = new RCDefaultContent<Texture2D>(Ctx.ContentRqst, "Content\\Textures\\rock");
+            RCContent<Texture2D> texture3 = new RCDefaultContent<Texture2D>(Ctx.ContentRqst, "Content\\Textures\\snow");
+            HeightMapEffect effect = new HeightMapEffect(Ctx.ContentRqst, heightMap, texture1, texture2, texture3);
+            heightMap.Content.AddEffect(effect);
 
             RCDefaultContent<RCSceneNode> modelContent = new RCDefaultContent<RCSceneNode>(Ctx.ContentRqst, @"Content\Models\enemy");
             RCSceneNode finallyModel = modelContent.Content;
@@ -93,24 +91,17 @@ namespace RC.Engine.Test
             RCDepthBufferState depthState = new RCDepthBufferState();
             depthState.DepthTestingEnabled = true;
             finallyModel.GlobalStates.Add(depthState);
-            model.GlobalStates.Add(depthState);
+            heightMap.Content.GlobalStates.Add(depthState);
 
-         
             /////////////////////////////////////////////////////////////////////
             // Setup the light node as the root and setup its children
             /////////////////////////////////////////////////////////////////////
-            //lightNode.AddChild(camera);
-            //lightNode.AddChild(model);
+            lightNode.AddChild(camera);
+            lightNode.AddChild(heightMap);
+            //lightNode.AddChild(finallyModel);
 
-           // localNode.AddChild(lightNode);
-            localNode.AddChild(model);
-            localNode.AddChild(camera);
-            
-            _sceneRoot = localNode;
-
+            _sceneRoot = lightNode;
             _sceneRoot.UpdateRS();
-
-            
 
             base.Initialize();
         }

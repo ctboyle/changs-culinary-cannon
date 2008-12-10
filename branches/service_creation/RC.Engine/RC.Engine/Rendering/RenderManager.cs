@@ -24,6 +24,8 @@ namespace RC.Engine.Rendering
     /// </summary>
     public interface IRCRenderManager
     {
+        IGraphicsDeviceService Graphics { get; }
+
         /// <summary>
         /// The current world transformation.
         /// </summary>
@@ -91,6 +93,11 @@ namespace RC.Engine.Rendering
             _cameraMgr = cameraMgr;
             _graphics = graphics;
             _contentRqst = contentRqst;
+        }
+
+        public IGraphicsDeviceService Graphics
+        {
+            get { return _graphics; }
         }
 
         public Matrix World
