@@ -13,11 +13,6 @@ namespace RC.Engine.SceneEffects
     {
         public const String EffectPath = "Content\\Effects\\Terrain";
 
-        public static int NumIntervalsX = 100;
-        public static int NumIntervalsY = 100;
-        public static float SizeX = 200;
-        public static float SizeY = 200;
-
         private RCContent<RCHeightMap> _heightMap = null;
         private RCContent<Texture2D> _grassTex = null;
         private RCContent<Texture2D> _rockTex = null;
@@ -37,16 +32,10 @@ namespace RC.Engine.SceneEffects
             _snowTex = snowTex;
         }
 
-        //public HeightMapEffect(RCHeightMap heightMap)
-        //{
-        //    _heightMap = heightMap;
-        //}
-
         public override void CustomConfigure(IRCRenderManager render)
         {
             if (_heightMap != null)
             {
-                Content.Parameters["HeightMap"].SetValue(_heightMap.Content);
                 Content.Parameters["World"].SetValue(render.World);
                 Content.Parameters["View"].SetValue(render.View);
                 Content.Parameters["Projection"].SetValue(render.Projection);
@@ -58,13 +47,6 @@ namespace RC.Engine.SceneEffects
                 Content.Parameters["middleTextureUnblendedMin"].SetValue(.35f);
                 Content.Parameters["middleTextureUnblendedMax"].SetValue(.4f);
                 Content.Parameters["topTextureUnblendedMin"].SetValue(.45f);
-
-                Content.Parameters["multiTextureEnabled"].SetValue(true);
-
-                Content.Parameters["du"].SetValue(1.0f / SizeX);
-                Content.Parameters["dv"].SetValue(1.0f / SizeY);
-                Content.Parameters["dx"].SetValue(SizeX / NumIntervalsX);
-                Content.Parameters["dy"].SetValue(SizeY / NumIntervalsY);
             }
         }
         

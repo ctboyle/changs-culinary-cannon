@@ -5,6 +5,9 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Content;
 
 using TRead = RC.Content.Heightmap.RCHeightMap;
+using RC.Engine.GraphicsManagement;
+using RC.Engine.Rendering;
+using Microsoft.Xna.Framework;
 
 namespace RC.Content.Heightmap
 {
@@ -34,28 +37,39 @@ namespace RC.Content.Heightmap
                     mapping[xCoordinate, yCoordinate] = input.ReadSingle();
                 }
             }
-
+            
             //read the mapping here
 
             Texture2D textureMap;
             //textureMap = input.ReadObject<Texture2D>();
             textureMap = input.ReadExternalReference<Texture2D>();
             //read the model here
-
-
+            
             return new RCHeightMap(textureMap, mapping);
         }
     }
 
-    public class RCHeightMap
+    public class RCHeightMap : RCSceneNode
     {
-        private float[,] mapping;
-        private Texture2D textureMapping;
+        public const int NumIntervalsX = 100;
+        public const int NumIntervalsY = 100;
+        public const float SizeX = 2;
+        public const float SizeY = 2;
+
+        private float[,] mapping = null;
+        private RCGeometry geometry = null;
+        private Texture2D textureMapping = null;
+        private int[] indices = null;
+        private float[] vertices = null;
+        private float[] texCoords = null;
+        private float[] normals = null;
+        private int numVertices = 0;
+        private int numIndices = 0;
 
         public RCHeightMap(Texture2D textureMap, float[,] heightMapping)
         {
-            Mapping = heightMapping;
-            TextureMapping = textureMap;
+            mapping = heightMapping;
+            textureMapping = textureMap;
         }
 
         /// <summary>
@@ -67,10 +81,6 @@ namespace RC.Content.Heightmap
             {
                 return textureMapping;
             }
-            set
-            {
-                textureMapping = value;
-            }
         }
 
         /// <summary>
@@ -81,10 +91,6 @@ namespace RC.Content.Heightmap
             get
             {
                 return mapping;
-            }
-            set
-            {
-                mapping = value;
             }
         }
 
@@ -113,5 +119,119 @@ namespace RC.Content.Heightmap
             return heightMap.TextureMapping;
         }
         #endregion Implicit conversions
+        
+        public override void Draw(IRCRenderManager render, RC.Engine.ContentManagement.IRCContentRequester contentRqst)
+        {
+            if (geometry == null)
+            {
+                SetupData();
+            }
+
+            RCVertexRefrence vertexReference = SetupVertexReference(render.Graphics);
+
+            geometry = new RCGeometry();
+            geometry.PartData = vertexReference;
+
+            foreach (RCEffect effect in Effects)
+            {
+                geometry.AddEffect(effect);
+            }
+
+            render.Draw(geometry);
+            base.Draw(render, contentRqst);
+        }
+        
+        private void SetupData()
+        {
+            float dx = SizeX / NumIntervalsX;
+            float dy = SizeY / NumIntervalsY;
+            float txinc = 1.0f / NumIntervalsX;
+            float tyinc = 1.0f / NumIntervalsY;
+
+            Vector3 position, normal = Vector3.Zero;
+            Vector2 texture = Vector2.Zero;
+
+            int vertexIdx = 0, fvertexIdx = 0;
+
+            numVertices = (NumIntervalsX + 1) * (NumIntervalsY + 1);
+            numIndices = 6 * NumIntervalsX * NumIntervalsY;
+
+            indices = new int[numIndices];
+            vertices = new float[3 * numVertices];
+            texCoords = new float[2 * numVertices];
+            normals = new float[3 * numVertices];
+
+            texture.X = 0.0f;
+            normal.Z = 1.0f;
+            position.Z = 0;
+
+            for (int i = 0; i <= NumIntervalsX; i++)
+            {
+                position.X = (-SizeX / 2.0f) + i * dx;
+                texture.Y = 1.0f;
+
+                for (int j = 0; j <= NumIntervalsY; j++)
+                {
+                    position.Y = (-SizeY / 2.0f) + j * dy;
+
+                    vertices[(3 * vertexIdx) + 0] = position.X;
+                    vertices[(3 * vertexIdx) + 1] = position.Y;
+                    vertices[(3 * vertexIdx) + 2] =
+                        Mapping[(int)(127 * texture.X), (int)(127 * texture.Y)];
+
+                    normals[(3 * vertexIdx) + 0] = normal.X;
+                    normals[(3 * vertexIdx) + 1] = normal.Y;
+                    normals[(3 * vertexIdx) + 2] = normal.Z;
+
+                    texCoords[(2 * vertexIdx) + 0] = texture.X;
+                    texCoords[(2 * vertexIdx) + 1] = texture.Y;
+
+                    if (i < NumIntervalsX && j < NumIntervalsY)
+                    {
+                        indices[fvertexIdx++] = (vertexIdx);
+                        indices[fvertexIdx++] = (vertexIdx + NumIntervalsY + 1);
+                        indices[fvertexIdx++] = (vertexIdx + NumIntervalsY + 2);
+                        indices[fvertexIdx++] = (vertexIdx);
+                        indices[fvertexIdx++] = (vertexIdx + NumIntervalsY + 2);
+                        indices[fvertexIdx++] = (vertexIdx + 1);
+                    }
+
+                    vertexIdx++;
+                    texture.Y -= tyinc;
+                }
+                texture.X += txinc;
+            }
+        }
+
+        private RCVertexRefrence SetupVertexReference(IGraphicsDeviceService graphics)
+        {
+            RCVertexAttributes vAttrib = new RCVertexAttributes();
+            vAttrib.SetElementChannels(ElementType.Position, RCVertexAttributes.ChannelCount.Three);
+            vAttrib.SetElementChannels(ElementType.Texture, RCVertexAttributes.ChannelCount.Two);
+            vAttrib.SetElementChannels(ElementType.Normal, RCVertexAttributes.ChannelCount.Three);
+
+            RCVertexBuffer vBuffer = new RCVertexBuffer(vAttrib, numVertices);
+            vBuffer.SetData(ElementType.Position, vertices);
+            vBuffer.SetData(ElementType.Texture, texCoords);
+            vBuffer.SetData(ElementType.Normal, normals);
+
+            RCIndexBuffer iBuffer = new RCIndexBuffer(numIndices);
+            iBuffer.SetData(indices);
+
+            iBuffer.Enable(graphics);
+            vBuffer.Enable(graphics);
+
+            RCVertexRefrence vertexRefrence = new RCVertexRefrence(
+                iBuffer.IndexBuffer,
+                vBuffer.VertexBuffer,
+                vBuffer.VertexDeclaration,
+                vBuffer.VertexSize,
+                0, 0, 0,
+                vBuffer.NumVertices,
+                iBuffer.NumIndicies / 3
+                );
+
+            return vertexRefrence;
+        }
     }
 }
