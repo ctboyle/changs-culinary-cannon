@@ -43,11 +43,11 @@ namespace RC.Engine.Ninject
             get { return _updatePlug; }
             set { _updatePlug = value; }
         }
-
+        /*
         protected override void Update(GameTime gameTime)
         {
             UpdatePlug.Update(gameTime);
             base.Update(gameTime);
-        }
+        }*/
     }
 }

@@ -17,7 +17,7 @@ namespace RC.Engine.Test
         {
             RCGameManagerFactory factory = new RCDefaultGameManagerFactory();
             RCGameManager mgr = factory.GetInstance();
-            mgr.LoadModule(new RCPhysicsModule());
+            //mgr.LoadModule(new RCPhysicsModule());
             mgr.Start(GameType);
         }
     }

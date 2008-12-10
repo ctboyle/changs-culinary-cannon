@@ -13,10 +13,10 @@ namespace RC.Engine.SceneEffects
     {
         public const String EffectPath = "Content\\Effects\\Terrain";
 
-        public static int NumIntervalsX = 120;
-        public static int NumIntervalsY = 120;
-        public static float SizeX = 2;
-        public static float SizeY = 2;
+        public static int NumIntervalsX = 100;
+        public static int NumIntervalsY = 100;
+        public static float SizeX = 200;
+        public static float SizeY = 200;
 
         private RCContent<RCHeightMap> _heightMap = null;
         private RCContent<Texture2D> _grassTex = null;

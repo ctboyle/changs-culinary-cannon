@@ -10,8 +10,8 @@ namespace RC.Engine.Rendering
     {
         private SpriteBatch _spriteBatch = null;
 
-        public RCSpriteBatch(IGraphicsDeviceService graphics) :
-            base(graphics)
+        public RCSpriteBatch() :
+            base()
         {
         }
 

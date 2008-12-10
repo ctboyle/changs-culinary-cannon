@@ -34,10 +34,9 @@ namespace RC.Engine.Rendering
             get { return _indexBuffer; }
         }
 
-        public RCIndexBuffer(IGraphicsDeviceService graphics, int numIndicies)
-            : base(graphics)
+        public RCIndexBuffer( int numIndicies)
+            : base()
         {
-
             _numIndicies = numIndicies;
             _data = new TPrimitive[_numIndicies];
         }
@@ -61,7 +60,7 @@ namespace RC.Engine.Rendering
 
         protected override void SetOnDevice()
         {
-            _indexBuffer = new IndexBuffer(Graphics.GraphicsDevice, SizeInBytes, BufferUsage.None, IndexElementSize.SixteenBits);
+            _indexBuffer = new IndexBuffer(Graphics.GraphicsDevice, SizeInBytes, BufferUsage.None, IndexElementSize.ThirtyTwoBits);
             _indexBuffer.SetData<TPrimitive>(_data);
         }
 

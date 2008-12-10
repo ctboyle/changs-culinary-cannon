@@ -9,9 +9,9 @@ namespace RC.Engine.ContentManagement
     {
         private IGraphicsDeviceService _graphics = null;
 
-        public RCDeviceResource(IGraphicsDeviceService graphics)
+        public RCDeviceResource()
         {
-            _graphics = graphics;
+
         }
 
         ~RCDeviceResource()
@@ -23,23 +23,31 @@ namespace RC.Engine.ContentManagement
 
         public void Dispose()
         {
-            RemoveFromDevice();
+            //RemoveFromDevice();
             GC.SuppressFinalize(this);
         }
 
         #endregion
 
-        public bool Enabled
+
+        public void Enable(IGraphicsDeviceService graphics)
         {
-            get { return IsOnDevice; }
-            set 
+            if (!IsOnDevice)
             {
-                if(IsOnDevice && !value)
-                    RemoveFromDevice();
-                else if (!IsOnDevice && value)
-                    SetOnDevice();
+                _graphics = graphics;
+                SetOnDevice();
             }
         }
+
+        public void Disable()
+        {
+            if (IsOnDevice)
+            {
+                RemoveFromDevice();
+                _graphics = null;
+            }
+        }
+
 
         protected abstract bool IsOnDevice { get; }
 

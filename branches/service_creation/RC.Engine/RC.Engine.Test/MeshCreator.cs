@@ -46,15 +46,28 @@ namespace RC.Engine.Test
             vAttrib.SetElementChannels(ElementType.Texture, RCVertexAttributes.ChannelCount.Two);
             vAttrib.SetElementChannels(ElementType.Normal, RCVertexAttributes.ChannelCount.Three);
 
-            RCVertexBuffer vBuffer = new RCVertexBuffer(graphics, vAttrib, 4);
+            RCVertexBuffer vBuffer = new RCVertexBuffer(vAttrib, 4);
             vBuffer.SetData(ElementType.Position, vertices);
             vBuffer.SetData(ElementType.Texture, texCoords);
             vBuffer.SetData(ElementType.Normal, normals);
 
-            RCIndexBuffer iBuffer = new RCIndexBuffer(graphics, 6);
+            RCIndexBuffer iBuffer = new RCIndexBuffer( 6);
             iBuffer.SetData(indicies);
 
-            RCGeometry geometry = new RCGeometry(iBuffer, vBuffer);
+            iBuffer.Enable(graphics);
+            vBuffer.Enable(graphics);
+            RCVertexRefrence vertexRefrence = new RCVertexRefrence(
+                iBuffer.IndexBuffer,
+                vBuffer.VertexBuffer,
+                vBuffer.VertexDeclaration,
+                vBuffer.VertexSize,
+                0, 0, 0,
+                vBuffer.NumVertices,
+                iBuffer.NumIndicies / 3);
+
+
+            RCGeometry geometry = new RCGeometry();
+            geometry.PartData = vertexRefrence;
 
             RCMaterialState material = new RCMaterialState();
             material.Ambient = new Color(255, 0, 0, 255);
@@ -109,16 +122,18 @@ namespace RC.Engine.Test
                 {
                     position.Y = (-HeightMapEffect.SizeY / 2.0f) + j * dy;
 
-                    vertices[a++] = position.X;
-                    vertices[a++] = position.Y;
-                    vertices[a++] = position.Z;
 
-                    normals[b++] = normal.X;
-                    normals[b++] = normal.Y;
-                    normals[b++] = normal.Z;
 
-                    texCoords[c++] = texture.X;
-                    texCoords[c++] = texture.Y;
+                    vertices[(3*vertexIdx)+0] = position.X;
+                    vertices[(3*vertexIdx)+1] = position.Y;
+                    vertices[(3*vertexIdx)+2] = position.Z;
+
+                    normals[(3 * vertexIdx) + 0] = normal.X;
+                    normals[(3 * vertexIdx) + 1] = normal.Y;
+                    normals[(3 * vertexIdx) + 2] = normal.Z;
+
+                    texCoords[(2 * vertexIdx) + 0] = texture.X;
+                    texCoords[(2 * vertexIdx) + 1] = texture.Y;
 
                     if (i < HeightMapEffect.NumIntervalsX && j < HeightMapEffect.NumIntervalsY)
                     {
@@ -141,12 +156,12 @@ namespace RC.Engine.Test
             vAttrib.SetElementChannels(ElementType.Texture, RCVertexAttributes.ChannelCount.Two);
             vAttrib.SetElementChannels(ElementType.Normal, RCVertexAttributes.ChannelCount.Three);
 
-            RCVertexBuffer vBuffer = new RCVertexBuffer(graphics, vAttrib, numVertices);
+            RCVertexBuffer vBuffer = new RCVertexBuffer(vAttrib, numVertices);
             vBuffer.SetData(ElementType.Position, vertices);
             vBuffer.SetData(ElementType.Texture, texCoords);
             vBuffer.SetData(ElementType.Normal, normals);
 
-            RCIndexBuffer iBuffer = new RCIndexBuffer(graphics, numIndices);
+            RCIndexBuffer iBuffer = new RCIndexBuffer(numIndices);
             iBuffer.SetData(indices);
 
             RCContent<Texture2D> texture1 = new RCDefaultContent<Texture2D>(contentRqst, "Content\\Textures\\grass");
@@ -154,7 +169,20 @@ namespace RC.Engine.Test
             RCContent<Texture2D> texture3 = new RCDefaultContent<Texture2D>(contentRqst, "Content\\Textures\\snow");
             HeightMapEffect effect = new HeightMapEffect(contentRqst, heightMap, texture1, texture2, texture3);
 
-            RCGeometry geometry = new RCGeometry(iBuffer, vBuffer);
+            iBuffer.Enable(graphics);
+            vBuffer.Enable(graphics);
+            RCVertexRefrence vertexRefrence = new RCVertexRefrence(
+                iBuffer.IndexBuffer,
+                vBuffer.VertexBuffer,
+                vBuffer.VertexDeclaration,
+                vBuffer.VertexSize,
+                0, 0, 0,
+                vBuffer.NumVertices,
+                iBuffer.NumIndicies / 3);
+
+
+            RCGeometry geometry = new RCGeometry();
+            geometry.PartData = vertexRefrence;
             geometry.AddEffect(effect);
 
             return geometry;
