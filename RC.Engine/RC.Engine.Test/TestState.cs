@@ -78,15 +78,14 @@ namespace RC.Engine.Test
             // Create the model
             /////////////////////////////////////////////////////////////////////
             //RCGeometry model = MeshCreator.CreateObject(Ctx.Graphics, Ctx.ContentRqst);
-            RCDefaultContent<RCHeightMap> heightMap = new RCDefaultContent<RCHeightMap>(Ctx.ContentRqst, "Content\\Textures\\heightmap");
+            RCContent<RCHeightMap> heightMap = new RCDefaultContent<RCHeightMap>(Ctx.ContentRqst, "Content\\Textures\\heightmap3");
             RCContent<Texture2D> texture1 = new RCDefaultContent<Texture2D>(Ctx.ContentRqst, "Content\\Textures\\grass");
             RCContent<Texture2D> texture2 = new RCDefaultContent<Texture2D>(Ctx.ContentRqst, "Content\\Textures\\rock");
             RCContent<Texture2D> texture3 = new RCDefaultContent<Texture2D>(Ctx.ContentRqst, "Content\\Textures\\snow");
             HeightMapEffect effect = new HeightMapEffect(Ctx.ContentRqst, heightMap, texture1, texture2, texture3);
             heightMap.Content.AddEffect(effect);
 
-            RCDefaultContent<RCSceneNode> modelContent = new RCDefaultContent<RCSceneNode>(Ctx.ContentRqst, @"Content\Models\enemy");
-            RCSceneNode finallyModel = modelContent.Content;
+            RCContent<RCSceneNode> modelContent = new RCDefaultContent<RCSceneNode>(Ctx.ContentRqst, @"Content\Models\enemy");
 
             RCDepthBufferState depthState = new RCDepthBufferState();
             depthState.DepthTestingEnabled = true;
@@ -98,7 +97,7 @@ namespace RC.Engine.Test
             /////////////////////////////////////////////////////////////////////
             lightNode.AddChild(camera);
             lightNode.AddChild(heightMap);
-            //lightNode.AddChild(finallyModel);
+            //lightNode.AddChild(modelContent);
 
             _sceneRoot = lightNode;
             _sceneRoot.UpdateRS();
