@@ -208,14 +208,14 @@ namespace RC.Content.Heightmap
             texCoords = new float[2 * numVertices];
             normals = new float[3 * numVertices];
 
-            texture.X = 0.0f;
+            texture.Y = 1.0f;
             normal.Y = 1.0f;
             position.Y = 0;
 
             for (int i = 0; i <= NumIntervalsX; i++)
             {
                 position.Z = (-SizeX / 2.0f) + i * dx;
-                texture.Y = 1.0f;
+                texture.X = 0.0f;
 
                 for (int j = 0; j <= NumIntervalsZ; j++)
                 {
@@ -223,8 +223,9 @@ namespace RC.Content.Heightmap
 
                     vertices[(3 * vertexIdx) + 0] = scaling * position.X;
                     vertices[(3 * vertexIdx) + 1] =
-                        Mapping[(int)((textureMapping.Width - 1) * texture.X), (int)((textureMapping.Height - 1) * texture.Y)];
+                        Mapping[(int)((textureMapping.Width - 1) * texture.X), (int)(textureMapping.Height - (textureMapping.Height - 1) * texture.Y - 1)];
                     vertices[(3 * vertexIdx) + 2] = scaling * position.Z;
+                        
 
                     normals[(3 * vertexIdx) + 0] = normal.X;
                     normals[(3 * vertexIdx) + 1] = normal.Y;
@@ -235,18 +236,36 @@ namespace RC.Content.Heightmap
 
                     if (i < NumIntervalsX && j < NumIntervalsZ)
                     {
+                        ////what Chang had
+                        //indices[fvertexIdx++] = (vertexIdx);
+                        //indices[fvertexIdx++] = (vertexIdx + NumIntervalsZ + 1);
+                        //indices[fvertexIdx++] = (vertexIdx + NumIntervalsZ + 2);
+                        //indices[fvertexIdx++] = (vertexIdx);
+                        //indices[fvertexIdx++] = (vertexIdx + NumIntervalsZ + 2);
+                        //indices[fvertexIdx++] = (vertexIdx + 1);
+
+
+                        ////switching rows and columns
+                        indices[fvertexIdx++] = (vertexIdx);
+                        indices[fvertexIdx++] = (vertexIdx + 1);
+                        indices[fvertexIdx++] = (vertexIdx + NumIntervalsZ + 2);
                         indices[fvertexIdx++] = (vertexIdx);
                         indices[fvertexIdx++] = (vertexIdx + NumIntervalsZ + 1);
                         indices[fvertexIdx++] = (vertexIdx + NumIntervalsZ + 2);
-                        indices[fvertexIdx++] = (vertexIdx);
-                        indices[fvertexIdx++] = (vertexIdx + NumIntervalsZ + 2);
-                        indices[fvertexIdx++] = (vertexIdx + 1);
+
+                        ////what is expected to be right
+                        //indices[fvertexIdx++] = (vertexIdx);
+                        //indices[fvertexIdx++] = (vertexIdx + NumIntervalsZ + 1);
+                        //indices[fvertexIdx++] = (vertexIdx + NumIntervalsZ + 2);
+                        //indices[fvertexIdx++] = (vertexIdx);
+                        //indices[fvertexIdx++] = (vertexIdx + NumIntervalsZ + 2);
+                        //indices[fvertexIdx++] = (vertexIdx + 1);
                     }
 
                     vertexIdx++;
-                    texture.Y -= tyinc;
+                    texture.X += txinc;
                 }
-                texture.X += txinc;
+                texture.Y -= tyinc;
             }
 
             
