@@ -136,6 +136,8 @@ namespace RC.Engine.ContentManagement
             Guid id
             )
         {
+            if (!_content.ContainsKey(id)) return;
+
             // Get the content and try to dispose it, in order
             // to immediately release the resources.
             IDisposable content = _content[id].Content as IDisposable;
