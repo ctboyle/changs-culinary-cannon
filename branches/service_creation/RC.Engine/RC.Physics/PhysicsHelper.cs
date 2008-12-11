@@ -34,21 +34,15 @@ namespace RC.Physics
             {
                 for (int z = 0; z < heightMap.Mapping.GetUpperBound(1); z++)
                 {
-                    heights.SetAt(x, z, heightMap.Mapping[x, z]);
+                    heights.SetAt(x, z, heightMap.Mapping[x, z] + heightMap.LocalTrans.Translation.Y);
                 }
             }
 
             physicsHeightMap.Body.CollisionSkin.AddPrimitive(
-                new JigLibX.Geometry.Heightmap(heights, -1 * heightMap.Scaling, -1 * heightMap.Scaling, 2 * heightMap.Scaling, 2 * heightMap.Scaling),
+                new JigLibX.Geometry.Heightmap(heights, 0, 0, 1, 1),
                 (int)JigLibX.Collision.MaterialTable.MaterialID.UserDefined,
                 new JigLibX.Collision.MaterialProperties(0.0f, 0.7f, 0.6f)
             );
-
-            //physicsHeightMap.Body.CollisionSkin.AddPrimitive(
-            //    new JigLibX.Geometry.Plane(Vector3.Up, 0),
-            //    (int)JigLibX.Collision.MaterialTable.MaterialID.UserDefined,
-            //    new JigLibX.Collision.MaterialProperties(0.7f, 0.7f, 0.6f)
-            //);
 
             physicsHeightMap.SetChildNode(heightMap);
 

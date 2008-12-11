@@ -70,7 +70,7 @@ namespace RC.Engine.Test
             RCLight light = new RCLight();
             light.Diffuse = new Vector3(1.2f);
             light.Specular = new Vector3(0.8f);
-            Matrix lightLookAt = Matrix.CreateLookAt(new Vector3(0, 10.0f, 15.0f), Vector3.UnitZ, Vector3.Up);
+            Matrix lightLookAt = Matrix.CreateLookAt(new Vector3(0f, 25.0f, 0f), Vector3.UnitZ, Vector3.Up);
             light.Transform = Matrix.Invert(lightLookAt);
             lightNode.SetLight(light);
             lightNode.AddLight(light);
@@ -95,13 +95,13 @@ namespace RC.Engine.Test
             // Create the model
             /////////////////////////////////////////////////////////////////////
 
-            for (int i = 0; i < 5; ++i)
+            for (int i = 0; i < 1; ++i)
             {
                 RCModelContent enemy = new RCModelContent(Ctx.ContentRqst, @"Content\Models\treasure_chest");
-                enemy.Content.WorldTrans = Matrix.CreateTranslation(new Vector3((float)(-2+i),20f,0f));
+                enemy.Content.WorldTrans = Matrix.CreateTranslation(new Vector3(0,20f+(float)i,0));
                 physicsEnemy = JibLibXPhysicsHelper.CreateObject(enemy);
                 physicsEnemy.SetMass(1.0f);
-                JigLibX.Geometry.Box box = new JigLibX.Geometry.Box(Vector3.Zero, Matrix.Identity, new Vector3(1f));
+                JigLibX.Geometry.Box box = new JigLibX.Geometry.Box(Vector3.Zero, Matrix.Identity, new Vector3(10.0f));
                 physicsEnemy.Body.CollisionSkin.AddPrimitive(
                     box,
                     (int)JigLibX.Collision.MaterialTable.MaterialID.UserDefined,
