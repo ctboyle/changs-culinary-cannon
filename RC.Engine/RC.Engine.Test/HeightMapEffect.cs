@@ -17,21 +17,29 @@ namespace RC.Engine.SceneEffects
         private RCContent<Texture2D> _grassTex = null;
         private RCContent<Texture2D> _rockTex = null;
         private RCContent<Texture2D> _snowTex = null;
-        private float scaling = 1;
+        private float totalHeightscaling = 1;
+        private float bottomOfRockHeightPercent = .2f;
+        private float topOfGrassHeightPercent = .35f;
+        private float bottomOfSnowHeightPercent = .4f;
+        private float topOfRockHeightPercent = .5f;
 
         public HeightMapEffect(
             IRCContentRequester contentRqst, 
             RCContent<RCHeightMap> heightMap,
             RCContent<Texture2D> grassTex,
             RCContent<Texture2D> rockTex,
-            RCContent<Texture2D> snowTex
+            RCContent<Texture2D> snowTex,
+            float percentBottomOfRockHeight,
+            float percentTopOfGrassHeight,
+            float percentBottomOfSnowHeight,
+            float percentTopOfRockHeight
             ) : base(contentRqst)
         {
             _heightMap = heightMap;
             _grassTex = grassTex;
             _rockTex = rockTex;
             _snowTex = snowTex;
-            scaling = heightMap.Content.Scaling;
+            totalHeightscaling = heightMap.Content.Scaling * heightMap.Content.HeightScaling;
         }
 
         public override void CustomConfigure(IRCRenderManager render)
@@ -45,10 +53,15 @@ namespace RC.Engine.SceneEffects
                 Content.Parameters["multiTextureBottom"].SetValue(_grassTex);
                 Content.Parameters["multiTextureMiddle"].SetValue(_rockTex);
                 Content.Parameters["multiTextureTop"].SetValue(_snowTex);
-                Content.Parameters["bottomTextureUnblendedMax"].SetValue(.3f*scaling);
-                Content.Parameters["middleTextureUnblendedMin"].SetValue(.35f*scaling);
-                Content.Parameters["middleTextureUnblendedMax"].SetValue(.45f*scaling);
-                Content.Parameters["topTextureUnblendedMin"].SetValue(.55f*scaling);
+
+                Content.Parameters["bottomTextureUnblendedMax"].SetValue(bottomOfRockHeightPercent 
+                    * totalHeightscaling);
+                Content.Parameters["middleTextureUnblendedMin"].SetValue(topOfGrassHeightPercent 
+                    * totalHeightscaling);
+                Content.Parameters["middleTextureUnblendedMax"].SetValue(bottomOfSnowHeightPercent 
+                    * totalHeightscaling);
+                Content.Parameters["topTextureUnblendedMin"].SetValue(topOfRockHeightPercent 
+                    * totalHeightscaling);
             }
         }
 

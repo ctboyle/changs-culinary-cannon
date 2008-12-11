@@ -51,7 +51,7 @@ namespace RC.Engine.Test
             // Create and setup the camera
             /////////////////////////////////////////////////////////////////////
             RCCamera camera = new RCPerspectiveCamera(Ctx.Graphics.GraphicsDevice.Viewport);
-            Matrix cameraLookAt = Matrix.CreateLookAt(new Vector3(0.0f, 0.0f, 3.0f), Vector3.Zero, Vector3.Up);
+            Matrix cameraLookAt = Matrix.CreateLookAt(new Vector3(0.0f, 0.0f, 0.0f), Vector3.Forward, Vector3.Up);
             camera.LocalTrans = Matrix.Invert(cameraLookAt);
             camera.Near = 0.05f;
             Ctx.CameraMgr.AddCamera("Test", camera);
@@ -80,13 +80,14 @@ namespace RC.Engine.Test
             //RCGeometry model = MeshCreator.CreateObject(Ctx.Graphics, Ctx.ContentRqst);
             float heightMapScaling = 5;
 
-            RCContent<RCHeightMap> heightMap = new RCDefaultContent<RCHeightMap>(Ctx.ContentRqst, "Content\\Textures\\heightmap");
+            RCContent<RCHeightMap> heightMap = new RCDefaultContent<RCHeightMap>(Ctx.ContentRqst, "Content\\Textures\\final_heightmap");
             RCContent<Texture2D> texture1 = new RCDefaultContent<Texture2D>(Ctx.ContentRqst, "Content\\Textures\\tilable_long_grass");
             RCContent<Texture2D> texture2 = new RCDefaultContent<Texture2D>(Ctx.ContentRqst, "Content\\Textures\\seamless_rock");
             RCContent<Texture2D> texture3 = new RCDefaultContent<Texture2D>(Ctx.ContentRqst, "Content\\Textures\\tileable_snow");
             heightMap.Content.Scaling = heightMapScaling;
 
-            HeightMapEffect effect = new HeightMapEffect(Ctx.ContentRqst, heightMap, texture1, texture2, texture3);
+            HeightMapEffect effect = new HeightMapEffect(Ctx.ContentRqst, heightMap,
+                texture1, texture2, texture3, .2f, .35f, .4f, .5f);
             heightMap.Content.AddEffect(effect);
             
 
@@ -102,7 +103,7 @@ namespace RC.Engine.Test
             // Setup the light node as the root and setup its children
             /////////////////////////////////////////////////////////////////////
             lightNode.AddChild(camera);
-            //lightNode.AddChild(heightMap);
+            lightNode.AddChild(heightMap);
             lightNode.AddChild(enemy);
 
             _sceneRoot = lightNode;

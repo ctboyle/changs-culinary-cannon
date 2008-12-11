@@ -45,7 +45,7 @@ namespace RC.Content.Heightmap
             textureMap = input.ReadExternalReference<Texture2D>();
             //read the model here
             
-            return new RCHeightMap(textureMap, mapping, 1);
+            return new RCHeightMap(textureMap, mapping);
         }
     }
 
@@ -65,26 +65,53 @@ namespace RC.Content.Heightmap
         private float[] normals = null;
         private int numVertices = 0;
         private int numIndices = 0;
-        private float scaling = 1;
+        private float scaling = 1;          //These should remain 1 by default; only change
+        private float heightScaling = 1;    //  them through their properties.
+
+        public float HeightScaling
+        {
+            get { return heightScaling; }
+            set
+            {
+                if (heightScaling != value)
+                {
+                    ScaleHeightMapping(value / heightScaling);
+                    heightScaling = value;
+                    SetupData();
+                }
+                
+                
+            }
+        }
 
         public float Scaling
         {
             get { return scaling; }
-            set { scaling = value; }
-        }
-
-        public RCHeightMap(Texture2D textureMap, float[,] heightMapping, float scaling)
-        {
-            if (scaling !=1f)
+            set
             {
-                for (int xCoord = 0; xCoord < heightMapping.GetLength(0); xCoord++)
+                if (scaling != value)
                 {
-                    for (int yCoord = 0; yCoord < heightMapping.GetLength(1); yCoord++)
-                    {
-                        heightMapping[xCoord, yCoord] = heightMapping[xCoord, yCoord] * scaling;
-                    }
+                    ScaleHeightMapping(value / scaling);
+                    scaling = value;
+                    SetupData();
                 }
             }
+        }
+
+        private void ScaleHeightMapping(float scalingDifference)
+        {
+            for (int xCoord = 0; xCoord < mapping.GetLength(0); xCoord++)
+            {
+                for (int yCoord = 0; yCoord < mapping.GetLength(1); yCoord++)
+                {
+                    mapping[xCoord, yCoord] = mapping[xCoord, yCoord] * scalingDifference;
+                }
+            }
+        }
+
+        public RCHeightMap(Texture2D textureMap, float[,] heightMapping)
+        {
+            
             mapping = heightMapping;
             textureMapping = textureMap;
         }
@@ -166,6 +193,8 @@ namespace RC.Content.Heightmap
             float tyinc = 1.0f / NumIntervalsZ;
             //scaling = 1;
 
+
+
             Vector3 position, normal = Vector3.Zero;
             Vector2 texture = Vector2.Zero;
 
@@ -185,16 +214,16 @@ namespace RC.Content.Heightmap
 
             for (int i = 0; i <= NumIntervalsX; i++)
             {
-                position.X = (-SizeX / 2.0f) + i * dx;
+                position.Z = (-SizeX / 2.0f) + i * dx;
                 texture.Y = 1.0f;
 
                 for (int j = 0; j <= NumIntervalsZ; j++)
                 {
-                    position.Z = (-SizeZ / 2.0f) + j * dz;
+                    position.X = (-SizeZ / 2.0f) + j * dz;
 
                     vertices[(3 * vertexIdx) + 0] = scaling * position.X;
-                    vertices[(3 * vertexIdx) + 1] = scaling * 
-                        Mapping[(int)(127 * texture.X), (int)(127 * texture.Y)];
+                    vertices[(3 * vertexIdx) + 1] =  
+                        Mapping[(int)((textureMapping.Width - 1) * texture.X), (int)((textureMapping.Height - 1) * texture.Y)];
                     vertices[(3 * vertexIdx) + 2] = scaling * position.Z;
                         
 
