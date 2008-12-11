@@ -75,8 +75,8 @@
     <Compile Include="Animation\DurationController.cs" />
     <Compile Include="Animation\KeyFrameController.cs" />
     <Compile Include="Base\Base.cs" />
+    <Compile Include="BasicGame.cs" />
     <Compile Include="SceneEffects\XnaModelEffect.cs" />
-    <Compile Include="StateManagement\BasicGame.cs" />
     <Compile Include="Base\XnaGame.cs" />
     <Compile Include="Cameras\Camera.cs" />
     <Compile Include="Cameras\CameraManager.cs" />
