@@ -8,6 +8,7 @@ using Microsoft.Xna.Framework;
 using RC.Engine.GraphicsManagement.BoundingVolumes;
 using JigLibX.Geometry;
 using JigLibX.Math;
+using Microsoft.Xna.Framework.Graphics;
 
 namespace RC.Physics
 {
@@ -17,7 +18,8 @@ namespace RC.Physics
         {
             public override void AddExternalForces(float dt)
             {
-                AddGravityToExternalForce();
+                this.Force -= new Vector3(0, 10, 0);
+                //AddGravityToExternalForce();
             }
         }
 
@@ -105,6 +107,16 @@ namespace RC.Physics
             if (_childNode != null)
             {
                 _childNode.Draw(render, contentRqst);
+            }
+            if (_body.CollisionSkin != null)
+            {
+                int count = _body.CollisionSkin.NumPrimitives;
+                for (int i = 0; i < count; i++)
+                {
+                    BoundingBox box = new BoundingBox();
+                    BoundingBoxHelper.AddPrimitive(_body.CollisionSkin.GetPrimitiveOldWorld(i), ref box);
+                    DebugDrawer.ActiveInstance.DrawAabb(box.Min, box.Max, Color.Red);
+                }
             }
         }
 

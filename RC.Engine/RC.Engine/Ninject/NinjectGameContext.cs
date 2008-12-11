@@ -8,6 +8,7 @@ using RC.Engine.Rendering;
 using Microsoft.Xna.Framework.Graphics;
 using Ninject.Core;
 using RC.Engine.Base;
+using Microsoft.Xna.Framework;
 
 namespace RC.Engine.Ninject
 {
@@ -19,6 +20,7 @@ namespace RC.Engine.Ninject
         private IRCCameraManager _cameraMgr = null;
         private IRCRenderManager _renderMgr = null;
         private IGraphicsDeviceService _graphics = null;
+        private Game _game = null;
         
         [Inject]
         public IRCContentRequester ContentRqst
@@ -54,11 +56,19 @@ namespace RC.Engine.Ninject
             set { _renderMgr = value; }
             get { return _renderMgr; }
         }
+
         [Inject]
         public IGraphicsDeviceService Graphics
         {
             set { _graphics = value; }
             get { return _graphics; }
+        }
+
+        [Inject]
+        public Game Game
+        {
+            get { return _game; }
+            set { _game = value; }
         }
     }
 }

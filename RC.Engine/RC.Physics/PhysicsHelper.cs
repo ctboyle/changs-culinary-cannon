@@ -15,6 +15,9 @@ namespace RC.Physics
             JibLibXPhysicsObject physicsObject = new JibLibXPhysicsObject();
             physicsObject.AddCollisionSkin();
             physicsObject.SetChildNode(spatial);
+
+
+
             return physicsObject;
         }
 
@@ -38,8 +41,15 @@ namespace RC.Physics
                 }
             }
 
+            //physicsHeightMap.Body.CollisionSkin.AddPrimitive(
+            //    new JigLibX.Geometry.Heightmap(heights, 0, 0, 1, 1),
+            //    (int)JigLibX.Collision.MaterialTable.MaterialID.UserDefined,
+            //    new JigLibX.Collision.MaterialProperties(0.0f, 0.7f, 0.6f)
+            //);
+
+
             physicsHeightMap.Body.CollisionSkin.AddPrimitive(
-                new JigLibX.Geometry.Heightmap(heights, 0, 0, 1, 1),
+                new JigLibX.Geometry.Plane(Vector3.Up, 0),
                 (int)JigLibX.Collision.MaterialTable.MaterialID.UserDefined,
                 new JigLibX.Collision.MaterialProperties(0.0f, 0.7f, 0.6f)
             );

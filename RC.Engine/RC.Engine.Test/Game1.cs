@@ -10,6 +10,7 @@ using Microsoft.Xna.Framework.Net;
 using Microsoft.Xna.Framework.Storage;
 using RC.Engine.StateManagement;
 using RC.Engine.Base;
+using RC.Physics;
 
 namespace RC.Engine.Test
 {
@@ -27,6 +28,10 @@ namespace RC.Engine.Test
 
         public override void Initialize()
         {
+            DebugDrawer d = new DebugDrawer(Ctx.Game, Ctx);
+            d.DrawOrder = 9000000;
+            d.UpdateOrder = 900000;
+            Ctx.Game.Components.Add(d);
             Ctx.StateMgr.AddState(GameStart, typeof(TestState));
             base.Initialize();
         }
