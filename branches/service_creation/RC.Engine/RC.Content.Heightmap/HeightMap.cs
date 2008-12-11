@@ -75,6 +75,16 @@ namespace RC.Content.Heightmap
 
         public RCHeightMap(Texture2D textureMap, float[,] heightMapping, float scaling)
         {
+            if (scaling !=1f)
+            {
+                for (int xCoord = 0; xCoord < heightMapping.GetLength(0); xCoord++)
+                {
+                    for (int yCoord = 0; yCoord < heightMapping.GetLength(1); yCoord++)
+                    {
+                        heightMapping[xCoord, yCoord] = heightMapping[xCoord, yCoord] * scaling;
+                    }
+                }
+            }
             mapping = heightMapping;
             textureMapping = textureMap;
         }
