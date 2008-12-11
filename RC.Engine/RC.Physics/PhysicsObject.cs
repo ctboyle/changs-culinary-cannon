@@ -119,7 +119,7 @@ namespace RC.Physics
 
             if (_body.CollisionSkin != null)
             {
-                //_body.CollisionSkin.ApplyLocalTransform(new Transform(-CenterOfMass, Matrix.Identity));
+                _body.CollisionSkin.ApplyLocalTransform(new Transform(-CenterOfMass, Matrix.Identity));
             }
         }
 
@@ -128,10 +128,9 @@ namespace RC.Physics
             if (_body.CollisionSkin != null)
             {
                 _worldTrans =
+                    _body.CollisionSkin.GetPrimitiveLocal(0).Transform.Orientation * 
                     _body.Orientation *
                     Matrix.CreateTranslation(_body.Position);
-                    //_body.CollisionSkin.GetPrimitiveLocal(0).Transform.Orientation * 
-
             }
             else
             {
