@@ -54,6 +54,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="DebugDrawer.cs" />
     <Compile Include="PhysicsHelper.cs" />
     <Compile Include="PhysicsObject.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

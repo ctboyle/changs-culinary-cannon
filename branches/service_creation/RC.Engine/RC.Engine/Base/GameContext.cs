@@ -6,6 +6,7 @@ using RC.Engine.ContentManagement;
 using RC.Engine.Cameras;
 using RC.Engine.Rendering;
 using Microsoft.Xna.Framework.Graphics;
+using Microsoft.Xna.Framework;
 
 namespace RC.Engine.Base
 {
@@ -17,5 +18,6 @@ namespace RC.Engine.Base
         IRCCameraManager CameraMgr { get; }
         IRCRenderManager RenderMgr { get; }
         IGraphicsDeviceService Graphics { get; }
+        Game Game { get; }
     }
 }

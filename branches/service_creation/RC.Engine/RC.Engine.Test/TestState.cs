@@ -16,6 +16,7 @@ using RC.Physics;
 using RC.Engine.GraphicsManagement.BoundingVolumes;
 using RC.Content.Heightmap;
 using RC.Engine.ContentManagement.ContentTypes;
+using JigLibX.Math;
 
 namespace RC.Engine.Test
 {
@@ -102,13 +103,21 @@ namespace RC.Engine.Test
             // Create the model
             /////////////////////////////////////////////////////////////////////
 
-            for (int i = 0; i < 1; ++i)
+            for (int i = 0; i < 4; ++i)
             {
                 RCModelContent enemy = new RCModelContent(Ctx.ContentRqst, @"Content\Models\treasure_chest");
-                enemy.Content.WorldTrans = Matrix.CreateTranslation(new Vector3(0,20f+(float)i,0));
+                enemy.Content.WorldTrans = Matrix.CreateTranslation(new Vector3(0,20f+(float)2*i,0));
                 physicsEnemy = JibLibXPhysicsHelper.CreateObject(enemy);
+
                 physicsEnemy.SetMass(1.0f);
-                JigLibX.Geometry.Box box = new JigLibX.Geometry.Box(Vector3.Zero, Matrix.Identity, new Vector3(10.0f));
+                // physicsEnemy.Body.MoveTo(physicsEnemy.WorldTrans.Translation, Matrix.Identity);
+                physicsEnemy.Body.CollisionSkin.ApplyLocalTransform(new Transform(-physicsEnemy.CenterOfMass, Matrix.Identity));
+
+                
+
+
+
+                JigLibX.Geometry.Box box = new JigLibX.Geometry.Box(Vector3.Zero, Matrix.Identity, new Vector3(500,500,500));
                 physicsEnemy.Body.CollisionSkin.AddPrimitive(
                     box,
                     (int)JigLibX.Collision.MaterialTable.MaterialID.UserDefined,
