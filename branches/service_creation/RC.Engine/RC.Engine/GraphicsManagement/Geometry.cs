@@ -7,6 +7,7 @@ using RC.Engine.SceneEffects;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Content;
 using RC.Engine.ContentManagement;
+using RC.Engine.GraphicsManagement.BoundingVolumes;
 
 namespace RC.Engine.GraphicsManagement
 {
@@ -17,6 +18,13 @@ namespace RC.Engine.GraphicsManagement
         private RCLightEffect _lightEffect = null;
         private RCVertexRefrence _vertexRefrence;
 
+        private RCBoundingSphere _localBound = new RCBoundingSphere();
+
+        public RCBoundingSphere LocalBound
+        {
+            get { return _localBound; }
+            set { _localBound = value; }
+        }
 
         public RCVertexRefrence PartData
         {
@@ -80,7 +88,7 @@ namespace RC.Engine.GraphicsManagement
 
         protected override void UpdateWorldBound()
         {
-            
+            _worldBound = _localBound.Transform(WorldTrans);
         }
     }
 }

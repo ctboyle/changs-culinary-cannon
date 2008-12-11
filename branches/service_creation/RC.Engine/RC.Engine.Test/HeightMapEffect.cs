@@ -51,8 +51,8 @@ namespace RC.Engine.SceneEffects
                 Content.Parameters["topTextureUnblendedMin"].SetValue(.55f*scaling);
             }
         }
-        
-        public override object CreateType(Microsoft.Xna.Framework.Graphics.IGraphicsDeviceService graphics, Microsoft.Xna.Framework.Content.ContentManager content)
+
+        protected override object OnCreateType(Microsoft.Xna.Framework.Graphics.IGraphicsDeviceService graphics, Microsoft.Xna.Framework.Content.ContentManager content)
         {
             return content.Load<Effect>(EffectPath);
         }

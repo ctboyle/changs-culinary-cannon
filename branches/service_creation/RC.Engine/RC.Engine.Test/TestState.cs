@@ -15,7 +15,7 @@ using RC.Engine.Base;
 using RC.Physics;
 using RC.Engine.GraphicsManagement.BoundingVolumes;
 using RC.Content.Heightmap;
-using RC.Engine.ContentManagement.ModelReader;
+using RC.Engine.ContentManagement.ContentTypes;
 
 namespace RC.Engine.Test
 {
@@ -90,7 +90,7 @@ namespace RC.Engine.Test
             heightMap.Content.AddEffect(effect);
             
 
-            RCContent<RCSceneNode> enemy = new RCDefaultContent<RCSceneNode>(Ctx.ContentRqst, @"Content\Models\enemy");
+            RCModelContent enemy = new RCModelContent(Ctx.ContentRqst, @"Content\Models\treasure_chest");
 
             RCDepthBufferState depthState = new RCDepthBufferState();
             depthState.DepthTestingEnabled = true;
@@ -102,8 +102,8 @@ namespace RC.Engine.Test
             // Setup the light node as the root and setup its children
             /////////////////////////////////////////////////////////////////////
             lightNode.AddChild(camera);
-            lightNode.AddChild(heightMap);
-            //lightNode.AddChild(enemy);
+            //lightNode.AddChild(heightMap);
+            lightNode.AddChild(enemy);
 
             _sceneRoot = lightNode;
             _sceneRoot.UpdateRS();
