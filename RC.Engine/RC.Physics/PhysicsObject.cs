@@ -99,6 +99,11 @@ namespace RC.Physics
             _body.BodyInertia = itCoM;
             _body.Mass = junk;
 
+            if (_body.CollisionSkin != null)
+            {
+                _body.CollisionSkin.ApplyLocalTransform(new Transform(-com, Matrix.Identity));
+            }
+
             _centerOfMass = com;
         }
 
@@ -107,16 +112,6 @@ namespace RC.Physics
             if (_childNode != null)
             {
                 _childNode.Draw(render, contentRqst);
-            }
-            if (_body.CollisionSkin != null)
-            {
-                int count = _body.CollisionSkin.NumPrimitives;
-                for (int i = 0; i < count; i++)
-                {
-                    BoundingBox box = new BoundingBox();
-                    BoundingBoxHelper.AddPrimitive(_body.CollisionSkin.GetPrimitiveOldWorld(i), ref box);
-                    DebugDrawer.ActiveInstance.DrawAabb(box.Min, box.Max, Color.Red);
-                }
             }
         }
 

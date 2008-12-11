@@ -17,14 +17,11 @@ namespace RC.Physics
         public RCPhysicsModule()
         {
             physicSystem = new PhysicsSystem();
-            physicSystem.Gravity = new Vector3(0, -1f, 0);
-            physicSystem.CollisionSystem = new CollisionSystemBrute(); //new CollisionSystemGrid(32, 32, 32, 30, 30, 30);
-            
-            physicSystem = new PhysicsSystem();
+            physicSystem.Gravity = new Vector3(0, -0.9f, 0);
             physicSystem.CollisionSystem = new CollisionSystemGrid(32, 32, 32, 30, 30, 30);
 
             physicSystem.EnableFreezing = true;
-            physicSystem.SolverType = PhysicsSystem.Solver.Normal;
+            physicSystem.SolverType = PhysicsSystem.Solver.Accumulated;
             physicSystem.CollisionSystem.UseSweepTests = true;
         }
 

@@ -15,9 +15,6 @@ namespace RC.Physics
             JibLibXPhysicsObject physicsObject = new JibLibXPhysicsObject();
             physicsObject.AddCollisionSkin();
             physicsObject.SetChildNode(spatial);
-
-
-
             return physicsObject;
         }
 
@@ -37,21 +34,16 @@ namespace RC.Physics
             {
                 for (int z = 0; z < heightMap.Mapping.GetUpperBound(1); z++)
                 {
-                    heights.SetAt(x, z, heightMap.Mapping[x, z] + heightMap.LocalTrans.Translation.Y);
+                    heights.SetAt(x, z, heightMap.Mapping[x, z]);
                 }
             }
 
-            //physicsHeightMap.Body.CollisionSkin.AddPrimitive(
-            //    new JigLibX.Geometry.Heightmap(heights, 0, 0, 1, 1),
-            //    (int)JigLibX.Collision.MaterialTable.MaterialID.UserDefined,
-            //    new JigLibX.Collision.MaterialProperties(0.0f, 0.7f, 0.6f)
-            //);
-
+            Vector3 position = heightMap.WorldTrans.Translation;
 
             physicsHeightMap.Body.CollisionSkin.AddPrimitive(
-                new JigLibX.Geometry.Plane(Vector3.Up, 0),
+                new JigLibX.Geometry.Heightmap(heights, position.X, position.Z, 0.004f * heightMap.Scaling, 0.004f * heightMap.Scaling),
                 (int)JigLibX.Collision.MaterialTable.MaterialID.UserDefined,
-                new JigLibX.Collision.MaterialProperties(0.0f, 0.7f, 0.6f)
+                new JigLibX.Collision.MaterialProperties(0.7f, 0.7f, 0.6f)
             );
 
             physicsHeightMap.SetChildNode(heightMap);
