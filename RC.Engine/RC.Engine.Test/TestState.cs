@@ -59,7 +59,7 @@ namespace RC.Engine.Test
             /////////////////////////////////////////////////////////////////////
             // Add a controller for the camera
             /////////////////////////////////////////////////////////////////////
-            FlyCameraController cameraController = new FlyCameraController(0.05f, MathHelper.PiOver2);
+            FlyCameraController cameraController = new FlyCameraController(5f, MathHelper.PiOver2);
             cameraController.AttachToObject(camera);
 
             /////////////////////////////////////////////////////////////////////
@@ -81,7 +81,7 @@ namespace RC.Engine.Test
             float heightMapScaling = 5;
 
             RCContent<RCHeightMap> heightMap = new RCDefaultContent<RCHeightMap>(Ctx.ContentRqst, "Content\\Textures\\heightmap");
-            RCContent<Texture2D> texture1 = new RCDefaultContent<Texture2D>(Ctx.ContentRqst, "Content\\Textures\\grass");
+            RCContent<Texture2D> texture1 = new RCDefaultContent<Texture2D>(Ctx.ContentRqst, "Content\\Textures\\tilable_long_grass");
             RCContent<Texture2D> texture2 = new RCDefaultContent<Texture2D>(Ctx.ContentRqst, "Content\\Textures\\seamless_rock");
             RCContent<Texture2D> texture3 = new RCDefaultContent<Texture2D>(Ctx.ContentRqst, "Content\\Textures\\tileable_snow");
             heightMap.Content.Scaling = heightMapScaling;
