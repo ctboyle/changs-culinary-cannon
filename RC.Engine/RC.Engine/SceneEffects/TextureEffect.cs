@@ -35,7 +35,7 @@ namespace RC.Engine.SceneEffects
             }
         }
 
-        public override object CreateType(IGraphicsDeviceService graphics, ContentManager content)
+        protected override object OnCreateType(IGraphicsDeviceService graphics, ContentManager content)
         {
             return content.Load<Effect>(EffectPath);
         }

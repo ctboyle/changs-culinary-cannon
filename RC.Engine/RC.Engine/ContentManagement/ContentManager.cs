@@ -126,6 +126,7 @@ namespace RC.Engine.ContentManagement
             {
                 content = (T)_content[id].TypeCreator.CreateType(_graphics, _contentMgr);
                 _content[id].Content = content;
+                _content[id].TypeCreator.OnFinishedLoad();
             }
 
             return content;

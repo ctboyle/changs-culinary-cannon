@@ -112,7 +112,7 @@ namespace RC.Engine.SceneEffects
             return basicLight;
         }
 
-        public override object CreateType(IGraphicsDeviceService graphics, ContentManager content)
+        protected override object OnCreateType(IGraphicsDeviceService graphics, ContentManager content)
         {
             return new BasicEffect(graphics.GraphicsDevice, null); 
         }

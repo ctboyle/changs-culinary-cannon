@@ -19,6 +19,8 @@ namespace RC.Engine.ContentManagement
         /// <param name="content">The content pipeline loader.</param>
         /// <returns>The underlying content type.</returns>
         object CreateType(IGraphicsDeviceService graphics, ContentManager content);
+
+        void OnFinishedLoad();
     }
 
     /// <summary>
@@ -60,7 +62,7 @@ namespace RC.Engine.ContentManagement
             _assetName = assetName;
         }
 
-        public override object CreateType(IGraphicsDeviceService graphics, ContentManager content)
+        protected override object OnCreateType(IGraphicsDeviceService graphics, ContentManager content)
         {
             return content.Load<T>(_assetName);
         }
@@ -69,7 +71,7 @@ namespace RC.Engine.ContentManagement
     public abstract class RCContent<T> : IRCCreateType, IRCContent<T> where T : class
     {
         private Guid _id = Guid.Empty;
-        private IRCContentManager _contentMgr = null;
+        protected IRCContentManager _contentMgr = null;
 
         public static implicit operator T(RCContent<T> theContent)
         {
@@ -133,10 +135,24 @@ namespace RC.Engine.ContentManagement
             get { return (_contentMgr != null && _id != Guid.Empty); }
         }
 
-        public abstract object CreateType(IGraphicsDeviceService graphics, ContentManager content);
+        protected abstract object OnCreateType(IGraphicsDeviceService graphics, ContentManager content);
+
+        public object CreateType(IGraphicsDeviceService graphics, ContentManager content)
+        {
+            object createdType = OnCreateType(graphics, content);
+            return createdType;
+        }
 
         protected virtual void OnInitialize()
         {
+        }
+
+        /// <summary>
+        /// Do any initialzaion of the loaded contenet here.
+        /// </summary>
+        public virtual void OnFinishedLoad()
+        {
+
         }
     }
 }

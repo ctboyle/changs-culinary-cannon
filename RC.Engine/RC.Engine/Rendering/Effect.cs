@@ -40,6 +40,7 @@ namespace RC.Engine.Rendering
         public RCEffect(IRCContentRequester contentRqst)
             : base(contentRqst)
         {
+            
         }
 
         private void UpdateTechniqueInfo()
@@ -105,10 +106,15 @@ namespace RC.Engine.Rendering
 
         protected override void OnInitialize()
         {
-            UpdateTechniqueInfo();
             base.OnInitialize();
         }
 
-        public override abstract object CreateType(IGraphicsDeviceService graphics, ContentManager content);
+        public override void OnFinishedLoad()
+        {
+            UpdateTechniqueInfo();
+            base.OnFinishedLoad();
+        }
+
+        protected override abstract object OnCreateType(IGraphicsDeviceService graphics, ContentManager content);
     } 
 }
