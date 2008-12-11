@@ -7,62 +7,97 @@ using JigLibX.Collision;
 using Microsoft.Xna.Framework;
 using RC.Engine.GraphicsManagement.BoundingVolumes;
 using JigLibX.Geometry;
+using JigLibX.Math;
 
 namespace RC.Physics
 {
-    public class RCPhysicsObject : RCSpatial
+    public class JibLibXPhysicsObject : RCSpatial
     {
-        public const float DefaultDynamicRoughness = 0.6f;
-        public const float DefaultElasticity = 0.5f;
-        public const float DefaultStaticRoughness = 0.7f;
-        public const RCAxisAlignedBoundingBox DefaultBoundingBox = null;
+        private class MyBody : Body
+        {
+            public override void AddExternalForces(float dt)
+            {
+                AddGravityToExternalForce();
+            }
+        }
+
         public const RCSpatial DefaultChildNode = null;
 
         private RCSpatial _childNode = null;
-        private float _dynamicRoughness = DefaultDynamicRoughness;
-        private float _elasticity = DefaultElasticity;
-        private float _staticRoughness = DefaultStaticRoughness;
-        protected Body _body = new Body();
+        private Body _body = new MyBody();
+        private Vector3 _centerOfMass = Vector3.Zero;
+        private CollisionSkin _collision = null;
 
-        public RCPhysicsObject(
-            Vector3 position
-        )
-            : this(
-            position,
-            DefaultChildNode
-            )
+        public JibLibXPhysicsObject()
+            : this(DefaultChildNode)
         {
         }
 
-        public RCPhysicsObject(
-            Vector3 position,
-            RCSpatial drawable
-        )
+        public JibLibXPhysicsObject(RCSpatial drawable)
         {
+            SetChildNode(drawable);
+        }
+
+        public virtual void SetChildNode(RCSpatial drawable)
+        {
+            if (drawable == null)
+            {
+                _body.DisableBody();
+                return;
+            }
+
             _childNode = drawable;
-            _body.Position = position;
+            _childNode.LocalTrans = Matrix.Identity;
+            _childNode.ParentNode = this;
+
+            Vector3 scale, translation;
+            Quaternion rotation;
+
+            drawable.WorldTrans.Decompose(out scale, out rotation, out translation);
+
+            SetOrientation(Matrix.CreateFromQuaternion(rotation));
+            SetPosition(translation);
+
             _body.EnableBody();
+        }
+
+        public Vector3 CenterOfMass
+        {
+            get { return _centerOfMass; }
+        }
+
+        public Body Body
+        {
+            get { return _body; }
         }
 
         public RCSpatial ChildNode
         {
             get { return _childNode; }
-            set { _childNode = value; }
         }
 
-        public RCAxisAlignedBoundingBox PhysicsBoundingBox
+        public void AddCollisionSkin()
         {
-            get
-            {
-                BoundingBox box = new BoundingBox();
+            _body.CollisionSkin = new JigLibX.Collision.CollisionSkin(_body);
+        }
 
-                if (_body.CollisionSkin != null)
-                {
-                    box = _body.CollisionSkin.WorldBoundingBox;
-                }
+        public void SetMass(float mass)
+        {
+            PrimitiveProperties primitiveProperties = new PrimitiveProperties(
+                PrimitiveProperties.MassDistributionEnum.Solid,
+                PrimitiveProperties.MassTypeEnum.Mass, mass);
 
-                return new RCAxisAlignedBoundingBox(box);
-            }
+            float junk;
+            Vector3 com;
+            Matrix it;
+            Matrix itCoM;
+
+            _body.CollisionSkin.GetMassProperties(primitiveProperties, out junk, out com, out it, out itCoM);
+
+            _body.BodyInertia = itCoM;
+            _body.Mass = junk;
+
+            _centerOfMass = com;
         }
 
         public override void Draw(RC.Engine.Rendering.IRCRenderManager render, RC.Engine.ContentManagement.IRCContentRequester contentRqst)
@@ -73,81 +108,19 @@ namespace RC.Physics
             }
         }
 
-        public override void UpdateGS(Microsoft.Xna.Framework.GameTime gameTime, bool fInitiator)
+        protected void SetOrientation(Matrix orientation)
         {
-            if (_childNode != null)
+            _body.SetOrientation(orientation);
+        }
+
+        protected void SetPosition(Vector3 position)
+        {
+            _body.MoveTo(position, Matrix.Identity);
+
+            if (_body.CollisionSkin != null)
             {
-                _childNode.UpdateGS(gameTime, fInitiator);
+                //_body.CollisionSkin.ApplyLocalTransform(new Transform(-CenterOfMass, Matrix.Identity));
             }
-            base.UpdateGS(gameTime, fInitiator);
-        }
-
-        public void AddDefaultPhysicsBoundingBox()
-        {
-            UpdatePhysicsBoundingBox(_childNode.WorldBound.ToBoundingBox(), DefaultElasticity);
-        }
-
-        public void AddDefaultPhysicsBoundingBox(float elasticity)
-        {
-            AddDefaultPhysicsBoundingBox(elasticity, DefaultStaticRoughness);
-        }
-
-        public void AddDefaultPhysicsBoundingBox(
-            float elasticity,
-            float staticRoughness
-        )
-        {
-            AddDefaultPhysicsBoundingBox(elasticity, DefaultStaticRoughness, DefaultDynamicRoughness);
-        }
-
-        public void AddDefaultPhysicsBoundingBox(
-            float elasticity,
-            float staticRoughness,
-            float dynamicRoughness
-        )
-        {
-            UpdatePhysicsBoundingBox(_childNode.WorldBound.ToBoundingBox(), elasticity, staticRoughness, dynamicRoughness);
-        }
-
-        public void UpdatePhysicsBoundingBox(RCAxisAlignedBoundingBox boundBox)
-        {
-            UpdatePhysicsBoundingBox(boundBox, DefaultElasticity);
-        }
-
-        public void UpdatePhysicsBoundingBox(
-            RCAxisAlignedBoundingBox boundBox,
-            float elasticity
-        )
-        {
-            UpdatePhysicsBoundingBox(boundBox, elasticity, DefaultStaticRoughness);
-        }
-
-        public void UpdatePhysicsBoundingBox(
-            RCAxisAlignedBoundingBox boundBox,
-            float elasticity,
-            float staticRoughness
-        )
-        {
-            UpdatePhysicsBoundingBox(boundBox, elasticity, staticRoughness, DefaultDynamicRoughness);
-        }
-
-        public void UpdatePhysicsBoundingBox(
-            RCAxisAlignedBoundingBox boundBox,
-            float elasticity,
-            float staticRoughness,
-            float dynamicRoughness
-        )
-        {
-            if (_body.CollisionSkin == null)
-            {
-                _body.CollisionSkin = new CollisionSkin(_body);
-            }
-
-            _body.CollisionSkin.AddPrimitive(
-                new AABox(boundBox.Min, boundBox.Max),
-                (int)MaterialTable.MaterialID.UserDefined,
-                new MaterialProperties(elasticity, staticRoughness, dynamicRoughness)
-            );
         }
 
         protected override void UpdateWorldData(GameTime gameTime)
@@ -155,9 +128,10 @@ namespace RC.Physics
             if (_body.CollisionSkin != null)
             {
                 _worldTrans =
-                    _body.CollisionSkin.GetPrimitiveLocal(0).Transform.Orientation *
                     _body.Orientation *
                     Matrix.CreateTranslation(_body.Position);
+                    //_body.CollisionSkin.GetPrimitiveLocal(0).Transform.Orientation * 
+
             }
             else
             {
@@ -165,7 +139,11 @@ namespace RC.Physics
                     _body.Orientation *
                     Matrix.CreateTranslation(_body.Position);
             }
-            base.UpdateWorldData(gameTime);
+
+            if (_childNode != null)
+            {
+                _childNode.UpdateGS(gameTime, true);
+            }
         }
 
         protected override void UpdateWorldBound()

@@ -86,6 +86,7 @@ namespace RC.Engine.GraphicsManagement
         public Matrix WorldTrans
         {
             get { return _worldTrans; }
+            set { _worldTrans = value; }
         }
 
         /// <summary>

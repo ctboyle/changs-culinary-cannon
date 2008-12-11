@@ -222,10 +222,9 @@ namespace RC.Content.Heightmap
                     position.X = (-SizeZ / 2.0f) + j * dz;
 
                     vertices[(3 * vertexIdx) + 0] = scaling * position.X;
-                    vertices[(3 * vertexIdx) + 1] =  
+                    vertices[(3 * vertexIdx) + 1] =
                         Mapping[(int)((textureMapping.Width - 1) * texture.X), (int)((textureMapping.Height - 1) * texture.Y)];
                     vertices[(3 * vertexIdx) + 2] = scaling * position.Z;
-                        
 
                     normals[(3 * vertexIdx) + 0] = normal.X;
                     normals[(3 * vertexIdx) + 1] = normal.Y;

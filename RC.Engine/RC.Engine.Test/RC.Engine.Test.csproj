@@ -38,6 +38,10 @@
     <PlatformTarget>x86</PlatformTarget>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="JigLibX, Version=0.0.2.0, Culture=neutral, processorArchitecture=x86">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\JigLibX BETA\JigLibX BETA\JigLibX\bin\x86\Debug\JigLibX.dll</HintPath>
+    </Reference>
     <Reference Include="Microsoft.Xna.Framework, Version=2.0.0.0, Culture=neutral, PublicKeyToken=6d5c3888ef60e27d, processorArchitecture=x86">
       <Private>False</Private>
       <SpecificVersion>True</SpecificVersion>
@@ -78,6 +82,10 @@
     <ProjectReference Include="..\RC.Content.Heightmap\RC.Content.Heightmap.csproj">
       <Project>{FBF1B902-649D-4537-9B8A-2932B0C76BF1}</Project>
       <Name>RC.Content.Heightmap</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\RC.Content.Pipeline.HeightMap\RC.Content.Pipeline.HeightMap.csproj">
+      <Project>{DECF90BA-D636-4003-8833-B2C55E0149FF}</Project>
+      <Name>RC.Content.Pipeline.HeightMap</Name>
     </ProjectReference>
     <ProjectReference Include="..\RC.Engine\RC.Engine.csproj">
       <Project>{8618CBBD-9108-493E-A4FC-BE6D6EDE0771}</Project>

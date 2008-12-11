@@ -49,7 +49,6 @@ namespace RC.Engine.ContentManagement.ContentPipeline.Readers
     {
         protected override RCSceneNode Read(ContentReader input, RCSceneNode existingInstance)
         {
-            
             RCSceneNode node = existingInstance ?? new RCSceneNode();
             base.Read(input, node);
             

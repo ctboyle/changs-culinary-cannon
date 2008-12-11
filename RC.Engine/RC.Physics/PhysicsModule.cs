@@ -17,6 +17,7 @@ namespace RC.Physics
         public RCPhysicsModule()
         {
             physicSystem = new PhysicsSystem();
+            physicSystem.Gravity = new Vector3(0, -1, 0);
             physicSystem.CollisionSystem = new CollisionSystemGrid(32, 32, 32, 30, 30, 30);
         }
 

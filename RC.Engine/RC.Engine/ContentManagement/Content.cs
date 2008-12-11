@@ -4,6 +4,7 @@ using System.Text;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Content;
 using System.Diagnostics;
+using RC.Engine.GraphicsManagement;
 
 namespace RC.Engine.ContentManagement
 {
@@ -60,6 +61,11 @@ namespace RC.Engine.ContentManagement
             : base()
         {
             _assetName = assetName;
+        }
+
+        public RCDefaultContent(RCContent<T> copy)
+            : base(copy)
+        {
         }
 
         protected override object OnCreateType(IGraphicsDeviceService graphics, ContentManager content)
