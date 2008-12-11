@@ -28,10 +28,6 @@ namespace RC.Engine.Test
 
         public override void Initialize()
         {
-            DebugDrawer d = new DebugDrawer(Ctx.Game, Ctx);
-            d.DrawOrder = 9000000;
-            d.UpdateOrder = 900000;
-            Ctx.Game.Components.Add(d);
             Ctx.StateMgr.AddState(GameStart, typeof(TestState));
             base.Initialize();
         }

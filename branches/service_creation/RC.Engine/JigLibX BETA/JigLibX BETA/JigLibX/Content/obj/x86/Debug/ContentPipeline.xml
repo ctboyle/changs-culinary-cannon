@@ -5,15 +5,15 @@
     <Settings>
       <TargetPlatform>Windows</TargetPlatform>
       <BuildConfiguration>Debug</BuildConfiguration>
-      <RootDirectory>C:\Users\CAE PC\Desktop\cannon\RC.Engine\JigLibX BETA\JigLibX BETA\JigLibX\Content\</RootDirectory>
-      <LoggerRootDirectory>C:\Users\CAE PC\Desktop\cannon\RC.Engine\JigLibX BETA\JigLibX BETA\JigLibX\</LoggerRootDirectory>
-      <IntermediateDirectory>C:\Users\CAE PC\Desktop\cannon\RC.Engine\JigLibX BETA\JigLibX BETA\JigLibX\Content\obj\x86\Debug\</IntermediateDirectory>
-      <OutputDirectory>C:\Users\CAE PC\Desktop\cannon\RC.Engine\JigLibX BETA\JigLibX BETA\JigLibX\bin\x86\Debug\Content\</OutputDirectory>
+      <RootDirectory>C:\Users\Chris\Documents\UofL\Classes\CECS 628\cannonmock\branches\service_creation\RC.Engine\JigLibX BETA\JigLibX BETA\JigLibX\Content\</RootDirectory>
+      <LoggerRootDirectory>C:\Users\Chris\Documents\UofL\Classes\CECS 628\cannonmock\branches\service_creation\RC.Engine\JigLibX BETA\JigLibX BETA\JigLibX\</LoggerRootDirectory>
+      <IntermediateDirectory>C:\Users\Chris\Documents\UofL\Classes\CECS 628\cannonmock\branches\service_creation\RC.Engine\JigLibX BETA\JigLibX BETA\JigLibX\Content\obj\x86\Debug\</IntermediateDirectory>
+      <OutputDirectory>C:\Users\Chris\Documents\UofL\Classes\CECS 628\cannonmock\branches\service_creation\RC.Engine\JigLibX BETA\JigLibX BETA\JigLibX\bin\x86\Debug\Content\</OutputDirectory>
     </Settings>
     <Assemblies>
       <Assembly>
         <Key>C:\Windows\assembly\GAC_32\Microsoft.Xna.Framework.Content.Pipeline\2.0.0.0__6d5c3888ef60e27d\Microsoft.Xna.Framework.Content.Pipeline.dll</Key>
-        <Value>2008-09-19T15:02:14.694592-04:00</Value>
+        <Value>2008-09-26T19:30:45.1184079-04:00</Value>
       </Assembly>
     </Assemblies>
   </Asset>

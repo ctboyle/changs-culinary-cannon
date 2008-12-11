@@ -53,14 +53,14 @@ namespace RC.Engine.Test
             // Create and setup the camera
             /////////////////////////////////////////////////////////////////////
             RCCamera camera = new RCPerspectiveCamera(Ctx.Graphics.GraphicsDevice.Viewport);
-            Matrix cameraLookAt = Matrix.CreateLookAt(new Vector3(0.0f, 0.0f, 0.0f), Vector3.Forward, Vector3.Up);
+            Matrix cameraLookAt = Matrix.CreateLookAt(new Vector3(0.0f, 0.0f, 0.0f), -Vector3.UnitZ, Vector3.Up);
             Vector3 truckStartPosition = new Vector3(-10.4f, 12.8f, -25.15f);
             Matrix truckStartCam = Matrix.CreateLookAt(truckStartPosition, 
                 truckStartPosition + new Vector3(-.55f,-0.4f,.5f), Vector3.Up);
 
-            Matrix upLookingDown = Matrix.CreateLookAt(new Vector3(2.5f, 40f, -0.5f), new Vector3(-0.8f,15f,-5.5f), Vector3.Up);
+            //Matrix upLookingDown = Matrix.CreateLookAt(new Vector3(2.5f, 40f, -0.5f), new Vector3(-0.8f,15f,-5.5f), Vector3.Up);
             camera.LocalTrans = Matrix.Invert(cameraLookAt);
-            camera.LocalTrans = Matrix.Invert(upLookingDown);
+            //camera.LocalTrans = Matrix.Invert(upLookingDown);
             //camera.LocalTrans = Matrix.Invert(truckStartCam);
             camera.Near = 0.05f;
             Ctx.CameraMgr.AddCamera("Test", camera);
@@ -86,7 +86,7 @@ namespace RC.Engine.Test
             /////////////////////////////////////////////////////////////////////
             // Create the model
             /////////////////////////////////////////////////////////////////////
-            float heightMapScaling = 15;
+            float heightMapScaling = 10;
 
             RCContent<RCHeightMap> heightMap = new RCDefaultContent<RCHeightMap>(Ctx.ContentRqst, "Content\\Textures\\final_heightmap");
             RCContent<Texture2D> texture1 = new RCDefaultContent<Texture2D>(Ctx.ContentRqst, "Content\\Textures\\tilable_long_grass");
@@ -100,24 +100,16 @@ namespace RC.Engine.Test
             JibLibXPhysicsObject physicsHeightMap = JibLibXPhysicsHelper.CreateHeightmap(heightMap);
             
             /////////////////////////////////////////////////////////////////////
-            // Create the model
+            // Create the models
             /////////////////////////////////////////////////////////////////////
 
-            for (int i = 0; i < 4; ++i)
+            for (int i = 0; i < 25; ++i)
             {
                 RCModelContent enemy = new RCModelContent(Ctx.ContentRqst, @"Content\Models\treasure_chest");
-                enemy.Content.WorldTrans = Matrix.CreateTranslation(new Vector3(0,20f+(float)2*i,0));
+                enemy.Content.WorldTrans = Matrix.CreateTranslation(new Vector3(0,20f+(float)2*i,3f));
                 physicsEnemy = JibLibXPhysicsHelper.CreateObject(enemy);
-
-                physicsEnemy.SetMass(1.0f);
-                // physicsEnemy.Body.MoveTo(physicsEnemy.WorldTrans.Translation, Matrix.Identity);
-                physicsEnemy.Body.CollisionSkin.ApplyLocalTransform(new Transform(-physicsEnemy.CenterOfMass, Matrix.Identity));
-
-                
-
-
-
-                JigLibX.Geometry.Box box = new JigLibX.Geometry.Box(Vector3.Zero, Matrix.Identity, new Vector3(500,500,500));
+                physicsEnemy.SetMass(10.0f);
+                JigLibX.Geometry.Box box = new JigLibX.Geometry.Box(-0.5f * new Vector3(0.5f), Matrix.Identity, new Vector3(0.5f));
                 physicsEnemy.Body.CollisionSkin.AddPrimitive(
                     box,
                     (int)JigLibX.Collision.MaterialTable.MaterialID.UserDefined,
@@ -131,6 +123,8 @@ namespace RC.Engine.Test
                 lightNode.AddChild(physicsEnemy);
             }
 
+            //RCModelContent car = new RCModelContent(Ctx.ContentRqst, @"Content\Models\car");
+            
             /////////////////////////////////////////////////////////////////////
             // Setup the light node as the root and setup its children
             /////////////////////////////////////////////////////////////////////
