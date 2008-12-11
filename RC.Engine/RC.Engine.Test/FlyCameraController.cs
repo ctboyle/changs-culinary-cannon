@@ -66,6 +66,11 @@ namespace RC.Engine.Test
                 xAxisRot += 1.0f;
             }
 
+            if (Keyboard.GetState().IsKeyDown(Keys.Back))
+            {
+                System.Diagnostics.Debugger.Break();
+            }
+
             float time = (float)gameTime.ElapsedGameTime.TotalSeconds;
 
             Vector3 saveTranslation = _controlledItem.LocalTrans.Translation;

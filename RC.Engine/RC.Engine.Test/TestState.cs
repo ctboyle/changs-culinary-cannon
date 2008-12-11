@@ -53,7 +53,14 @@ namespace RC.Engine.Test
             /////////////////////////////////////////////////////////////////////
             RCCamera camera = new RCPerspectiveCamera(Ctx.Graphics.GraphicsDevice.Viewport);
             Matrix cameraLookAt = Matrix.CreateLookAt(new Vector3(0.0f, 0.0f, 0.0f), Vector3.Forward, Vector3.Up);
+            Vector3 truckStartPosition = new Vector3(-10.4f, 12.8f, -25.15f);
+            Matrix truckStartCam = Matrix.CreateLookAt(truckStartPosition, 
+                truckStartPosition + new Vector3(-.55f,-0.4f,.5f), Vector3.Up);
+
+            Matrix upLookingDown = Matrix.CreateLookAt(new Vector3(2.5f, 40f, -0.5f), new Vector3(-0.8f,15f,-5.5f), Vector3.Up);
             camera.LocalTrans = Matrix.Invert(cameraLookAt);
+            camera.LocalTrans = Matrix.Invert(upLookingDown);
+            //camera.LocalTrans = Matrix.Invert(truckStartCam);
             camera.Near = 0.05f;
             Ctx.CameraMgr.AddCamera("Test", camera);
 
@@ -78,16 +85,16 @@ namespace RC.Engine.Test
             /////////////////////////////////////////////////////////////////////
             // Create the model
             /////////////////////////////////////////////////////////////////////
-            float heightMapScaling = 5;
+            float heightMapScaling = 15;
 
-            RCContent<RCHeightMap> heightMap = new RCDefaultContent<RCHeightMap>(Ctx.ContentRqst, "Content\\Textures\\heightmap");
+            RCContent<RCHeightMap> heightMap = new RCDefaultContent<RCHeightMap>(Ctx.ContentRqst, "Content\\Textures\\final_heightmap");
             RCContent<Texture2D> texture1 = new RCDefaultContent<Texture2D>(Ctx.ContentRqst, "Content\\Textures\\tilable_long_grass");
             RCContent<Texture2D> texture2 = new RCDefaultContent<Texture2D>(Ctx.ContentRqst, "Content\\Textures\\seamless_rock");
             RCContent<Texture2D> texture3 = new RCDefaultContent<Texture2D>(Ctx.ContentRqst, "Content\\Textures\\tileable_snow");
             heightMap.Content.Scaling = heightMapScaling;
 
             HeightMapEffect effect = new HeightMapEffect(Ctx.ContentRqst, heightMap,
-                texture1, texture2, texture3, .2f, .35f, .4f, .5f);
+                texture1, texture2, texture3, .3f, .55f, .65f, .75f);
             heightMap.Content.AddEffect(effect);
             JibLibXPhysicsObject physicsHeightMap = JibLibXPhysicsHelper.CreateHeightmap(heightMap);
             
@@ -161,10 +168,11 @@ namespace RC.Engine.Test
 
         private void UpdateInput()
         {
-            if (Keyboard.GetState().IsKeyDown(Keys.E))
+            if (Keyboard.GetState().IsKeyDown(Keys.Escape))
             {
                 Ctx.StateStack.PopState();
             }
+            
         }
     }
 }
