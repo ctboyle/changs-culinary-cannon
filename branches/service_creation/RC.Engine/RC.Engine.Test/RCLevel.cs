@@ -23,13 +23,19 @@ namespace RC.Engine.Test
         private RCLevelParameters loadingParameters;
         private bool isLoaded = false;
         static Random spawnIndexRandomizer;
+        private RCLevelCollection levelContainer;
 
+        public string Name
+        {
+            get { return loadingParameters.LevelName; }
+            set { loadingParameters.LevelName = value; }
+        }
 
         internal List<RCLevelSpawnPoint> SpawnPoints
         {
-            get 
+            get
             {
-                List<RCLevelSpawnPoint> adjustedSpawnPoints = 
+                List<RCLevelSpawnPoint> adjustedSpawnPoints =
                     new List<RCLevelSpawnPoint>();
 
                 foreach (RCLevelSpawnPoint point in loadingParameters.SpawnPoints)
@@ -39,9 +45,9 @@ namespace RC.Engine.Test
                     position.Y *= loadingParameters.HeightMapYScaling;
                     adjustedSpawnPoints.Add(new RCLevelSpawnPoint(position, point.Heading));
                 }
-                return adjustedSpawnPoints; 
+                return adjustedSpawnPoints;
             }
-            set 
+            set
             {
                 List<RCLevelSpawnPoint> adjustedSpawnPoints =
                     new List<RCLevelSpawnPoint>();
@@ -57,116 +63,169 @@ namespace RC.Engine.Test
             }
         }
 
-            internal RCLevelSpawnPoint RandomSpawnPoint
+        internal RCLevelSpawnPoint RandomSpawnPoint
+        {
+            get
             {
-                get
-                {
-                    RCLevelSpawnPoint sourceSpawnPoint = SpawnPoints[spawnIndexRandomizer.Next(loadingParameters.SpawnPoints.Count)];
-                    
-                    Vector3 position = sourceSpawnPoint.Position * loadingParameters.HeightMapXYZScaling;
-                    position.Y *= loadingParameters.HeightMapYScaling;
+                RCLevelSpawnPoint sourceSpawnPoint = SpawnPoints[spawnIndexRandomizer.Next(loadingParameters.SpawnPoints.Count)];
 
-                    RCLevelSpawnPoint randomizedSpawnPoint = new
-                        RCLevelSpawnPoint(position, sourceSpawnPoint.Heading);
+                Vector3 position = sourceSpawnPoint.Position * loadingParameters.HeightMapXYZScaling;
+                position.Y *= loadingParameters.HeightMapYScaling;
 
-                    return randomizedSpawnPoint;
-                }
+                RCLevelSpawnPoint randomizedSpawnPoint = new
+                    RCLevelSpawnPoint(position, sourceSpawnPoint.Heading);
+
+                return randomizedSpawnPoint;
             }
-
-            public JibLibXObject PhysicsMap
-            {
-                get { return physicsMap; }
-            }
-
-            public RCLevel(RCLevelParameters levelParameters)
-            {
-                loadingParameters = levelParameters;
-            }
-
-            public void LoadLevel(IGraphicsDeviceService graphics)
-            {
-                heightMap = new RCDefaultContent<RCHeightMap>(loadingParameters.Requester, "Content\\Textures\\"
-                    + loadingParameters.HeightMapName);
-                heightMap.Content.Scaling = loadingParameters.HeightMapXYZScaling;
-                heightMap.Content.HeightScaling = loadingParameters.HeightMapYScaling;
-
-                bottomTexture = new RCDefaultContent<Texture2D>(loadingParameters.Requester, "Content\\Textures\\"
-                    + loadingParameters.BottomTextureName);
-                centerTexture = new RCDefaultContent<Texture2D>(loadingParameters.Requester, "Content\\Textures\\"
-                    + loadingParameters.CenterTextureName);
-                topTexture = new RCDefaultContent<Texture2D>(loadingParameters.Requester, "Content\\Textures\\"
-                    + loadingParameters.TopTextureName);
-
-                HeightMapEffect heightMapEffect = new HeightMapEffect(loadingParameters.Requester,
-                    heightMap, bottomTexture, centerTexture, topTexture, loadingParameters.PercentBottomOfCenterTexture,
-                    loadingParameters.PercentTopOfBottomTexture, loadingParameters.PercentBottomOfTopTexture, loadingParameters.PercentTopOfMiddleTexture);
-
-                RCGeometry heightMapDrawable = heightMap.Content.CreateGeometry(graphics);
-
-                heightMapDrawable.AddEffect(heightMapEffect);
-
-                physicsMap = JibLibXPhysicsHelper.CreateHeightmap(heightMap, heightMapDrawable);
-
-                loadingParameters.ParentNode.AddChild(physicsMap);
-                //loadingParameters.ParentNode.AddChild(
-
-                isLoaded = true;
-            }
-
-            public void UnloadLevel()
-            {
-                //Dispose();
-            }
-
-            ~RCLevel()
-            {
-                UnloadLevel();
-            }
-
-
-
-            #region IDisposable Members
-
-            //public void Dispose()
-            //{
-            //    if (isLoaded)
-            //    {
-            //        bottomTexture.Dispose();
-            //        centerTexture.Dispose();
-            //        topTexture.Dispose();
-            //        heightMap.Dispose();
-            //    }
-            //}
-
-            #endregion
         }
 
-        class RCLevelCollection : Dictionary<string, RCLevel>
-        { }
-
-        struct RCLevelSpawnPoint
+        public JibLibXObject PhysicsMap
         {
-            private Vector3 position;
+            get { return physicsMap; }
+        }
 
-            public Vector3 Position
+        public RCLevel(RCLevelParameters levelParameters, RCLevelCollection levelCollection)
+        {
+            loadingParameters = levelParameters;
+            levelContainer = levelCollection;
+        }
+
+
+        public void LoadLevel()
+        {
+            IGraphicsDeviceService graphics = levelContainer.Graphics;
+            heightMap = new RCDefaultContent<RCHeightMap>(loadingParameters.Requester, "Content\\Textures\\"
+                + loadingParameters.HeightMapName);
+            heightMap.Content.Scaling = loadingParameters.HeightMapXYZScaling;
+            heightMap.Content.HeightScaling = loadingParameters.HeightMapYScaling;
+
+            bottomTexture = new RCDefaultContent<Texture2D>(loadingParameters.Requester, "Content\\Textures\\"
+                + loadingParameters.BottomTextureName);
+            centerTexture = new RCDefaultContent<Texture2D>(loadingParameters.Requester, "Content\\Textures\\"
+                + loadingParameters.CenterTextureName);
+            topTexture = new RCDefaultContent<Texture2D>(loadingParameters.Requester, "Content\\Textures\\"
+                + loadingParameters.TopTextureName);
+
+            HeightMapEffect heightMapEffect = new HeightMapEffect(loadingParameters.Requester,
+                heightMap, bottomTexture, centerTexture, topTexture, loadingParameters.PercentBottomOfCenterTexture,
+                loadingParameters.PercentTopOfBottomTexture, loadingParameters.PercentBottomOfTopTexture, loadingParameters.PercentTopOfMiddleTexture);
+
+            RCGeometry heightMapDrawable = heightMap.Content.CreateGeometry(graphics);
+
+            heightMapDrawable.AddEffect(heightMapEffect);
+
+            physicsMap = JibLibXPhysicsHelper.CreateHeightmap(heightMap, heightMapDrawable);
+
+            loadingParameters.ParentNode.AddChild(physicsMap);
+            //loadingParameters.ParentNode.AddChild(
+
+            isLoaded = true;
+            levelContainer.ActiveLevel = this;
+        }
+
+        public void UnloadLevel()
+        {
+            //Dispose();
+        }
+
+        ~RCLevel()
+        {
+            UnloadLevel();
+        }
+
+
+
+        #region IDisposable Members
+
+        //public void Dispose()
+        //{
+        //    if (isLoaded)
+        //    {
+        //        bottomTexture.Dispose();
+        //        centerTexture.Dispose();
+        //        topTexture.Dispose();
+        //        heightMap.Dispose();
+        //    }
+        //}
+
+        #endregion
+    }
+
+    class RCLevelCollection : Dictionary<string, RCLevel>
+    {
+        string activeLevelKey = null;
+        IGraphicsDeviceService graphics;
+
+        public IGraphicsDeviceService Graphics
+        {
+            get { return graphics; }
+            set { graphics = value; }
+        }
+
+        private RCLevelCollection()
+        {
+        }
+
+        public RCLevelCollection(IGraphicsDeviceService graphics)
+        {
+            this.graphics = graphics;
+        }
+
+        public RCLevel ActiveLevel
+        {
+            get
             {
-                get { return position; }
-                set { position = value; }
+                if (activeLevelKey == null)
+                {
+                    return null;
+                }
+                return this[activeLevelKey];
             }
-            private Vector3 heading;
-
-            public Vector3 Heading
+            set
             {
-                get { return heading; }
-                set { heading = value; }
+                if (activeLevelKey != null)
+                {
+                    ActiveLevel.UnloadLevel();
+                }
+                else if (value.Name != activeLevelKey)
+                {
+                    activeLevelKey = value.Name;
+                    ActiveLevel.LoadLevel();
+                }
             }
+        }
 
-            public RCLevelSpawnPoint(Vector3 position, Vector3 heading)
-            {
-                this.position = position;
-                this.heading = heading;
-            }
 
+        public void Add(RCLevel levelToAdd)
+        {
+            Add(levelToAdd.Name, levelToAdd);
         }
 
     }
+
+    struct RCLevelSpawnPoint
+    {
+        private Vector3 position;
+
+        public Vector3 Position
+        {
+            get { return position; }
+            set { position = value; }
+        }
+        private Vector3 heading;
+
+        public Vector3 Heading
+        {
+            get { return heading; }
+            set { heading = value; }
+        }
+
+        public RCLevelSpawnPoint(Vector3 position, Vector3 heading)
+        {
+            this.position = position;
+            this.heading = heading;
+        }
+
+    }
+
+}

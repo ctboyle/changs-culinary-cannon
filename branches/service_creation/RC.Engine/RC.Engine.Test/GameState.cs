@@ -33,6 +33,14 @@ namespace RC.Engine.Test
         private RCSpriteBatch _spriteBatch = null;
         private RCContent<SpriteFont> _spriteFont = null;
         private JibLibXObject physicsEnemy = null;
+        private RCLevelCollection levels;
+        public List<RCLevelSpawnPoint> spawnPoints
+        {
+            get
+            {
+                return levels.ActiveLevel.SpawnPoints;
+            }
+        }
 
         private Dictionary<PlayerIndex, Player> _players = new Dictionary<PlayerIndex, Player>();
 
@@ -57,11 +65,15 @@ namespace RC.Engine.Test
             _spriteBatch.Enable(Ctx.Graphics);
             _spriteFont = new RCDefaultContent<SpriteFont>(Ctx.ContentRqst, "Content\\Fonts\\DefaultFont");
 
+            levels = new RCLevelCollection(Ctx.Graphics);
+            SetUpLevels(_sceneRoot);
+
             PotatoPool pool = new PotatoPool(Ctx.ContentRqst, 10, _sceneRoot);
             for (int iPlayer = 0; iPlayer < NumPlayers; iPlayer++)
             {
                 Player player = new Player((PlayerIndex)(iPlayer),pool, NumPlayers);
                 player.CreatePlayerContent(_sceneRoot, Ctx);
+                player.SetPlayerPosition(levels.ActiveLevel.SpawnPoints[iPlayer]);
 
                 _players[player.PlayerIndex] = player;
 
@@ -92,8 +104,7 @@ namespace RC.Engine.Test
             sun.Transform = Matrix.Invert(lightLookAt);
             _sceneRoot.AddLight(sun);
 
-            RCLevelCollection levels = new RCLevelCollection();
-            SetUpLevels(_sceneRoot, levels);
+            
 
 
             _sceneRoot.UpdateRS();
@@ -123,7 +134,7 @@ namespace RC.Engine.Test
 
 
             // Draw the scene statistics
-            string message = string.Format("FPS: {0}\n", _framesPerSecond);
+            string message = string.Format("FPS: {0}\nPosition: {1}\nFacing: {2} \n", _framesPerSecond, Ctx.CameraMgr.ActiveCamera.WorldTrans.Translation, Ctx.CameraMgr.ActiveCamera.WorldTrans.Forward);
 
             _spriteBatch.SpriteBatch.Begin(SpriteBlendMode.AlphaBlend, SpriteSortMode.Texture, SaveStateMode.SaveState);
             _spriteBatch.SpriteBatch.DrawString(_spriteFont, message, Vector2.Zero, Color.Yellow);
@@ -154,13 +165,11 @@ namespace RC.Engine.Test
 
         }
 
-        private void SetUpLevels(RCSceneNode lightNode, RCLevelCollection levels)
+        private void SetUpLevels(RCSceneNode sceneNode)
         {
             #region level 1
             {
                 List<RCLevelSpawnPoint> level1SpawnPoints = new List<RCLevelSpawnPoint>();
-                level1SpawnPoints.Add(new RCLevelSpawnPoint(
-                    new Vector3(+0.779f, +0.406f, -0.728f), new Vector3(-0.003f, -0.013f, +0.099f)));
                 level1SpawnPoints.Add(new RCLevelSpawnPoint(
                     new Vector3(+0.912f, +0.535f, -0.302f), new Vector3(-0.045f, -0.029f, +0.084f)));
                 level1SpawnPoints.Add(new RCLevelSpawnPoint(
@@ -171,10 +180,10 @@ namespace RC.Engine.Test
                     new Vector3(-0.209f, +0.441f, +0.917f), new Vector3(+0.003f, -0.005f, -0.100f)));
 
                 RCLevelParameters level1Params = new RCLevelParameters(Ctx.ContentRqst, "Deathmatch Level 1",
-                    "tilable_long_grass", "seamless_rock", "tileable_snow", 10f, 1, .3f, .55f, .65f, .75f,
-                    lightNode, level1SpawnPoints);
+                    "tilable_long_grass", "seamless_rock", "tileable_snow", 450f, 1, .3f, .55f, .65f, .75f,
+                    sceneNode, level1SpawnPoints, "Grassy Canyon Battle");
 
-                levels.Add("Grassy Canyon Battle", new RCLevel(level1Params));
+                levels.Add(new RCLevel(level1Params,levels));
             }
             #endregion level 1
 
@@ -199,10 +208,10 @@ namespace RC.Engine.Test
                     new Vector3(-0.417f, +0.543f, -0.613f), new Vector3(+0.000f, +0.103f, +0.995f)));
 
                 RCLevelParameters level2Params = new RCLevelParameters(Ctx.ContentRqst, "Tower Level 1",
-                    "lava2", "seamless_rock", "lava", 25f, 1, .05f, .075f, .78f, .83f,
-                    lightNode, level2SpawnPoints);
+                    "lava2", "seamless_rock", "lava", 50f, 1, .05f, .075f, .78f, .83f,
+                    sceneNode, level2SpawnPoints,"Volcanic Tower Battle");
 
-                levels.Add("Volcanic Tower Battle", new RCLevel(level2Params));
+                levels.Add(new RCLevel(level2Params,levels));
             }
             #endregion level 2
 
@@ -210,7 +219,7 @@ namespace RC.Engine.Test
             {
                 List<RCLevelSpawnPoint> level3SpawnPoints = new List<RCLevelSpawnPoint>();
                 level3SpawnPoints.Add(new RCLevelSpawnPoint(
-                    new Vector3(+0.338f, +0.240f, -0.290f), new Vector3(-0.918f, -0.105f, +0.382f)));
+                    new Vector3(+0.338f, +0.540f, -0.290f), new Vector3(-0.918f, -0.105f, +0.382f)));
                 level3SpawnPoints.Add(new RCLevelSpawnPoint(
                     new Vector3(+0.912f, +0.535f, -0.302f), new Vector3(-0.045f, -0.029f, +0.084f)));
                 level3SpawnPoints.Add(new RCLevelSpawnPoint(
@@ -221,36 +230,15 @@ namespace RC.Engine.Test
                     new Vector3(-0.209f, +0.441f, +0.917f), new Vector3(+0.003f, -0.005f, -0.100f)));
 
                 RCLevelParameters level3Params = new RCLevelParameters(Ctx.ContentRqst, "Deathmatch Level 2",
-                    "tileable_snow", "ice", "snow", 10.0f, 1, .1f, .3f, .6f, .7f,
-                    lightNode, level3SpawnPoints);
+                    "tileable_snow", "ice", "snow", 50f, 1, .1f, .3f, .6f, .7f,
+                    sceneNode, level3SpawnPoints, "Rough Snowy Plain");
 
-                levels.Add("Rough Snowy Plain", new RCLevel(level3Params));
+                levels.Add(new RCLevel(level3Params,levels));
             }
             #endregion level 3
 
-            #region level 4
-            {
-                List<RCLevelSpawnPoint> level4SpawnPoints = new List<RCLevelSpawnPoint>();
-                level4SpawnPoints.Add(new RCLevelSpawnPoint(
-                    new Vector3(+0.338f, +0.240f, -0.290f), new Vector3(-0.918f, -0.105f, +0.382f)));
-                level4SpawnPoints.Add(new RCLevelSpawnPoint(
-                    new Vector3(+0.912f, +0.535f, -0.302f), new Vector3(-0.045f, -0.029f, +0.084f)));
-                level4SpawnPoints.Add(new RCLevelSpawnPoint(
-                    new Vector3(+0.263f, +0.502f, -0.031f), new Vector3(-0.098f, -0.013f, +0.008f)));
-                level4SpawnPoints.Add(new RCLevelSpawnPoint(
-                    new Vector3(-0.638f, +0.430f, +0.480f), new Vector3(+0.057f, -0.021f, -0.079f)));
-                level4SpawnPoints.Add(new RCLevelSpawnPoint(
-                    new Vector3(-0.209f, +0.441f, +0.917f), new Vector3(+0.003f, -0.005f, -0.100f)));
-
-                RCLevelParameters level4Params = new RCLevelParameters(Ctx.ContentRqst, "Deathmatch Level 2",
-                    "tileable_snow", "ice", "snow", 100, 1, .1f, .3f, .6f, .7f,
-                    lightNode, level4SpawnPoints);
-
-                levels.Add("Level 4", new RCLevel(level4Params));
-            }
-            #endregion level 4
-
-            levels["Rough Snowy Plain"].LoadLevel(Ctx.Graphics);
+            levels["Rough Snowy Plain"].LoadLevel();
+            
 
         }
     }

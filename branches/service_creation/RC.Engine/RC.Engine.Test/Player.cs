@@ -38,6 +38,7 @@ namespace RC.Engine.Test
             get { return _potatoGun.Content; }
         }
 
+
         public PlayerIndex PlayerIndex
         {
             get { return _playerIndex; }
@@ -186,9 +187,17 @@ namespace RC.Engine.Test
 
 
 
-           car.Accelerate = padState.Triggers.Right - padState.Triggers.Left;
+            car.Accelerate = padState.ThumbSticks.Left.Y;
 
-           car.Steer = -padState.ThumbSticks.Left.X;
+            car.Steer = -padState.ThumbSticks.Left.X;
+
+            car.HBrake = padState.IsButtonDown(Buttons.LeftShoulder) ? 1 : 0;
+
+            if (padState.IsButtonDown(Buttons.Back))
+            {
+                SetPlayerPosition(new RCLevelSpawnPoint(car.Chassis.Body.Position, Vector3.Forward));
+            }
+
 
         }
 
