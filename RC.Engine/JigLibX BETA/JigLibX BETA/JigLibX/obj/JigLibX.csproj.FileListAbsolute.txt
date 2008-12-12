@@ -19,3 +19,10 @@ C:\Users\Chris\Documents\UofL\Classes\CECS 628\cannonmock\branches\service_creat
 C:\Users\Chris\Documents\UofL\Classes\CECS 628\cannonmock\branches\service_creation\RC.Engine\JigLibX BETA\JigLibX BETA\JigLibX\obj\x86\Debug\JigLibX.obj.x86.Debug.Microsoft.Xna.Framework.RuntimeProfile.txt
 C:\Users\Chris\Documents\UofL\Classes\CECS 628\cannonmock\branches\service_creation\RC.Engine\JigLibX BETA\JigLibX BETA\JigLibX\obj\x86\Debug\JigLibX.dll
 C:\Users\Chris\Documents\UofL\Classes\CECS 628\cannonmock\branches\service_creation\RC.Engine\JigLibX BETA\JigLibX BETA\JigLibX\obj\x86\Debug\JigLibX.pdb
+C:\Users\CAE PC\Desktop\cannon1\RC.Engine\JigLibX BETA\JigLibX BETA\JigLibX\bin\x86\Debug\JigLibX.dll
+C:\Users\CAE PC\Desktop\cannon1\RC.Engine\JigLibX BETA\JigLibX BETA\JigLibX\bin\x86\Debug\JigLibX.pdb
+C:\Users\CAE PC\Desktop\cannon1\RC.Engine\JigLibX BETA\JigLibX BETA\JigLibX\obj\x86\Debug\ResolveAssemblyReference.cache
+C:\Users\CAE PC\Desktop\cannon1\RC.Engine\JigLibX BETA\JigLibX BETA\JigLibX\obj\x86\Debug\Microsoft.Xna.Framework.RuntimeProfile.txt
+C:\Users\CAE PC\Desktop\cannon1\RC.Engine\JigLibX BETA\JigLibX BETA\JigLibX\obj\x86\Debug\JigLibX.obj.x86.Debug.Microsoft.Xna.Framework.RuntimeProfile.txt
+C:\Users\CAE PC\Desktop\cannon1\RC.Engine\JigLibX BETA\JigLibX BETA\JigLibX\obj\x86\Debug\JigLibX.dll
+C:\Users\CAE PC\Desktop\cannon1\RC.Engine\JigLibX BETA\JigLibX BETA\JigLibX\obj\x86\Debug\JigLibX.pdb

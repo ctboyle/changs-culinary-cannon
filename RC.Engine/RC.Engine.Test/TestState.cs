@@ -17,6 +17,8 @@ using RC.Engine.GraphicsManagement.BoundingVolumes;
 using RC.Content.Heightmap;
 using RC.Engine.ContentManagement.ContentTypes;
 using JigLibX.Math;
+using JigLibX.Vehicles;
+using JigLibX.Physics;
 
 namespace RC.Engine.Test
 {
@@ -28,7 +30,6 @@ namespace RC.Engine.Test
         private int _framesPerSecond = 0;
         private RCSpriteBatch _spriteBatch = null;
         private RCContent<SpriteFont> _spriteFont = null;
-        private JibLibXPhysicsObject physicsEnemy = null;
 
         public TestState(RCGameContext gameCtx)
             : base(gameCtx)
@@ -37,6 +38,8 @@ namespace RC.Engine.Test
 
         public override void Initialize()
         {
+            RCSceneNode sceneRoot = new RCSceneNode();
+
             /////////////////////////////////////////////////////////////////////
             // Setup the graphics device
             /////////////////////////////////////////////////////////////////////
@@ -53,7 +56,7 @@ namespace RC.Engine.Test
             // Create and setup the camera
             /////////////////////////////////////////////////////////////////////
             RCCamera camera = new RCPerspectiveCamera(Ctx.Graphics.GraphicsDevice.Viewport);
-            Matrix cameraLookAt = Matrix.CreateLookAt(new Vector3(0.0f, 0.0f, 0.0f), -Vector3.UnitZ, Vector3.Up);
+            Matrix cameraLookAt = Matrix.CreateLookAt(new Vector3(0.0f, 40.0f, 10.0f), -Vector3.UnitZ, Vector3.Up);
             Vector3 truckStartPosition = new Vector3(-10.4f, 12.8f, -25.15f);
             Matrix truckStartCam = Matrix.CreateLookAt(truckStartPosition, 
                 truckStartPosition + new Vector3(-.55f,-0.4f,.5f), Vector3.Up);
@@ -74,64 +77,35 @@ namespace RC.Engine.Test
             /////////////////////////////////////////////////////////////////////
             // Create and setup the light
             /////////////////////////////////////////////////////////////////////
-            RCLightNode lightNode = new RCLightNode();
             RCLight light = new RCLight();
             light.Diffuse = new Vector3(1.2f);
             light.Specular = new Vector3(0.8f);
             Matrix lightLookAt = Matrix.CreateLookAt(new Vector3(0f, 25.0f, 0f), Vector3.UnitZ, Vector3.Up);
             light.Transform = Matrix.Invert(lightLookAt);
-            lightNode.SetLight(light);
-            lightNode.AddLight(light);
 
             /////////////////////////////////////////////////////////////////////
-            // Create the model
+            // Create the heightmap
             /////////////////////////////////////////////////////////////////////
-            float heightMapScaling = 10;
+            JibLibXObject heightmap = CreateHeightmap(50);
 
-            RCContent<RCHeightMap> heightMap = new RCDefaultContent<RCHeightMap>(Ctx.ContentRqst, "Content\\Textures\\final_heightmap");
-            RCContent<Texture2D> texture1 = new RCDefaultContent<Texture2D>(Ctx.ContentRqst, "Content\\Textures\\tilable_long_grass");
-            RCContent<Texture2D> texture2 = new RCDefaultContent<Texture2D>(Ctx.ContentRqst, "Content\\Textures\\seamless_rock");
-            RCContent<Texture2D> texture3 = new RCDefaultContent<Texture2D>(Ctx.ContentRqst, "Content\\Textures\\tileable_snow");
-            heightMap.Content.Scaling = heightMapScaling;
-
-            HeightMapEffect effect = new HeightMapEffect(Ctx.ContentRqst, heightMap,
-                texture1, texture2, texture3, .3f, .55f, .65f, .75f);
-            heightMap.Content.AddEffect(effect);
-            JibLibXPhysicsObject physicsHeightMap = JibLibXPhysicsHelper.CreateHeightmap(heightMap);
-            
             /////////////////////////////////////////////////////////////////////
             // Create the models
             /////////////////////////////////////////////////////////////////////
+            JigLibXVehicle car = CreateVehicle();
 
-            for (int i = 0; i < 25; ++i)
-            {
-                RCModelContent enemy = new RCModelContent(Ctx.ContentRqst, @"Content\Models\treasure_chest");
-                enemy.Content.WorldTrans = Matrix.CreateTranslation(new Vector3(0,20f+(float)2*i,3f));
-                physicsEnemy = JibLibXPhysicsHelper.CreateObject(enemy);
-                physicsEnemy.SetMass(10.0f);
-                JigLibX.Geometry.Box box = new JigLibX.Geometry.Box(-0.5f * new Vector3(0.5f), Matrix.Identity, new Vector3(0.5f));
-                physicsEnemy.Body.CollisionSkin.AddPrimitive(
-                    box,
-                    (int)JigLibX.Collision.MaterialTable.MaterialID.UserDefined,
-                    new JigLibX.Collision.MaterialProperties(0.2f, 0.9f, 0.9f)
-                    );
-
-                RCDepthBufferState depthState = new RCDepthBufferState();
-                depthState.DepthTestingEnabled = true;
-                enemy.Content.GlobalStates.Add(depthState);
-
-                lightNode.AddChild(physicsEnemy);
-            }
-
-            //RCModelContent car = new RCModelContent(Ctx.ContentRqst, @"Content\Models\car");
-            
             /////////////////////////////////////////////////////////////////////
             // Setup the light node as the root and setup its children
             /////////////////////////////////////////////////////////////////////
-            lightNode.AddChild(camera);
-            lightNode.AddChild(physicsHeightMap);
+            sceneRoot.AddLight(light);
+            sceneRoot.AddChild(camera);
+            sceneRoot.AddChild(heightmap);
+            sceneRoot.AddChild(car);
 
-            _sceneRoot = lightNode;
+            RCDepthBufferState depthState1 = new RCDepthBufferState();
+            depthState1.DepthTestingEnabled = true;
+            sceneRoot.GlobalStates.Add(depthState1);
+
+            _sceneRoot = sceneRoot;
             _sceneRoot.UpdateRS();
 
             base.Initialize();
@@ -169,13 +143,53 @@ namespace RC.Engine.Test
             base.Update(gameTime);
         }
 
+        private JibLibXObject CreateHeightmap(float heightMapScaling)
+        {
+            RCContent<RCHeightMap> heightMap = new RCDefaultContent<RCHeightMap>(Ctx.ContentRqst, "Content\\Textures\\final_heightmap");
+            RCContent<Texture2D> texture1 = new RCDefaultContent<Texture2D>(Ctx.ContentRqst, "Content\\Textures\\tilable_long_grass");
+            RCContent<Texture2D> texture2 = new RCDefaultContent<Texture2D>(Ctx.ContentRqst, "Content\\Textures\\seamless_rock");
+            RCContent<Texture2D> texture3 = new RCDefaultContent<Texture2D>(Ctx.ContentRqst, "Content\\Textures\\tileable_snow");
+            heightMap.Content.Scaling = heightMapScaling;
+
+            HeightMapEffect effect = new HeightMapEffect(Ctx.ContentRqst, heightMap,
+                texture1, texture2, texture3, .3f, .55f, .65f, .75f);
+            heightMap.Content.AddEffect(effect);
+
+            JibLibXObject physicsHeightMap = JibLibXPhysicsHelper.CreateHeightmap(heightMap);
+
+            return physicsHeightMap;
+        }
+
+        private JigLibXVehicle CreateVehicle()
+        {
+            RCModelContent wheelDrawable1 = new RCModelContent(Ctx.ContentRqst, @"Content\Models\wheel");
+            RCModelContent wheelDrawable2 = new RCModelContent(Ctx.ContentRqst, @"Content\Models\wheel");
+            RCModelContent wheelDrawable3 = new RCModelContent(Ctx.ContentRqst, @"Content\Models\wheel");
+            RCModelContent wheelDrawable4 = new RCModelContent(Ctx.ContentRqst, @"Content\Models\wheel");
+            RCModelContent carDrawable = new RCModelContent(Ctx.ContentRqst, @"Content\Models\car");
+            carDrawable.Content.WorldTrans = Matrix.CreateTranslation(new Vector3(0, 50f, 0));
+
+            JigLibXWheel wheel1 = new JigLibXWheel(wheelDrawable1);
+            JigLibXWheel wheel2 = new JigLibXWheel(wheelDrawable2);
+            JigLibXWheel wheel3 = new JigLibXWheel(wheelDrawable3);
+            JigLibXWheel wheel4 = new JigLibXWheel(wheelDrawable4);
+
+            Car car = new Car(true, true, 30.0f, 5.0f, 4.7f, 5.0f, 0.20f, 0.4f, 0.05f,
+                0.45f, 0.3f, 1, 520.0f, PhysicsSystem.CurrentPhysicsSystem.Gravity.Length());
+
+            JigLibXVehicle carPhysics = new JigLibXVehicle(car, carDrawable, wheel1, wheel2, wheel3, wheel4);
+
+            return carPhysics;
+        }
+
         private void UpdateInput()
         {
-            if (Keyboard.GetState().IsKeyDown(Keys.Escape))
+            KeyboardState keyState = Keyboard.GetState();
+
+            if (keyState.IsKeyDown(Keys.Escape))
             {
                 Ctx.StateStack.PopState();
             }
-            
         }
     }
 }

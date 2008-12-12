@@ -10,17 +10,17 @@ namespace RC.Physics
 {
     public class JibLibXPhysicsHelper
     {
-        public static JibLibXPhysicsObject CreateObject(RCSpatial spatial)
+        public static JibLibXObject CreateObject(RCSpatial spatial)
         {
-            JibLibXPhysicsObject physicsObject = new JibLibXPhysicsObject();
+            JibLibXObject physicsObject = new JibLibXObject();
             physicsObject.AddCollisionSkin();
             physicsObject.SetChildNode(spatial);
             return physicsObject;
         }
 
-        public static JibLibXPhysicsObject CreateHeightmap(RCHeightMap heightMap)
+        public static JibLibXObject CreateHeightmap(RCHeightMap heightMap)
         {
-            JibLibXPhysicsObject physicsHeightMap = new JibLibXPhysicsObject();
+            JibLibXObject physicsHeightMap = new JibLibXObject();
 
             physicsHeightMap.Body.Immovable = true;
             physicsHeightMap.AddCollisionSkin();
