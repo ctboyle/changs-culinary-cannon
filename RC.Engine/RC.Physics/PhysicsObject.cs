@@ -118,7 +118,7 @@ namespace RC.Physics
 
         protected virtual bool OnCollision(CollisionSkin skin0, CollisionSkin skin1)
         {
-            return false;
+            return true;
         }
 
         protected void SetBody(Body body)
