@@ -113,7 +113,7 @@ namespace RC.Engine.Test
             /////////////////////////////////////////////////////////////////////
             JigLibXVehicle car = CreateVehicle();
 
-            car.VehicleData.Chassis.Body.MoveTo(levels["Volcanic Tower Battle"].SpawnPoints[0].GetScaledPosition(25f,1f),Matrix.Identity);
+            car.VehicleData.Chassis.Body.MoveTo(levels["Rough Snowy Plain"].SpawnPoints[0].GetScaledPosition(5f,1f),Matrix.Identity);
             
             //for (int i = 0; i < 25; ++i)
             //{
@@ -242,16 +242,16 @@ namespace RC.Engine.Test
         {
             #region level 1
             {
-                List<RCLevelSpawnPoints> level1SpawnPoints = new List<RCLevelSpawnPoints>();
-                level1SpawnPoints.Add(new RCLevelSpawnPoints(
+                List<RCLevelSpawnPoint> level1SpawnPoints = new List<RCLevelSpawnPoint>();
+                level1SpawnPoints.Add(new RCLevelSpawnPoint(
                     new Vector3(+0.779f, +0.406f, -0.728f), new Vector3(-0.003f, -0.013f, +0.099f)));
-                level1SpawnPoints.Add(new RCLevelSpawnPoints(
+                level1SpawnPoints.Add(new RCLevelSpawnPoint(
                     new Vector3(+0.912f, +0.535f, -0.302f), new Vector3(-0.045f, -0.029f, +0.084f)));
-                level1SpawnPoints.Add(new RCLevelSpawnPoints(
+                level1SpawnPoints.Add(new RCLevelSpawnPoint(
                     new Vector3(+0.263f, +0.502f, -0.031f), new Vector3(-0.098f, -0.013f, +0.008f)));
-                level1SpawnPoints.Add(new RCLevelSpawnPoints(
+                level1SpawnPoints.Add(new RCLevelSpawnPoint(
                     new Vector3(-0.638f, +0.430f, +0.480f), new Vector3(+0.057f, -0.021f, -0.079f)));
-                level1SpawnPoints.Add(new RCLevelSpawnPoints(
+                level1SpawnPoints.Add(new RCLevelSpawnPoint(
                     new Vector3(-0.209f, +0.441f, +0.917f), new Vector3(+0.003f, -0.005f, -0.100f)));
 
                 RCLevelParameters level1Params = new RCLevelParameters(Ctx.ContentRqst, "Deathmatch Level 1",
@@ -264,22 +264,22 @@ namespace RC.Engine.Test
 
             #region level 2
             {
-                List<RCLevelSpawnPoints> level2SpawnPoints = new List<RCLevelSpawnPoints>();
-                level2SpawnPoints.Add(new RCLevelSpawnPoints(
+                List<RCLevelSpawnPoint> level2SpawnPoints = new List<RCLevelSpawnPoint>();
+                level2SpawnPoints.Add(new RCLevelSpawnPoint(
                     new Vector3(-0.554f, +0.523f, -0.646f), new Vector3(+0.688f, +0.025f, +0.725f)));
-                level2SpawnPoints.Add(new RCLevelSpawnPoints(
+                level2SpawnPoints.Add(new RCLevelSpawnPoint(
                     new Vector3(-0.554f, +0.512f, -0.023f), new Vector3(+0.999f, +0.025f, -0.026f)));
-                level2SpawnPoints.Add(new RCLevelSpawnPoints(
+                level2SpawnPoints.Add(new RCLevelSpawnPoint(
                     new Vector3(-0.079f, +0.525f, +0.571f), new Vector3(+0.078f, +0.025f, -0.997f)));
-                level2SpawnPoints.Add(new RCLevelSpawnPoints(
+                level2SpawnPoints.Add(new RCLevelSpawnPoint(
                     new Vector3(-0.585f, +0.537f, +0.581f), new Vector3(+0.743f, +0.025f, -0.669f)));
-                level2SpawnPoints.Add(new RCLevelSpawnPoints(
+                level2SpawnPoints.Add(new RCLevelSpawnPoint(
                     new Vector3(+0.614f, +0.551f, +0.555f), new Vector3(-0.758f, -0.080f, -0.647f)));
-                level2SpawnPoints.Add(new RCLevelSpawnPoints(
+                level2SpawnPoints.Add(new RCLevelSpawnPoint(
                     new Vector3(+0.702f, +0.564f, -0.698f), new Vector3(-0.994f, -0.028f, -0.104f)));
-                level2SpawnPoints.Add(new RCLevelSpawnPoints(
+                level2SpawnPoints.Add(new RCLevelSpawnPoint(
                     new Vector3(+0.650f, +0.556f, -0.626f), new Vector3(-0.820f, -0.106f, +0.563f)));
-                level2SpawnPoints.Add(new RCLevelSpawnPoints(
+                level2SpawnPoints.Add(new RCLevelSpawnPoint(
                     new Vector3(-0.417f, +0.543f, -0.613f), new Vector3(+0.000f, +0.103f, +0.995f)));
 
                 RCLevelParameters level2Params = new RCLevelParameters(Ctx.ContentRqst, "Tower Level 1",
@@ -292,16 +292,16 @@ namespace RC.Engine.Test
 
             #region level 3
             {
-                List<RCLevelSpawnPoints> level3SpawnPoints = new List<RCLevelSpawnPoints>();
-                level3SpawnPoints.Add(new RCLevelSpawnPoints(
+                List<RCLevelSpawnPoint> level3SpawnPoints = new List<RCLevelSpawnPoint>();
+                level3SpawnPoints.Add(new RCLevelSpawnPoint(
                     new Vector3(+0.338f, +0.240f, -0.290f), new Vector3(-0.918f, -0.105f, +0.382f)));
-                level3SpawnPoints.Add(new RCLevelSpawnPoints(
+                level3SpawnPoints.Add(new RCLevelSpawnPoint(
                     new Vector3(+0.912f, +0.535f, -0.302f), new Vector3(-0.045f, -0.029f, +0.084f)));
-                level3SpawnPoints.Add(new RCLevelSpawnPoints(
+                level3SpawnPoints.Add(new RCLevelSpawnPoint(
                     new Vector3(+0.263f, +0.502f, -0.031f), new Vector3(-0.098f, -0.013f, +0.008f)));
-                level3SpawnPoints.Add(new RCLevelSpawnPoints(
+                level3SpawnPoints.Add(new RCLevelSpawnPoint(
                     new Vector3(-0.638f, +0.430f, +0.480f), new Vector3(+0.057f, -0.021f, -0.079f)));
-                level3SpawnPoints.Add(new RCLevelSpawnPoints(
+                level3SpawnPoints.Add(new RCLevelSpawnPoint(
                     new Vector3(-0.209f, +0.441f, +0.917f), new Vector3(+0.003f, -0.005f, -0.100f)));
 
                 RCLevelParameters level3Params = new RCLevelParameters(Ctx.ContentRqst, "Deathmatch Level 2",
@@ -314,16 +314,16 @@ namespace RC.Engine.Test
 
             #region level 4
             {
-                List<RCLevelSpawnPoints> level4SpawnPoints = new List<RCLevelSpawnPoints>();
-                level4SpawnPoints.Add(new RCLevelSpawnPoints(
+                List<RCLevelSpawnPoint> level4SpawnPoints = new List<RCLevelSpawnPoint>();
+                level4SpawnPoints.Add(new RCLevelSpawnPoint(
                     new Vector3(+0.338f, +0.240f, -0.290f), new Vector3(-0.918f, -0.105f, +0.382f)));
-                level4SpawnPoints.Add(new RCLevelSpawnPoints(
+                level4SpawnPoints.Add(new RCLevelSpawnPoint(
                     new Vector3(+0.912f, +0.535f, -0.302f), new Vector3(-0.045f, -0.029f, +0.084f)));
-                level4SpawnPoints.Add(new RCLevelSpawnPoints(
+                level4SpawnPoints.Add(new RCLevelSpawnPoint(
                     new Vector3(+0.263f, +0.502f, -0.031f), new Vector3(-0.098f, -0.013f, +0.008f)));
-                level4SpawnPoints.Add(new RCLevelSpawnPoints(
+                level4SpawnPoints.Add(new RCLevelSpawnPoint(
                     new Vector3(-0.638f, +0.430f, +0.480f), new Vector3(+0.057f, -0.021f, -0.079f)));
-                level4SpawnPoints.Add(new RCLevelSpawnPoints(
+                level4SpawnPoints.Add(new RCLevelSpawnPoint(
                     new Vector3(-0.209f, +0.441f, +0.917f), new Vector3(+0.003f, -0.005f, -0.100f)));
 
                 RCLevelParameters level4Params = new RCLevelParameters(Ctx.ContentRqst, "Deathmatch Level 2",
