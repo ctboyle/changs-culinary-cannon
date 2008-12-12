@@ -79,15 +79,18 @@ float bottomTextureUnblendedMax;
 float middleTextureUnblendedMin;
 float middleTextureUnblendedMax;
 float topTextureUnblendedMin;
+int bottomTextureTesselationMultiplier;
+int centerTextureTesselationMultiplier;
+int topTextureTesselationMultiplier;
 
 float4 PixelShaderFunction(VertexShaderOutput input) : COLOR0
 {
 	float4 color, color0, color1, color2;
 	
 	color = float4(1,0,0,1); 
-	color0 = tex2D (SamplerBottom, input.Tex * 2); //Note that the grass should be tessellated 
-	color1 = tex2D (SamplerMiddle, input.Tex);   // twice as much as the snow and the rock.
-	color2 = tex2D (SamplerTop, input.Tex);
+	color0 = tex2D (SamplerBottom, input.Tex * bottomTextureTesselationMultiplier); //Note that the grass should be tessellated 
+	color1 = tex2D (SamplerMiddle, input.Tex * centerTextureTesselationMultiplier);   // twice as much as the snow and the rock.
+	color2 = tex2D (SamplerTop, input.Tex * topTextureTesselationMultiplier);
 	
 	if (input.Height >= topTextureUnblendedMin)
 		color = color2;
