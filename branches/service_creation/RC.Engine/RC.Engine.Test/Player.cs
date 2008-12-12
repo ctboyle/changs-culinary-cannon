@@ -110,7 +110,7 @@ namespace RC.Engine.Test
 
         }
 
-        private void SetPlayerPosition(RCLevelSpawnPoint point)
+        public void SetPlayerPosition(RCLevelSpawnPoint point)
         {
             car.Chassis.Body.MoveTo(point.Position, Matrix.CreateWorld(Vector3.Zero, point.Heading, Vector3.Up));
         }
