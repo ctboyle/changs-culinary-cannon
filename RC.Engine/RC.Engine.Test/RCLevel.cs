@@ -107,8 +107,14 @@ namespace RC.Engine.Test
                 + loadingParameters.TopTextureName);
 
             HeightMapEffect heightMapEffect = new HeightMapEffect(loadingParameters.Requester,
-                heightMap, bottomTexture, centerTexture, topTexture, loadingParameters.PercentBottomOfCenterTexture,
-                loadingParameters.PercentTopOfBottomTexture, loadingParameters.PercentBottomOfTopTexture, loadingParameters.PercentTopOfMiddleTexture);
+                heightMap, bottomTexture, centerTexture, topTexture,
+                loadingParameters.PercentBottomOfCenterTexture,
+                loadingParameters.PercentTopOfBottomTexture,
+                loadingParameters.PercentBottomOfTopTexture,
+                loadingParameters.PercentTopOfMiddleTexture,
+                loadingParameters.BottomTextureTesselationMultiplier,
+                loadingParameters.CenterTextureTesselationMultiplier,
+                loadingParameters.TopTextureTesselationMultiplier);
 
             RCGeometry heightMapDrawable = heightMap.Content.CreateGeometry(graphics);
 

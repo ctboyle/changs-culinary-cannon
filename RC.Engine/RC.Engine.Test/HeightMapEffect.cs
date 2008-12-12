@@ -22,6 +22,9 @@ namespace RC.Engine.SceneEffects
         private float topOfGrassHeightPercent = .35f;
         private float bottomOfSnowHeightPercent = .4f;
         private float topOfRockHeightPercent = .5f;
+        private int bottomTextureTesselationMultiplier = 1;
+        private int centerTextureTesselationMultiplier = 1;
+        private int topTextureTesselationMultiplier = 1;
 
         public HeightMapEffect(
             IRCContentRequester contentRqst,
@@ -32,7 +35,11 @@ namespace RC.Engine.SceneEffects
             float percentBottomOfRockHeight,
             float percentTopOfGrassHeight,
             float percentBottomOfSnowHeight,
-            float percentTopOfRockHeight
+            float percentTopOfRockHeight,
+            int bottomTextureTesselationMultiplier,
+            int centerTextureTesselationMultiplier,
+            int topTextureTesselationMultiplier
+
             )
             : base(contentRqst)
         {
@@ -45,6 +52,10 @@ namespace RC.Engine.SceneEffects
             topOfGrassHeightPercent = percentTopOfGrassHeight;
             bottomOfSnowHeightPercent = percentBottomOfSnowHeight;
             topOfRockHeightPercent = percentTopOfRockHeight;
+
+            this.bottomTextureTesselationMultiplier = bottomTextureTesselationMultiplier;
+            this.centerTextureTesselationMultiplier = centerTextureTesselationMultiplier;
+            this.topTextureTesselationMultiplier = topTextureTesselationMultiplier;
         }
 
         public override void CustomConfigure(IRCRenderManager render)
@@ -67,6 +78,10 @@ namespace RC.Engine.SceneEffects
                     * totalHeightscaling);
                 Content.Parameters["topTextureUnblendedMin"].SetValue(topOfRockHeightPercent
                     * totalHeightscaling);
+
+                Content.Parameters["bottomTextureTesselationMultiplier"].SetValue(bottomTextureTesselationMultiplier);
+                Content.Parameters["centerTextureTesselationMultiplier"].SetValue(centerTextureTesselationMultiplier);
+                Content.Parameters["topTextureTesselationMultiplier"].SetValue(topTextureTesselationMultiplier);
             }
         }
 

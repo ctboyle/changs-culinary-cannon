@@ -181,7 +181,7 @@ namespace RC.Engine.Test
 
                 RCLevelParameters level1Params = new RCLevelParameters(Ctx.ContentRqst, "Deathmatch Level 1",
                     "tilable_long_grass", "seamless_rock", "tileable_snow", 450f, 1, .3f, .55f, .65f, .75f,
-                    sceneNode, level1SpawnPoints, "Grassy Canyon Battle");
+                    sceneNode, level1SpawnPoints, "Grassy Canyon Battle",100,15,5);
 
                 levels.Add(new RCLevel(level1Params,levels));
             }
@@ -209,7 +209,7 @@ namespace RC.Engine.Test
 
                 RCLevelParameters level2Params = new RCLevelParameters(Ctx.ContentRqst, "Tower Level 1",
                     "lava2", "seamless_rock", "lava", 50f, 1, .05f, .075f, .78f, .83f,
-                    sceneNode, level2SpawnPoints,"Volcanic Tower Battle");
+                    sceneNode, level2SpawnPoints,"Volcanic Tower Battle",20,10,2);
 
                 levels.Add(new RCLevel(level2Params,levels));
             }
@@ -230,14 +230,62 @@ namespace RC.Engine.Test
                     new Vector3(-0.209f, +0.441f, +0.917f), new Vector3(+0.003f, -0.005f, -0.100f)));
 
                 RCLevelParameters level3Params = new RCLevelParameters(Ctx.ContentRqst, "Deathmatch Level 2",
-                    "tileable_snow", "ice", "snow", 50f, 1, .1f, .3f, .6f, .7f,
-                    sceneNode, level3SpawnPoints, "Rough Snowy Plain");
+                    "tileable_snow", "ice", "snow", 150f, 1, .35f, .65f, .7f, .8f,
+                    sceneNode, level3SpawnPoints, "Rough Snowy Plain",30,2,3);
 
                 levels.Add(new RCLevel(level3Params,levels));
             }
             #endregion level 3
 
-            levels["Rough Snowy Plain"].LoadLevel();
+            #region level 4
+            {
+                List<RCLevelSpawnPoint> level4SpawnPoints = new List<RCLevelSpawnPoint>();
+                level4SpawnPoints.Add(new RCLevelSpawnPoint(
+                    new Vector3(+0.338f, +0.540f, -0.290f), new Vector3(-0.918f, -0.105f, +0.382f)));
+                level4SpawnPoints.Add(new RCLevelSpawnPoint(
+                    new Vector3(+0.912f, +0.535f, -0.302f), new Vector3(-0.045f, -0.029f, +0.084f)));
+                level4SpawnPoints.Add(new RCLevelSpawnPoint(
+                    new Vector3(+0.263f, +0.502f, -0.031f), new Vector3(-0.098f, -0.013f, +0.008f)));
+                level4SpawnPoints.Add(new RCLevelSpawnPoint(
+                    new Vector3(-0.638f, +0.430f, +0.480f), new Vector3(+0.057f, -0.021f, -0.079f)));
+                level4SpawnPoints.Add(new RCLevelSpawnPoint(
+                    new Vector3(-0.209f, +0.441f, +0.917f), new Vector3(+0.003f, -0.005f, -0.100f)));
+
+                RCLevelParameters level4Params = new RCLevelParameters(Ctx.ContentRqst, "Trenches",
+                    "tileable_snow", "ice", "snow", 150f, 1, .35f, .65f, .7f, .8f,
+                    sceneNode, level4SpawnPoints, "Trench War", 30, 2, 3);
+
+                levels.Add(new RCLevel(level4Params, levels));
+            }
+            #endregion level 4
+
+            #region level 5
+            {
+                List<RCLevelSpawnPoint> level5SpawnPoints = new List<RCLevelSpawnPoint>();
+                level5SpawnPoints.Add(new RCLevelSpawnPoint(
+                    new Vector3(+0.338f, +0.540f, -0.290f), new Vector3(-0.918f, -0.105f, +0.382f)));
+                level5SpawnPoints.Add(new RCLevelSpawnPoint(
+                    new Vector3(+0.912f, +0.535f, -0.302f), new Vector3(-0.045f, -0.029f, +0.084f)));
+                level5SpawnPoints.Add(new RCLevelSpawnPoint(
+                    new Vector3(+0.263f, +0.502f, -0.031f), new Vector3(-0.098f, -0.013f, +0.008f)));
+                level5SpawnPoints.Add(new RCLevelSpawnPoint(
+                    new Vector3(-0.638f, +0.430f, +0.480f), new Vector3(+0.057f, -0.021f, -0.079f)));
+                level5SpawnPoints.Add(new RCLevelSpawnPoint(
+                    new Vector3(-0.209f, +0.441f, +0.917f), new Vector3(+0.003f, -0.005f, -0.100f)));
+
+                RCLevelParameters level5Params = new RCLevelParameters(Ctx.ContentRqst, "RandomStuff",
+                    "tileable_snow", "ice", "snow", 150f, 1, .35f, .65f, .7f, .8f,
+                    sceneNode, level5SpawnPoints, "Sharp Chaos", 1, 1, 1);
+
+                levels.Add(new RCLevel(level5Params, levels));
+            }
+            #endregion level 5
+
+            //levels["Grassy Canyon Battle"].LoadLevel;
+            //levels["Volcanic Tower Battle"].LoadLevel();
+            //levels["Rough Snowy Plain"].LoadLevel();
+            //levels["Trench War"].LoadLevel();
+            levels["Sharp Chaos"].LoadLevel();
             
 
         }

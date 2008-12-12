@@ -22,6 +22,28 @@ namespace RC.Engine.Test
         private RCSceneNode parentNode;
         private List<RCLevelSpawnPoint> spawnPoints;
         private string levelName;
+        private int bottomTextureTesselationMultiplier;
+        private int centerTextureTesselationMultiplier;
+        private int topTextureTesselationMultiplier;
+
+        public int BottomTextureTesselationMultiplier
+        {
+            get { return bottomTextureTesselationMultiplier; }
+            set { bottomTextureTesselationMultiplier = value; }
+        }
+        
+        public int CenterTextureTesselationMultiplier
+        {
+            get { return centerTextureTesselationMultiplier; }
+            set { centerTextureTesselationMultiplier = value; }
+        }
+        
+        public int TopTextureTesselationMultiplier
+        {
+            get { return topTextureTesselationMultiplier; }
+            set { topTextureTesselationMultiplier = value; }
+        }
+
 
         internal List<RCLevelSpawnPoint> SpawnPoints
         {
@@ -105,7 +127,9 @@ namespace RC.Engine.Test
             float heightMapXYZScaling, float heightMapYScaling,
             float percentBottomOfCenterTexture, float percentTopOfBottomTexture,
             float percentBottomOfTopTexture, float percentTopOfMiddleTexture,
-            RCSceneNode parentNode, List<RCLevelSpawnPoint> spawnPoints, string levelName)
+            RCSceneNode parentNode, List<RCLevelSpawnPoint> spawnPoints, string levelName,
+            int bottomTextureTesselationMultiplier, int centerTextureTesselationMultiplier,
+            int topTextureTesselationMultiplier )
         {
             this.requester = requester;
             this.heightMapName = heightMapName;
@@ -121,6 +145,10 @@ namespace RC.Engine.Test
             this.parentNode = parentNode;
             this.spawnPoints = spawnPoints;
             this.levelName = levelName;
+
+            this.bottomTextureTesselationMultiplier = bottomTextureTesselationMultiplier;
+            this.centerTextureTesselationMultiplier = centerTextureTesselationMultiplier;
+            this.topTextureTesselationMultiplier = topTextureTesselationMultiplier;
 
         }
 

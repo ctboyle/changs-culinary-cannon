@@ -37,14 +37,14 @@ namespace RC.Content.Heightmap
                     mapping[xCoordinate, yCoordinate] = input.ReadSingle();
                 }
             }
-            
+
             //read the mapping here
 
             Texture2D textureMap;
             //textureMap = input.ReadObject<Texture2D>();
             textureMap = input.ReadExternalReference<Texture2D>();
             //read the model here
-            
+
             return new RCHeightMap(textureMap, mapping);
         }
     }
@@ -110,7 +110,7 @@ namespace RC.Content.Heightmap
 
         public RCHeightMap(Texture2D textureMap, float[,] heightMapping)
         {
-            
+
             mapping = heightMapping;
             textureMapping = textureMap;
             NumIntervalsX = textureMapping.Width;
@@ -189,7 +189,7 @@ namespace RC.Content.Heightmap
             float dz = SizeZ / NumIntervalsZ;
             float txinc = 1.0f / NumIntervalsX;
             float tyinc = 1.0f / NumIntervalsZ;
- 
+
             Vector3 position, normal = Vector3.Zero;
             Vector2 texture = Vector2.Zero;
 
@@ -220,14 +220,14 @@ namespace RC.Content.Heightmap
                     vertices[(3 * vertexIdx) + 1] =
                         Mapping[(int)((textureMapping.Width - 1) * texture.X), (int)(textureMapping.Height - (textureMapping.Height - 1) * texture.Y - 1)];
                     vertices[(3 * vertexIdx) + 2] = scaling * position.Z;
-                        
+
 
                     normals[(3 * vertexIdx) + 0] = normal.X;
                     normals[(3 * vertexIdx) + 1] = normal.Y;
                     normals[(3 * vertexIdx) + 2] = normal.Z;
 
-                    texCoords[(2 * vertexIdx) + 0] = texture.X*2 * scaling;
-                    texCoords[(2 * vertexIdx) + 1] = texture.Y*2 * scaling;
+                    texCoords[(2 * vertexIdx) + 0] = texture.X * 2 ;
+                    texCoords[(2 * vertexIdx) + 1] = texture.Y * 2 ;
 
                     if (i < NumIntervalsX && j < NumIntervalsZ)
                     {
