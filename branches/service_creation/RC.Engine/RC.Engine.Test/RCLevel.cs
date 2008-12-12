@@ -30,26 +30,30 @@ namespace RC.Engine.Test
             get 
             {
                 List<RCLevelSpawnPoint> adjustedSpawnPoints = 
-                    new List<RCLevelSpawnPoint>(loadingParameters.SpawnPoints);
+                    new List<RCLevelSpawnPoint>();
 
-                foreach (RCLevelSpawnPoint point in adjustedSpawnPoints)
+                foreach (RCLevelSpawnPoint point in loadingParameters.SpawnPoints)
                 {
-                    point.Position *= loadingParameters.HeightMapXYZScaling;
-                    point.Poisition.Y *= loadingParameters.HeightMapYScaling;
+                    Vector3 position = point.Position;
+                    position *= loadingParameters.HeightMapXYZScaling;
+                    position.Y *= loadingParameters.HeightMapYScaling;
+                    adjustedSpawnPoints.Add(new RCLevelSpawnPoint(position, point.Heading));
                 }
-                return loadingParameters.SpawnPoints; 
+                return adjustedSpawnPoints; 
             }
             set 
             {
                 List<RCLevelSpawnPoint> adjustedSpawnPoints =
-                    new List<RCLevelSpawnPoint>(value);
+                    new List<RCLevelSpawnPoint>();
 
-                foreach (RCLevelSpawnPoint point in adjustedSpawnPoints)
+                foreach (RCLevelSpawnPoint point in value)
                 {
-                    point.Position *= loadingParameters.HeightMapXYZScaling;
-                    point.Poisition.Y *= loadingParameters.HeightMapYScaling;
+                    Vector3 position = point.Position;
+                    position *= loadingParameters.HeightMapXYZScaling;
+                    position.Y *= loadingParameters.HeightMapYScaling;
+                    adjustedSpawnPoints.Add(new RCLevelSpawnPoint(position, point.Heading));
                 }
-                loadingParameters.SpawnPoints = value;
+                loadingParameters.SpawnPoints = adjustedSpawnPoints;
             }
         }
 
@@ -57,10 +61,15 @@ namespace RC.Engine.Test
             {
                 get
                 {
-                    RCLevelSpawnPoint randomizedSpawnPoint =
-                        SpawnPoints[spawnIndexRandomizer.Next(loadingParameters.SpawnPoints.Count)];
-                    randomizedSpawnPoint.Position *= loadingParameters.HeightMapXYZScaling;
-                    randomizedSpawnPoint.Position.Y *= loadingParameters.HeightMapYScaling;
+                    RCLevelSpawnPoint sourceSpawnPoint = SpawnPoints[spawnIndexRandomizer.Next(loadingParameters.SpawnPoints.Count)];
+                    
+                    Vector3 position = sourceSpawnPoint.Position * loadingParameters.HeightMapXYZScaling;
+                    position.Y *= loadingParameters.HeightMapYScaling;
+
+                    RCLevelSpawnPoint randomizedSpawnPoint = new
+                        RCLevelSpawnPoint(position, sourceSpawnPoint.Heading);
+
+                    return randomizedSpawnPoint;
                 }
             }
 

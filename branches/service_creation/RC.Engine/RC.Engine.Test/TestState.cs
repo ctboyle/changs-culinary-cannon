@@ -113,7 +113,7 @@ namespace RC.Engine.Test
             /////////////////////////////////////////////////////////////////////
             JigLibXVehicle car = CreateVehicle();
 
-            car.VehicleData.Chassis.Body.MoveTo(levels["Rough Snowy Plain"].SpawnPoints[0].GetScaledPosition(5f,1f),Matrix.Identity);
+            car.VehicleData.Chassis.Body.MoveTo(levels["Rough Snowy Plain"].SpawnPoints[0].Position,Matrix.Identity);
             
             //for (int i = 0; i < 25; ++i)
             //{
@@ -294,7 +294,7 @@ namespace RC.Engine.Test
             {
                 List<RCLevelSpawnPoint> level3SpawnPoints = new List<RCLevelSpawnPoint>();
                 level3SpawnPoints.Add(new RCLevelSpawnPoint(
-                    new Vector3(+0.338f, +0.240f, -0.290f), new Vector3(-0.918f, -0.105f, +0.382f)));
+                    new Vector3(+0.338f, +0.540f, -0.290f), new Vector3(-0.918f, -0.105f, +0.382f)));
                 level3SpawnPoints.Add(new RCLevelSpawnPoint(
                     new Vector3(+0.912f, +0.535f, -0.302f), new Vector3(-0.045f, -0.029f, +0.084f)));
                 level3SpawnPoints.Add(new RCLevelSpawnPoint(
@@ -305,7 +305,7 @@ namespace RC.Engine.Test
                     new Vector3(-0.209f, +0.441f, +0.917f), new Vector3(+0.003f, -0.005f, -0.100f)));
 
                 RCLevelParameters level3Params = new RCLevelParameters(Ctx.ContentRqst, "Deathmatch Level 2",
-                    "tileable_snow", "ice", "snow", 5f, 1, .1f, .3f, .6f, .7f,
+                    "tileable_snow", "ice", "snow", 25f, 1, .1f, .3f, .6f, .7f,
                     lightNode, level3SpawnPoints);
 
                 levels.Add("Rough Snowy Plain", new RCLevel(level3Params));
