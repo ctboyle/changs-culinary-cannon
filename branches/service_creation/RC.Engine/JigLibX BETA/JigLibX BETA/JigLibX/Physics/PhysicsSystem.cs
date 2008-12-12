@@ -1808,6 +1808,8 @@ namespace JigLibX.Physics
 
             island.Add(body);
 
+            if (body.CollisionSkin == null) return;
+
             foreach (CollisionInfo collision in body.CollisionSkin.Collisions)
             {
                 if (collision.SkinInfo.Skin1.Owner != null)

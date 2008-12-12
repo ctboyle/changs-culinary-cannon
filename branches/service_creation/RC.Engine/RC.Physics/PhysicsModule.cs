@@ -10,14 +10,14 @@ using Microsoft.Xna.Framework;
 
 namespace RC.Physics
 {
-    public class RCPhysicsModule : IRCModule
+    public class JigLibXModule : IRCModule
     {
         private PhysicsSystem physicSystem = null;
 
-        public RCPhysicsModule()
+        public JigLibXModule()
         {
             physicSystem = new PhysicsSystem();
-            physicSystem.Gravity = new Vector3(0, -0.9f, 0);
+            physicSystem.Gravity = new Vector3(0, -4f, 0);
             physicSystem.CollisionSystem = new CollisionSystemGrid(32, 32, 32, 30, 30, 30);
 
             physicSystem.EnableFreezing = true;

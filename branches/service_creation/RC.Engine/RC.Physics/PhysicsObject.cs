@@ -9,33 +9,32 @@ using RC.Engine.GraphicsManagement.BoundingVolumes;
 using JigLibX.Geometry;
 using JigLibX.Math;
 using Microsoft.Xna.Framework.Graphics;
+using System.Diagnostics;
 
 namespace RC.Physics
 {
-    public class JibLibXPhysicsObject : RCSpatial
+    public class JibLibXObject : RCSpatial
     {
         private class MyBody : Body
         {
             public override void AddExternalForces(float dt)
             {
-                this.Force -= new Vector3(0, 10, 0);
-                //AddGravityToExternalForce();
+                AddGravityToExternalForce();
             }
         }
 
         public const RCSpatial DefaultChildNode = null;
 
-        private RCSpatial _childNode = null;
+        protected RCSpatial _childNode = null;
         private Body _body = new MyBody();
         private Vector3 _centerOfMass = Vector3.Zero;
-        private CollisionSkin _collision = null;
 
-        public JibLibXPhysicsObject()
+        public JibLibXObject()
             : this(DefaultChildNode)
         {
         }
 
-        public JibLibXPhysicsObject(RCSpatial drawable)
+        public JibLibXObject(RCSpatial drawable)
         {
             SetChildNode(drawable);
         }
@@ -83,7 +82,7 @@ namespace RC.Physics
             _body.CollisionSkin = new JigLibX.Collision.CollisionSkin(_body);
         }
 
-        public void SetMass(float mass)
+        public virtual void SetMass(float mass)
         {
             PrimitiveProperties primitiveProperties = new PrimitiveProperties(
                 PrimitiveProperties.MassDistributionEnum.Solid,
@@ -113,6 +112,18 @@ namespace RC.Physics
             {
                 _childNode.Draw(render, contentRqst);
             }
+        }
+
+        protected void SetBody(Body body)
+        {
+            Debug.Assert(body != null);
+
+            if (_body != null)
+            {
+                _body.DisableBody();
+            }
+
+            _body = body;
         }
 
         protected void SetOrientation(Matrix orientation)

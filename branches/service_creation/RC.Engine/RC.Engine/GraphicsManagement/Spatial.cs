@@ -192,7 +192,7 @@ namespace RC.Engine.GraphicsManagement
             stateStack.PopStates(_globalStates);
             
             int iSize = _lights.Count;
-            for (int i = 0; i < iSize; iSize++)
+            for (int i = 0; i < iSize; i++)
             {
                 lightStack.Pop();
             }
