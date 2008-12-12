@@ -160,7 +160,7 @@
       <Name>potatoGun</Name>
       <Importer>XImporter</Importer>
       <Processor>ModelProcessor</Processor>
-      <ProcessorParameters_Scale>0.001</ProcessorParameters_Scale>
+      <ProcessorParameters_Scale>0.005</ProcessorParameters_Scale>
       <ProcessorParameters_SwapWindingOrder>True</ProcessorParameters_SwapWindingOrder>
     </Compile>
     <Compile Include="Textures\Tilable_long_grass.JPG">
