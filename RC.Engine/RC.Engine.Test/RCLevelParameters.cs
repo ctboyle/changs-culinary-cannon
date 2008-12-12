@@ -21,6 +21,7 @@ namespace RC.Engine.Test
         private float percentTopOfMiddleTexture;
         private RCSceneNode parentNode;
         private List<RCLevelSpawnPoint> spawnPoints;
+        private string levelName;
 
         internal List<RCLevelSpawnPoint> SpawnPoints
         {
@@ -92,13 +93,19 @@ namespace RC.Engine.Test
             get { return requester; }
             set { requester = value; }
         }
+        public string LevelName
+        {
+            get { return levelName; }
+            set { levelName = value; }
+        }
+
 
         public RCLevelParameters(IRCContentRequester requester, string heightMapName,
             string bottomTextureName, string centerTextureName, string topTextureName,
             float heightMapXYZScaling, float heightMapYScaling,
             float percentBottomOfCenterTexture, float percentTopOfBottomTexture,
             float percentBottomOfTopTexture, float percentTopOfMiddleTexture,
-            RCSceneNode parentNode, List<RCLevelSpawnPoint> spawnPoints)
+            RCSceneNode parentNode, List<RCLevelSpawnPoint> spawnPoints, string levelName)
         {
             this.requester = requester;
             this.heightMapName = heightMapName;
@@ -113,6 +120,7 @@ namespace RC.Engine.Test
             this.percentTopOfMiddleTexture = percentTopOfMiddleTexture;
             this.parentNode = parentNode;
             this.spawnPoints = spawnPoints;
+            this.levelName = levelName;
 
         }
 

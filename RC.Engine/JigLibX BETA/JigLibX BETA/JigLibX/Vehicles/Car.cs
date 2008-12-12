@@ -60,7 +60,7 @@ namespace JigLibX.Vehicles
             this.wheelSideFriction = wheelSideFriction;
             this.wheelFwdFriction = wheelFwdFriction;
             this.wheelTravel = wheelTravel;
-            this.wheelRadius = wheelRadius;
+            this.wheelRadius = wheelRadius*2;
             this.wheelZOffset = wheelZOffset;
             this.wheelRestingFrac = wheelRestingFrac;
             this.wheelDampingFrac = wheelDampingFrac;
@@ -69,7 +69,7 @@ namespace JigLibX.Vehicles
             this.gravity = gravity;
 
             chassis = new Chassis(this);
-
+           
             SetupDefaultWheels();
         }
 
