@@ -35,7 +35,6 @@ namespace RC.Engine.ContentManagement.ContentTypes
 
             foreach (ModelMesh xnaMesh in xnaModel.Meshes)
             {
-                RCSceneNode meshNode = new RCSceneNode();
                 foreach (ModelMeshPart xnaPart in xnaMesh.MeshParts)
                 {
                     RCVertexRefrence vertexRefrence = new RCVertexRefrence(
@@ -56,12 +55,9 @@ namespace RC.Engine.ContentManagement.ContentTypes
                     newPart.Effects.Add(new RCModelPartEffect(xnaPart.Effect, _contentMgr ));
 
                     newPart.LocalBound = new RCBoundingSphere(xnaMesh.BoundingSphere);
-
-                    meshNode.AddChild(newPart);
+                    newPart.LocalTrans = xnaMesh.ParentBone.Transform;
+                    model.AddChild(newPart);
                 }
-
-                meshNode.LocalTrans = xnaMesh.ParentBone.Transform;
-                model.AddChild(meshNode);
             }
 
             return model;

@@ -143,6 +143,14 @@ Global
 		{8A7CEF45-3501-491D-AEDA-0164060F5348}.Release|x86.ActiveCfg = Release|x86
 		{8A7CEF45-3501-491D-AEDA-0164060F5348}.Release|x86.Build.0 = Release|x86
 		{8A7CEF45-3501-491D-AEDA-0164060F5348}.Release|Xbox 360.ActiveCfg = Release|x86
+		{9EED4821-893E-4ABE-9390-BCB6365539C8}.Debug|Any CPU.ActiveCfg = Debug|x86
+		{9EED4821-893E-4ABE-9390-BCB6365539C8}.Debug|Mixed Platforms.ActiveCfg = Debug|x86
+		{9EED4821-893E-4ABE-9390-BCB6365539C8}.Debug|x86.ActiveCfg = Debug|x86
+		{9EED4821-893E-4ABE-9390-BCB6365539C8}.Debug|Xbox 360.ActiveCfg = Debug|x86
+		{9EED4821-893E-4ABE-9390-BCB6365539C8}.Release|Any CPU.ActiveCfg = Release|x86
+		{9EED4821-893E-4ABE-9390-BCB6365539C8}.Release|Mixed Platforms.ActiveCfg = Release|x86
+		{9EED4821-893E-4ABE-9390-BCB6365539C8}.Release|x86.ActiveCfg = Release|x86
+		{9EED4821-893E-4ABE-9390-BCB6365539C8}.Release|Xbox 360.ActiveCfg = Release|x86
 		{77F6EF9A-E976-4D9B-A105-C68532A2C39E}.Debug|Any CPU.ActiveCfg = Debug|x86
 		{77F6EF9A-E976-4D9B-A105-C68532A2C39E}.Debug|Mixed Platforms.ActiveCfg = Debug|x86
 		{77F6EF9A-E976-4D9B-A105-C68532A2C39E}.Debug|x86.ActiveCfg = Debug|x86
@@ -175,14 +183,6 @@ Global
 		{1C02D323-1712-414B-B515-444B3A311149}.Release|Mixed Platforms.ActiveCfg = Release|x86
 		{1C02D323-1712-414B-B515-444B3A311149}.Release|x86.ActiveCfg = Release|x86
 		{1C02D323-1712-414B-B515-444B3A311149}.Release|Xbox 360.ActiveCfg = Release|x86
-		{9EED4821-893E-4ABE-9390-BCB6365539C8}.Debug|Any CPU.ActiveCfg = Debug|x86
-		{9EED4821-893E-4ABE-9390-BCB6365539C8}.Debug|Mixed Platforms.ActiveCfg = Debug|x86
-		{9EED4821-893E-4ABE-9390-BCB6365539C8}.Debug|x86.ActiveCfg = Debug|x86
-		{9EED4821-893E-4ABE-9390-BCB6365539C8}.Debug|Xbox 360.ActiveCfg = Debug|x86
-		{9EED4821-893E-4ABE-9390-BCB6365539C8}.Release|Any CPU.ActiveCfg = Release|x86
-		{9EED4821-893E-4ABE-9390-BCB6365539C8}.Release|Mixed Platforms.ActiveCfg = Release|x86
-		{9EED4821-893E-4ABE-9390-BCB6365539C8}.Release|x86.ActiveCfg = Release|x86
-		{9EED4821-893E-4ABE-9390-BCB6365539C8}.Release|Xbox 360.ActiveCfg = Release|x86
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

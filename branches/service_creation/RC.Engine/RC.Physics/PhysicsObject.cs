@@ -19,7 +19,8 @@ namespace RC.Physics
         {
             public override void AddExternalForces(float dt)
             {
-                AddGravityToExternalForce();
+                
+                base.AddExternalForces(dt);
             }
         }
 
@@ -151,19 +152,26 @@ namespace RC.Physics
 
         protected override void UpdateWorldData(GameTime gameTime)
         {
-            if (_body.CollisionSkin != null)
-            {
-                _worldTrans =
-                    _body.CollisionSkin.GetPrimitiveLocal(0).Transform.Orientation * 
-                    _body.Orientation *
-                    Matrix.CreateTranslation(_body.Position);
-            }
-            else
-            {
-                _worldTrans =
-                    _body.Orientation *
-                    Matrix.CreateTranslation(_body.Position);
-            }
+            //if (_body.IsBodyEnabled)
+            //{
+                if (_body.CollisionSkin != null)
+                {
+                    _worldTrans =
+                        _body.CollisionSkin.GetPrimitiveLocal(0).Transform.Orientation *
+                        _body.Orientation *
+                        Matrix.CreateTranslation(_body.Position);
+                }
+                else
+                {
+                    _worldTrans =
+                        _body.Orientation *
+                        Matrix.CreateTranslation(_body.Position);
+                }
+            
+            //else
+            //{
+            //    _worldTrans = ParentNode.WorldTrans * LocalTrans;
+            //}
 
             if (_childNode != null)
             {

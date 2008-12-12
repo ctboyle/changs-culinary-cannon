@@ -28,7 +28,7 @@ namespace RC.Engine.Test
 
         public override void Initialize()
         {
-            Ctx.StateMgr.AddState(GameStart, typeof(TestState));
+            Ctx.StateMgr.AddState(GameStart, typeof(GameState));
             base.Initialize();
         }
 

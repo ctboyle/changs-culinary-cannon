@@ -41,7 +41,7 @@ namespace RC.Physics
             Vector3 position = heightMapDrawable.WorldTrans.Translation;
 
             physicsHeightMap.Body.CollisionSkin.AddPrimitive(
-                new JigLibX.Geometry.Heightmap(heights, position.X, position.Z, 0.004f * heightMap.Scaling, 0.004f * heightMap.Scaling),
+                new JigLibX.Geometry.Heightmap(heights, position.X, position.Z, RCHeightMap.SizeX / heightMap.NumIntervalsX * heightMap.Scaling, RCHeightMap.SizeZ / heightMap.NumIntervalsZ * heightMap.Scaling),
                 (int)JigLibX.Collision.MaterialTable.MaterialID.UserDefined,
                 new JigLibX.Collision.MaterialProperties(0.7f, 0.7f, 0.6f)
             );
