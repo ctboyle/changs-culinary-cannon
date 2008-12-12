@@ -294,7 +294,7 @@ namespace RC.Engine.Test
             {
                 List<RCLevelSpawnPoints> level3SpawnPoints = new List<RCLevelSpawnPoints>();
                 level3SpawnPoints.Add(new RCLevelSpawnPoints(
-                    new Vector3(+0.779f, +0.406f, -0.728f), new Vector3(-0.003f, -0.013f, +0.099f)));
+                    new Vector3(+0.338f, +0.240f, -0.290f), new Vector3(-0.918f, -0.105f, +0.382f)));
                 level3SpawnPoints.Add(new RCLevelSpawnPoints(
                     new Vector3(+0.912f, +0.535f, -0.302f), new Vector3(-0.045f, -0.029f, +0.084f)));
                 level3SpawnPoints.Add(new RCLevelSpawnPoints(
@@ -316,7 +316,7 @@ namespace RC.Engine.Test
             {
                 List<RCLevelSpawnPoints> level4SpawnPoints = new List<RCLevelSpawnPoints>();
                 level4SpawnPoints.Add(new RCLevelSpawnPoints(
-                    new Vector3(+0.779f, +0.406f, -0.728f), new Vector3(-0.003f, -0.013f, +0.099f)));
+                    new Vector3(+0.338f, +0.240f, -0.290f), new Vector3(-0.918f, -0.105f, +0.382f)));
                 level4SpawnPoints.Add(new RCLevelSpawnPoints(
                     new Vector3(+0.912f, +0.535f, -0.302f), new Vector3(-0.045f, -0.029f, +0.084f)));
                 level4SpawnPoints.Add(new RCLevelSpawnPoints(
