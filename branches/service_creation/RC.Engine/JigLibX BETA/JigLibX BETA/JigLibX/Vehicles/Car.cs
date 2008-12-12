@@ -60,7 +60,7 @@ namespace JigLibX.Vehicles
             this.wheelSideFriction = wheelSideFriction;
             this.wheelFwdFriction = wheelFwdFriction;
             this.wheelTravel = wheelTravel;
-            this.wheelRadius = wheelRadius*2;
+            this.wheelRadius = wheelRadius;
             this.wheelZOffset = wheelZOffset;
             this.wheelRestingFrac = wheelRestingFrac;
             this.wheelDampingFrac = wheelDampingFrac;
