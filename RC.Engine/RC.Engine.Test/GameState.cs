@@ -76,10 +76,7 @@ namespace RC.Engine.Test
                 player.SetPlayerPosition(levels.ActiveLevel.SpawnPoints[iPlayer]);
 
                 _players[player.PlayerIndex] = player;
-
             }
-
-
 
             RCDepthBufferState depthState = new RCDepthBufferState();
             depthState.DepthTestingEnabled = true;
@@ -145,8 +142,10 @@ namespace RC.Engine.Test
 
         public override void Update(GameTime gameTime)
         {
-            UpdateInput(gameTime);
+            
             _sceneRoot.UpdateGS(gameTime, true);
+            UpdateInput(gameTime);
+             
             base.Update(gameTime);
         }
 
@@ -281,10 +280,10 @@ namespace RC.Engine.Test
             }
             #endregion level 5
 
-            levels["Grassy Canyon Battle"].LoadLevel();
-            levels["Volcanic Tower Battle"].LoadLevel();
+            //levels["Grassy Canyon Battle"].LoadLevel();
+            //levels["Volcanic Tower Battle"].LoadLevel();
             //levels["Rough Snowy Plain"].LoadLevel();
-            //levels["Trench War"].LoadLevel();
+            levels["Trench War"].LoadLevel();
             //levels["Sharp Chaos"].LoadLevel();
             
 

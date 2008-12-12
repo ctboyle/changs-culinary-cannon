@@ -214,7 +214,7 @@
       <Name>potato</Name>
       <Importer>XImporter</Importer>
       <Processor>ModelProcessor</Processor>
-      <ProcessorParameters_Scale>0.001</ProcessorParameters_Scale>
+      <ProcessorParameters_Scale>0.005</ProcessorParameters_Scale>
     </Compile>
   </ItemGroup>
   <ItemGroup>

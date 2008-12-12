@@ -58,6 +58,11 @@ namespace RC.Engine.Test
 
         }
 
+        public void Die()
+        {
+
+        }
+
         public void CreatePlayerCamera(Viewport screen, IRCCameraManager camManager)
         {
             int numPlayersPerRow = 2;
@@ -149,8 +154,8 @@ namespace RC.Engine.Test
             JigLibXWheel wheel4 = new JigLibXWheel(wheelDrawable4);
 
 
-            car = new Car(true, true, 30.0f, 5.0f, 4.7f, 5.0f, 0.20f, 0.4f, 0.05f,
-              0.45f, 0.3f, 1, 520.0f, PhysicsSystem.CurrentPhysicsSystem.Gravity.Length());
+            car = new Car(true, true, 60.0f, 20.0f, 4.7f, 5.0f, 0.50f, 0.4f, 0.05f,
+              0.45f, 0.3f, 1, 300.0f, PhysicsSystem.CurrentPhysicsSystem.Gravity.Length());
 
             carPhysics = new JigLibXVehicle(car, carModel, wheel1, wheel2, wheel3, wheel4);
 
@@ -177,7 +182,7 @@ namespace RC.Engine.Test
 
 
 
-                    _pool.FirePotato(gunPos + 0.1f* _potatoGun.Content.WorldTrans.Forward , Matrix.CreateRotationZ(MathHelper.PiOver2) * Matrix.CreateFromQuaternion(gunRot), _potatoGun.Content.WorldTrans.Forward * 1.0f);
+                    _pool.FirePotato(gunPos + 5.0f * _potatoGun.Content.WorldTrans.Forward , Matrix.CreateRotationX(MathHelper.PiOver2) * Matrix.CreateFromQuaternion(gunRot), _potatoGun.Content.WorldTrans.Forward * 25.0f);
                 }
             }
 

@@ -17,11 +17,11 @@ namespace RC.Physics
         public JigLibXModule()
         {
             physicSystem = new PhysicsSystem();
-            physicSystem.Gravity = new Vector3(0, -4f, 0);
+            physicSystem.Gravity = new Vector3(0, -15f, 0);
             physicSystem.CollisionSystem = new CollisionSystemGrid(32, 32, 32, 30, 30, 30);
 
             physicSystem.EnableFreezing = true;
-            physicSystem.SolverType = PhysicsSystem.Solver.Accumulated;
+            physicSystem.SolverType = PhysicsSystem.Solver.Normal;
             physicSystem.CollisionSystem.UseSweepTests = true;
         }
 

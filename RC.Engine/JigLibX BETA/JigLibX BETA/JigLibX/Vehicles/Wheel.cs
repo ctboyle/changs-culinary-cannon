@@ -71,7 +71,7 @@ namespace JigLibX.Vehicles
 
             pred = new WheelPred(car.Chassis.Body.CollisionSkin);
 
-            Reset();
+            //Reset();
         }
 
         /// <summary>

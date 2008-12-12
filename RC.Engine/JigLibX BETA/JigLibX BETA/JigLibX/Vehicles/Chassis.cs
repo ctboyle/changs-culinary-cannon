@@ -72,8 +72,8 @@ namespace JigLibX.Vehicles
             Box box2 = new Box(min2, Matrix.Identity, max2 - min2);
 
             collisionSkin.RemoveAllPrimitives();
-            collisionSkin.AddPrimitive(box1, (int)MaterialTable.MaterialID.NormalNormal, new MaterialProperties(0.3f, 0.5f, 0.3f));
-            collisionSkin.AddPrimitive(box2, (int)MaterialTable.MaterialID.NormalNormal, new MaterialProperties(0.3f, 0.5f, 0.3f));
+            collisionSkin.AddPrimitive(box1, (int)MaterialTable.MaterialID.NormalNormal, new MaterialProperties(0.01f, 0.5f, 0.3f));
+            collisionSkin.AddPrimitive(box2, (int)MaterialTable.MaterialID.NormalNormal, new MaterialProperties(0.01f, 0.5f, 0.3f));
 
             body.Car.SetupDefaultWheels();
         }
