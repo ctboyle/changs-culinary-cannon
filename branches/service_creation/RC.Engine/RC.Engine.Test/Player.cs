@@ -13,13 +13,17 @@ using Microsoft.Xna.Framework.Input;
 using RC.Physics;
 using JigLibX.Vehicles;
 using JigLibX.Physics;
+using JigLibX.Geometry;
 using RC.Engine.Test.Particle;
+using JigLibX.Collision;
 
 namespace RC.Engine.Test
 {
-    class Player
+    public class Player
     {
         static Random random = new Random();
+
+        private const double MaxDeadLength = 5.0;
 
         private ParticleSystem _fireParticles; 
         private ParticleSystem _smokeParticles; 
@@ -32,7 +36,9 @@ namespace RC.Engine.Test
 
         private Vector3 _potatoVel = Vector3.Zero;
 
-        private double _timeSinceLasFire = 0.0f;
+        private double _timeSinceLasFire = 0.0;
+        private double _deadDuration = 0.0;
+        private bool dead = false;
         
 
 
@@ -66,14 +72,20 @@ namespace RC.Engine.Test
         public void Die()
         {
 
+            dead = true;
+            _deadDuration = 0.0;
+            
+
+
+
         }
 
         public void CreatePlayerCamera(Viewport screen, IRCCameraManager camManager)
         {
-            int numPlayersPerRow = 2;
-            int numRows = (int)Math.Ceiling((float)(_numPlayers) / numPlayersPerRow);
+            int numPlayersPerRow = 1;
+            int numRows = _numPlayers > 1 ? 2 : 1; 
 
-            int numColumns = _numPlayers > 1 ? 2 : 1; 
+            int numColumns =  _numPlayers > 2 ? 2 : 1; 
 
             Viewport playerScreenPart = new Viewport();
 
@@ -105,7 +117,7 @@ namespace RC.Engine.Test
 
         public void CreatePlayerContent(RCSceneNode root, RCGameContext ctx)
         {
-            
+
             RCModelContent carModel;
             JigLibXVehicle carPhysics;
 
@@ -124,6 +136,9 @@ namespace RC.Engine.Test
             carModel.Content.AddChild(gunPivot);
             gunPivot.AddChild(_potatoGun);
             _potatoGun.Content.AddChild(_playerCamera);
+
+
+
 
 
             root.AddChild(carPhysics);
@@ -148,7 +163,7 @@ namespace RC.Engine.Test
             _potatoGun.Content.AddChild(_smokeParticles);
         }
 
-        private static void CreateCar(RCGameContext ctx, out RCModelContent carModel, out Car car, out JigLibXVehicle carPhysics)
+        private void CreateCar(RCGameContext ctx, out RCModelContent carModel, out Car car, out JigLibXVehicle carPhysics)
         {
             carModel = new RCModelContent(ctx.ContentRqst, @"Content\Models\Car");
 
@@ -164,73 +179,88 @@ namespace RC.Engine.Test
             JigLibXWheel wheel4 = new JigLibXWheel(wheelDrawable4);
 
 
-            car = new Car(true, true, 60.0f, 20.0f, 4.7f, 5.0f, 0.50f, 0.4f, 0.05f,
+            car = new Car(true, true, 60.0f, 20.0f, 4.7f, 5.0f, 0.50f, 0.4f, 0.00f,
               0.45f, 0.3f, 1, 300.0f, PhysicsSystem.CurrentPhysicsSystem.Gravity.Length());
 
-            carPhysics = new JigLibXVehicle(car, carModel, wheel1, wheel2, wheel3, wheel4);
+            carPhysics = new JigLibXVehicle(car, carModel, wheel1, wheel2, wheel3, wheel4, this);
 
             
         }
 
         public void UpdateInput(GameTime gameTime, GamePadState padState)
         {
-            _timeSinceLasFire += gameTime.ElapsedGameTime.TotalSeconds;
 
-            if (padState.Triggers.Right > 0.75f)
+            if (!dead)
             {
-                if (_timeSinceLasFire >= 0.5)
+                _timeSinceLasFire += gameTime.ElapsedGameTime.TotalSeconds;
+
+                if (padState.Triggers.Right > 0.75f)
                 {
-                    _timeSinceLasFire = 0.0;
+                    if (_timeSinceLasFire >= 0.25)
+                    {
+                        _timeSinceLasFire = 0.0;
 
-                    Vector3 gunPos;
-                    Quaternion gunRot;
-                    Vector3 scale;
+                        Vector3 gunPos;
+                        Quaternion gunRot;
+                        Vector3 scale;
 
-                    _potatoGun.Content.WorldTrans.Decompose(out scale,
-                        out gunRot,
-                        out gunPos);
+                        _potatoGun.Content.WorldTrans.Decompose(out scale,
+                            out gunRot,
+                            out gunPos);
 
 
 
-                    _pool.FirePotato(gunPos + 5.0f * _potatoGun.Content.WorldTrans.Forward , Matrix.CreateRotationX(MathHelper.PiOver2) * Matrix.CreateFromQuaternion(gunRot), _potatoGun.Content.WorldTrans.Forward * 25.0f);
-                    
-                    // Add effect of gun
-                    _fireParticles.AddParticle(gunPos + 5f * _potatoGun.Content.WorldTrans.Forward, Vector3.Zero);
-                    _smokeParticles.AddParticle(gunPos + 5f * _potatoGun.Content.WorldTrans.Forward, Vector3.Zero);
+                        _pool.FirePotato(gunPos + 5.0f * _potatoGun.Content.WorldTrans.Forward, Matrix.CreateRotationX(MathHelper.PiOver2) * Matrix.CreateFromQuaternion(gunRot), _potatoGun.Content.WorldTrans.Forward * 75.0f);
+
+                        // Add effect of gun
+                        _fireParticles.AddParticle(gunPos + 5f * _potatoGun.Content.WorldTrans.Forward, Vector3.Zero);
+                        _smokeParticles.AddParticle(gunPos + 5f * _potatoGun.Content.WorldTrans.Forward, Vector3.Zero);
+                    }
+                }
+
+                _potatoGun.Content.LocalTrans *=
+                    Matrix.CreateFromAxisAngle(Vector3.Up, -(float)gameTime.ElapsedGameTime.TotalSeconds * MathHelper.PiOver2 * padState.ThumbSticks.Right.X) *
+                    Matrix.CreateFromAxisAngle(-_potatoGun.Content.LocalTrans.Right, (float)gameTime.ElapsedGameTime.TotalSeconds * MathHelper.PiOver2 * padState.ThumbSticks.Right.Y);
+
+
+
+                car.Accelerate = padState.ThumbSticks.Left.Y;
+
+                car.Steer = -padState.ThumbSticks.Left.X;
+
+                car.HBrake = padState.IsButtonDown(Buttons.LeftShoulder) ? 1 : 0;
+
+                if (padState.IsButtonDown(Buttons.Back))
+                {
+                    SetPlayerPosition(new RCLevelSpawnPoint(car.Chassis.Body.Position, Vector3.Forward));
                 }
             }
-
-            _potatoGun.Content.LocalTrans *= 
-                Matrix.CreateFromAxisAngle(Vector3.Up, -(float)gameTime.ElapsedGameTime.TotalSeconds * MathHelper.PiOver2 * padState.ThumbSticks.Right.X) *
-                Matrix.CreateFromAxisAngle(-_potatoGun.Content.LocalTrans.Right, (float)gameTime.ElapsedGameTime.TotalSeconds * MathHelper.PiOver2 * padState.ThumbSticks.Right.Y);
-
-
-            
-            car.Accelerate = padState.ThumbSticks.Left.Y;
-
-            car.Steer = -padState.ThumbSticks.Left.X;
-
-            car.HBrake = padState.IsButtonDown(Buttons.LeftShoulder) ? 1 : 0;
-
-            if (padState.IsButtonDown(Buttons.Back))
+            else
             {
-                SetPlayerPosition(new RCLevelSpawnPoint(car.Chassis.Body.Position, Vector3.Forward));
+                _deadDuration += gameTime.ElapsedGameTime.TotalSeconds;
+
+                _fireParticles.AddParticle(gunPivot.WorldTrans.Translation + .75f * _potatoGun.Content.WorldTrans.Forward , Vector3.Zero);
+                _smokeParticles.AddParticle(gunPivot.WorldTrans.Translation + .75f * _potatoGun.Content.WorldTrans.Forward, Vector3.Zero);
+
+                if (_deadDuration > MaxDeadLength)
+                {
+                    dead = false;
+                }
+
             }
-
-
         }
 
         Vector3 RandomPointOnCircle()
         {
-            const float radius = 30;
-            const float height = 40;
+            const float radius = 1;
+            const float height = 1;
 
             double angle = random.NextDouble() * Math.PI * 2;
 
             float x = (float)Math.Cos(angle);
             float y = (float)Math.Sin(angle);
 
-            return new Vector3(x * radius, y * radius + height, 0);
+            return new Vector3(x * radius, 0, y * radius + height);
         }
 
     }

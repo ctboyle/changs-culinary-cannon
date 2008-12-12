@@ -18,6 +18,10 @@ namespace RC.Engine.Base
         public RCXnaGame()
         {
             _deviceMgr = new GraphicsDeviceManager(this);
+            //_deviceMgr.IsFullScreen = true;
+            _deviceMgr.PreferredBackBufferWidth = 1920;
+            _deviceMgr.PreferredBackBufferHeight = 1200;
+
         }
 
         public abstract IRCContentRequester ContentRqst { set; get; }
@@ -38,6 +42,7 @@ namespace RC.Engine.Base
             Components.Add(ContentRqst);
             Components.Add(StateMgr);
             Game.Initialize();
+   
             base.Initialize();
         }
 

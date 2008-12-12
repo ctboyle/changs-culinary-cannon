@@ -8,7 +8,7 @@ using RC.Engine.GraphicsManagement;
 
 namespace RC.Engine.Test
 {
-    class PotatoPool
+    public class PotatoPool
     {
         List<Potato> _readyPool = new List<Potato>();
         List<Potato> _usedPool = new List<Potato>();

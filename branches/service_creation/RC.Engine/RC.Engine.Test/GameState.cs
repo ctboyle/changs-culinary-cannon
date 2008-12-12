@@ -23,7 +23,7 @@ namespace RC.Engine.Test
 {
     class GameState : RCGameState
     {
-        private const int NumPlayers = 1;
+        private const int NumPlayers = 4;
 
 
         private RCSceneNode _sceneRoot = null;
@@ -280,10 +280,10 @@ namespace RC.Engine.Test
             }
             #endregion level 5
 
-            //levels["Grassy Canyon Battle"].LoadLevel();
+            levels["Grassy Canyon Battle"].LoadLevel();
             //levels["Volcanic Tower Battle"].LoadLevel();
             //levels["Rough Snowy Plain"].LoadLevel();
-            levels["Trench War"].LoadLevel();
+            //levels["Trench War"].LoadLevel();
             //levels["Sharp Chaos"].LoadLevel();
             
 

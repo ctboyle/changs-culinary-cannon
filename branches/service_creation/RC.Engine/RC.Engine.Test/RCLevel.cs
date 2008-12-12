@@ -209,7 +209,7 @@ namespace RC.Engine.Test
 
     }
 
-    struct RCLevelSpawnPoint
+    public struct RCLevelSpawnPoint
     {
         private Vector3 position;
 
