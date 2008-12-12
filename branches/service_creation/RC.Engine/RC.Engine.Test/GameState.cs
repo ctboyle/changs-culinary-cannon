@@ -31,7 +31,7 @@ namespace RC.Engine.Test
         private int _framesPerSecond = 0;
         private RCSpriteBatch _spriteBatch = null;
         private RCContent<SpriteFont> _spriteFont = null;
-        private JibLibXPhysicsObject physicsEnemy = null;
+        private JibLibXObject physicsEnemy = null;
 
         private Dictionary<PlayerIndex, Player> _players = new Dictionary<PlayerIndex, Player>();
 
@@ -106,7 +106,7 @@ namespace RC.Engine.Test
             heightMap.Content.AddEffect(effect);
 
             // Attach the heightmap to the pysics system.
-            JibLibXPhysicsObject physicsHeightMap = JibLibXPhysicsHelper.CreateHeightmap(heightMap);
+            JibLibXObject physicsHeightMap = JibLibXPhysicsHelper.CreateHeightmap(heightMap);
 
             _sceneRoot.UpdateRS();
 
