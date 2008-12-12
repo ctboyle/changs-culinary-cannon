@@ -281,11 +281,11 @@ namespace RC.Engine.Test
             }
             #endregion level 5
 
-            //levels["Grassy Canyon Battle"].LoadLevel;
-            //levels["Volcanic Tower Battle"].LoadLevel();
+            levels["Grassy Canyon Battle"].LoadLevel();
+            levels["Volcanic Tower Battle"].LoadLevel();
             //levels["Rough Snowy Plain"].LoadLevel();
             //levels["Trench War"].LoadLevel();
-            levels["Sharp Chaos"].LoadLevel();
+            //levels["Sharp Chaos"].LoadLevel();
             
 
         }
