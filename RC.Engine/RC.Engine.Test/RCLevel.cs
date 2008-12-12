@@ -40,7 +40,7 @@ namespace RC.Engine.Test
             loadingParameters = levelParameters;
         }
 
-        public void LoadLevel()
+        public void LoadLevel(IGraphicsDeviceService graphics)
         {
             heightMap = new RCDefaultContent<RCHeightMap>(loadingParameters.Requester, "Content\\Textures\\"
                 + loadingParameters.HeightMapName);
@@ -58,9 +58,11 @@ namespace RC.Engine.Test
                 heightMap, bottomTexture, centerTexture, topTexture, loadingParameters.PercentBottomOfCenterTexture,
                 loadingParameters.PercentTopOfBottomTexture, loadingParameters.PercentBottomOfTopTexture, loadingParameters.PercentTopOfMiddleTexture);
 
-            heightMap.Content.AddEffect(heightMapEffect);
+            RCGeometry heightMapDrawable = heightMap.Content.CreateGeometry(graphics);
 
-            physicsMap = JibLibXPhysicsHelper.CreateHeightmap(heightMap);
+            heightMapDrawable.AddEffect(heightMapEffect);
+
+            physicsMap = JibLibXPhysicsHelper.CreateHeightmap(heightMap, heightMapDrawable);
 
             loadingParameters.ParentNode.AddChild(physicsMap);
             //loadingParameters.ParentNode.AddChild(

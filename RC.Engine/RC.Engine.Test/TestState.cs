@@ -334,7 +334,7 @@ namespace RC.Engine.Test
             }
             #endregion level 4
 
-            levels["Rough Snowy Plain"].LoadLevel();
+            levels["Rough Snowy Plain"].LoadLevel(Ctx.Graphics);
         }
 
     }
