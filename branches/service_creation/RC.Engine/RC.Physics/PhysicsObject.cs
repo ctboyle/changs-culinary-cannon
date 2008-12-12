@@ -26,7 +26,7 @@ namespace RC.Physics
         public const RCSpatial DefaultChildNode = null;
 
         protected RCSpatial _childNode = null;
-        private Body _body = new MyBody();
+        private Body _body = null;
         private Vector3 _centerOfMass = Vector3.Zero;
 
         public JibLibXObject()
@@ -36,6 +36,7 @@ namespace RC.Physics
 
         public JibLibXObject(RCSpatial drawable)
         {
+            SetBody(new MyBody());
             SetChildNode(drawable);
         }
 
@@ -80,6 +81,7 @@ namespace RC.Physics
         public void AddCollisionSkin()
         {
             _body.CollisionSkin = new JigLibX.Collision.CollisionSkin(_body);
+            _body.CollisionSkin.callbackFn += new CollisionCallbackFn(OnCollision);
         }
 
         public virtual void SetMass(float mass)
@@ -114,6 +116,11 @@ namespace RC.Physics
             }
         }
 
+        protected virtual bool OnCollision(CollisionSkin skin0, CollisionSkin skin1)
+        {
+            return false;
+        }
+
         protected void SetBody(Body body)
         {
             Debug.Assert(body != null);
@@ -124,6 +131,7 @@ namespace RC.Physics
             }
 
             _body = body;
+            _body.ExternalData = this;
         }
 
         protected void SetOrientation(Matrix orientation)

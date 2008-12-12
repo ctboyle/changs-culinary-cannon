@@ -46,6 +46,13 @@ namespace RC.Physics
                 new JigLibX.Collision.MaterialProperties(0.7f, 0.7f, 0.6f)
             );
 
+
+            physicsHeightMap.Body.CollisionSkin.AddPrimitive(
+    new JigLibX.Geometry.Plane(Vector3.Zero, 0),
+    (int)JigLibX.Collision.MaterialTable.MaterialID.UserDefined,
+    new JigLibX.Collision.MaterialProperties(0.7f, 0.7f, 0.6f)
+);
+
             physicsHeightMap.SetChildNode(heightMap);
 
             return physicsHeightMap;
