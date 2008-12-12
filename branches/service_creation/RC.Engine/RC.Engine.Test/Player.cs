@@ -22,6 +22,7 @@ namespace RC.Engine.Test
         private RCModelContent _potatoGun;
         private PlayerIndex _playerIndex;
         private PotatoPool _pool;
+        private RCSceneNode gunPivot;
         private Car car;
 
         private Vector3 _potatoVel = Vector3.Zero;
@@ -81,7 +82,7 @@ namespace RC.Engine.Test
             _playerCamera = playerCamera;
 
 
-            _playerCamera.LocalTrans = Matrix.CreateTranslation(new Vector3(-0.05f, 0.05f, 0.1f));
+            
 
             FlyCameraController controller = new FlyCameraController(5.0f, MathHelper.PiOver2);
             controller.AttachToObject(_playerCamera);
@@ -93,18 +94,26 @@ namespace RC.Engine.Test
 
         public void CreatePlayerContent(RCSceneNode root, RCGameContext ctx)
         {
-
+            
             RCModelContent carModel;
             JigLibXVehicle carPhysics;
 
             CreateCar(ctx, out carModel, out car, out carPhysics);
+            car.Chassis.Body.MoveTo(new Vector3(0.0f, 10.0f, 0.0f), Matrix.Identity);
 
             CreateGun(ctx);
+            _potatoGun.Content.LocalTrans = Matrix.CreateTranslation(0.0f, 0.0f, 1.0f);
+            
+            gunPivot = new RCSceneNode();
+            gunPivot.LocalTrans = Matrix.CreateRotationY(-MathHelper.PiOver2) * Matrix.CreateTranslation(new Vector3(-1.0f, 2.0f, 0.0f)) ;
 
             CreatePlayerCamera(ctx.Graphics.GraphicsDevice.Viewport, ctx.CameraMgr);
-
+            _playerCamera.LocalTrans = Matrix.CreateTranslation(new Vector3(-0.0f, 0.5f, -0.75f));
+            
+            carModel.Content.AddChild(gunPivot);
+            gunPivot.AddChild(_potatoGun);
             _potatoGun.Content.AddChild(_playerCamera);
-            carModel.Content.AddChild(_potatoGun);
+
 
             root.AddChild(carPhysics);
 
@@ -144,7 +153,7 @@ namespace RC.Engine.Test
 
             carPhysics = new JigLibXVehicle(car, carModel, wheel1, wheel2, wheel3, wheel4);
 
-            car.Chassis.Body.MoveTo(new Vector3(0.0f, 3.0f, 0.0f), Matrix.Identity);
+            
         }
 
         public void UpdateInput(GameTime gameTime, GamePadState padState)
@@ -167,9 +176,14 @@ namespace RC.Engine.Test
 
 
 
-                    _pool.FirePotato(gunPos + 0.1f* _potatoGun.Content.WorldTrans.Forward , Matrix.CreateRotationX(MathHelper.PiOver2) * Matrix.CreateFromQuaternion(gunRot), _potatoGun.Content.WorldTrans.Forward * 1.0f);
+                    _pool.FirePotato(gunPos + 0.1f* _potatoGun.Content.WorldTrans.Forward , Matrix.CreateRotationZ(MathHelper.PiOver2) * Matrix.CreateFromQuaternion(gunRot), _potatoGun.Content.WorldTrans.Forward * 1.0f);
                 }
             }
+
+            _potatoGun.Content.LocalTrans *= 
+                Matrix.CreateFromAxisAngle(Vector3.Up, -(float)gameTime.ElapsedGameTime.TotalSeconds * MathHelper.PiOver2 * padState.ThumbSticks.Right.X) *
+                Matrix.CreateFromAxisAngle(-_potatoGun.Content.LocalTrans.Right, (float)gameTime.ElapsedGameTime.TotalSeconds * MathHelper.PiOver2 * padState.ThumbSticks.Right.Y);
+
 
 
            car.Accelerate = padState.Triggers.Right - padState.Triggers.Left;

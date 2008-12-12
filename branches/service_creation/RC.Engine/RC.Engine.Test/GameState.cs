@@ -64,7 +64,10 @@ namespace RC.Engine.Test
                 player.CreatePlayerContent(_sceneRoot, Ctx);
 
                 _players[player.PlayerIndex] = player;
+
             }
+
+
 
             RCDepthBufferState depthState = new RCDepthBufferState();
             depthState.DepthTestingEnabled = true;
@@ -218,7 +221,7 @@ namespace RC.Engine.Test
                     new Vector3(-0.209f, +0.441f, +0.917f), new Vector3(+0.003f, -0.005f, -0.100f)));
 
                 RCLevelParameters level3Params = new RCLevelParameters(Ctx.ContentRqst, "Deathmatch Level 2",
-                    "tileable_snow", "ice", "snow", 5f, 1, .1f, .3f, .6f, .7f,
+                    "tileable_snow", "ice", "snow", 10.0f, 1, .1f, .3f, .6f, .7f,
                     lightNode, level3SpawnPoints);
 
                 levels.Add("Rough Snowy Plain", new RCLevel(level3Params));
@@ -240,7 +243,7 @@ namespace RC.Engine.Test
                     new Vector3(-0.209f, +0.441f, +0.917f), new Vector3(+0.003f, -0.005f, -0.100f)));
 
                 RCLevelParameters level4Params = new RCLevelParameters(Ctx.ContentRqst, "Deathmatch Level 2",
-                    "tileable_snow", "ice", "snow", 10f, 1, .1f, .3f, .6f, .7f,
+                    "tileable_snow", "ice", "snow", 100, 1, .1f, .3f, .6f, .7f,
                     lightNode, level4SpawnPoints);
 
                 levels.Add("Level 4", new RCLevel(level4Params));
