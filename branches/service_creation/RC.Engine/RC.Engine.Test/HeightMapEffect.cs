@@ -70,6 +70,8 @@ namespace RC.Engine.SceneEffects
                 Content.Parameters["multiTextureMiddle"].SetValue(_rockTex);
                 Content.Parameters["multiTextureTop"].SetValue(_snowTex);
 
+                render.Graphics.GraphicsDevice.Textures[2] = _grassTex.Content;
+
                 Content.Parameters["bottomTextureUnblendedMax"].SetValue(bottomOfRockHeightPercent
                     * totalHeightscaling);
                 Content.Parameters["middleTextureUnblendedMin"].SetValue(topOfGrassHeightPercent

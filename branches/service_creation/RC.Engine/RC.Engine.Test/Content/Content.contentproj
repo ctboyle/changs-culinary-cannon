@@ -244,7 +244,12 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Textures\Trenches.bmp">
+    <Compile Include="explosion.png">
+      <Name>explosion</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+    <Compile Include="fire.png">
       <Name>Trenches</Name>
       <Importer>TextureImporter</Importer>
       <Processor>RCHeightMapProcessor</Processor>
@@ -253,6 +258,57 @@
   <ItemGroup>
     <Compile Include="Textures\RandomStuff.bmp">
       <Name>RandomStuff</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>RCHeightMapProcessor</Processor>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="ParticleEffect.fx">
+      <Name>ParticleEffect</Name>
+      <Importer>EffectImporter</Importer>
+      <Processor>EffectProcessor</Processor>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="smoke.png">
+      <Name>smoke</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Textures\Checker.bmp">
+      <Name>Checker</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+    <Compile Include="Textures\Flash Freeze.jpg">
+      <Name>Flash Freeze</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+    <Compile Include="Textures\height.jpg">
+      <Name>height</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+    <Compile Include="Textures\heightmap_backup.bmp">
+      <Name>heightmap_backup</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+    <Compile Include="Textures\Ice Diamonds.jpg">
+      <Name>Ice Diamonds</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+    <Compile Include="Textures\treasure_chest_2.png">
+      <Name>treasure_chest_2</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+    <Compile Include="Textures\Trenches.bmp">
+      <Name>Trenches</Name>
       <Importer>TextureImporter</Importer>
       <Processor>RCHeightMapProcessor</Processor>
     </Compile>
