@@ -13,11 +13,9 @@ namespace RC.Engine.Test
         private float _rotateSpeed = 1.0f;
         private float _travelSpeed = 1.0f;
 
-        private Vector2 _angles;
-        private Vector3 _cameraPos;
-
         public FlyCameraController( float travelUnitPerSec, float rotateSpeedRadPerSec)
         {
+            // Init
             _rotateSpeed = rotateSpeedRadPerSec;
             _travelSpeed = travelUnitPerSec;
         }
@@ -25,48 +23,48 @@ namespace RC.Engine.Test
         public override void Update(Microsoft.Xna.Framework.GameTime gameTime)
         {
             KeyboardState newState = Keyboard.GetState();
-
-            Vector2 rotIncrement = Vector2.Zero;
-            Vector3 transIncrement = Vector3.Zero;
+            Vector3 moveVector = Vector3.Zero;
+            float yAxisRot = 0.0f;
+            float xAxisRot = 0.0f;
 
             if (newState.IsKeyDown(Keys.Up))
             {
-                transIncrement += _controlledItem.LocalTrans.Forward;
+                moveVector += _controlledItem.LocalTrans.Forward;
             }
 
             if (newState.IsKeyDown(Keys.Down))
             {
-                transIncrement -= _controlledItem.LocalTrans.Forward;
+                moveVector -= _controlledItem.LocalTrans.Forward;
             }
 
             if (newState.IsKeyDown(Keys.Left))
             {
-                transIncrement -= _controlledItem.LocalTrans.Right;
+                moveVector -= _controlledItem.LocalTrans.Right;
             }
 
             if (newState.IsKeyDown(Keys.Right))
             {
-                transIncrement += _controlledItem.LocalTrans.Right;
+                moveVector += _controlledItem.LocalTrans.Right;
             }
 
             if (newState.IsKeyDown(Keys.A))
             {
-                rotIncrement.Y += 1.0f;
+                yAxisRot += 1.0f;
             }
 
             if (newState.IsKeyDown(Keys.D))
             {
-                rotIncrement.Y -= 1.0f;
+                yAxisRot -= 1.0f;
             }
 
             if (newState.IsKeyDown(Keys.W))
             {
-                rotIncrement.X -= 1.0f;
+                xAxisRot -= 1.0f;
             }
 
             if (newState.IsKeyDown(Keys.S))
             {
-                rotIncrement.X += 1.0f;
+                xAxisRot += 1.0f;
             }
 
             if (Keyboard.GetState().IsKeyDown(Keys.Back))
@@ -74,16 +72,16 @@ namespace RC.Engine.Test
                 System.Diagnostics.Debugger.Break();
             }
 
+            float time = (float)gameTime.ElapsedGameTime.TotalSeconds;
 
-            transIncrement *= ((float)gameTime.ElapsedGameTime.TotalSeconds) * _travelSpeed;
-            rotIncrement *= ((float)gameTime.ElapsedGameTime.TotalSeconds) * _rotateSpeed;
+            Vector3 saveTranslation = _controlledItem.LocalTrans.Translation;
 
-            _cameraPos += transIncrement;
-            _angles += rotIncrement;
+            _controlledItem.LocalTrans *= Matrix.CreateTranslation(-_controlledItem.LocalTrans.Translation);
+                
+            _controlledItem.LocalTrans *=  Matrix.CreateFromAxisAngle(_controlledItem.LocalTrans.Right, xAxisRot * _rotateSpeed * time) *
+                Matrix.CreateFromAxisAngle(Vector3.Up, yAxisRot * _rotateSpeed * time);
 
-            _controlledItem.LocalTrans = 
-                Matrix.CreateFromYawPitchRoll(_angles.Y * _rotateSpeed, _angles.X, 0) * Matrix.CreateTranslation(_cameraPos);
-
+            _controlledItem.LocalTrans *= Matrix.CreateTranslation(saveTranslation+moveVector * _travelSpeed * time);
         }
     }
 }
