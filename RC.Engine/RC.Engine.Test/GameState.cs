@@ -17,12 +17,13 @@ using RC.Engine.GraphicsManagement.BoundingVolumes;
 using RC.Content.Heightmap;
 using RC.Engine.ContentManagement.ContentTypes;
 using JigLibX.Math;
+using JigLibX.Collision;
 
 namespace RC.Engine.Test
 {
-    class  GameState : RCGameState
+    class GameState : RCGameState
     {
-        private const int NumPlayers = 4;
+        private const int NumPlayers = 1;
 
 
         private RCSceneNode _sceneRoot = null;
@@ -47,6 +48,8 @@ namespace RC.Engine.Test
         {
             _sceneRoot = new RCSceneNode();
 
+            Ctx.Graphics.GraphicsDevice.RenderState.CullMode = CullMode.None;
+
             /////////////////////////////////////////////////////////////////////
             // Setup the SpriteBatch content for displaying the FPS text
             /////////////////////////////////////////////////////////////////////
@@ -54,14 +57,11 @@ namespace RC.Engine.Test
             _spriteBatch.Enable(Ctx.Graphics);
             _spriteFont = new RCDefaultContent<SpriteFont>(Ctx.ContentRqst, "Content\\Fonts\\DefaultFont");
 
+            PotatoPool pool = new PotatoPool(Ctx.ContentRqst, 10, _sceneRoot);
             for (int iPlayer = 0; iPlayer < NumPlayers; iPlayer++)
             {
-                Player player = new Player((PlayerIndex)(iPlayer), NumPlayers);
-                RCSpatial playerContent = player.CreatePlayerContent(Ctx);
-                playerContent.LocalTrans = Matrix.Identity;
-
-
-                _sceneRoot.AddChild(playerContent);
+                Player player = new Player((PlayerIndex)(iPlayer),pool, NumPlayers);
+                player.CreatePlayerContent(_sceneRoot, Ctx);
 
                 _players[player.PlayerIndex] = player;
             }
@@ -69,7 +69,6 @@ namespace RC.Engine.Test
             RCDepthBufferState depthState = new RCDepthBufferState();
             depthState.DepthTestingEnabled = true;
             _sceneRoot.GlobalStates.Add(depthState);
-
 
 
 
@@ -90,24 +89,9 @@ namespace RC.Engine.Test
             sun.Transform = Matrix.Invert(lightLookAt);
             _sceneRoot.AddLight(sun);
 
-            /////////////////////////////////////////////////////////////////////
-            // Create the height map
-            /////////////////////////////////////////////////////////////////////
-            float heightMapScaling = 10;
+            RCLevelCollection levels = new RCLevelCollection();
+            SetUpLevels(_sceneRoot, levels);
 
-            RCContent<RCHeightMap> heightMap = new RCDefaultContent<RCHeightMap>(Ctx.ContentRqst, "Content\\Textures\\final_heightmap");
-            RCContent<Texture2D> texture1 = new RCDefaultContent<Texture2D>(Ctx.ContentRqst, "Content\\Textures\\tilable_long_grass");
-            RCContent<Texture2D> texture2 = new RCDefaultContent<Texture2D>(Ctx.ContentRqst, "Content\\Textures\\seamless_rock");
-            RCContent<Texture2D> texture3 = new RCDefaultContent<Texture2D>(Ctx.ContentRqst, "Content\\Textures\\tileable_snow");
-            heightMap.Content.Scaling = heightMapScaling;
-            RCGeometry heightMapGeo = heightMap.Content.CreateGeometry(Ctx.Graphics);
-
-            HeightMapEffect effect = new HeightMapEffect(Ctx.ContentRqst, heightMap,
-                texture1, texture2, texture3, .3f, .55f, .65f, .75f);
-            heightMapGeo.AddEffect(effect);
-
-            // Attach the heightmap to the pysics system.
-            JibLibXObject physicsHeightMap = JibLibXPhysicsHelper.CreateHeightmap(heightMap, heightMapGeo);
 
             _sceneRoot.UpdateRS();
 
@@ -147,17 +131,123 @@ namespace RC.Engine.Test
 
         public override void Update(GameTime gameTime)
         {
-            UpdateInput();
+            UpdateInput(gameTime);
             _sceneRoot.UpdateGS(gameTime, true);
             base.Update(gameTime);
         }
 
-        private void UpdateInput()
+        private void UpdateInput(GameTime gameTime)
         {
+            foreach (KeyValuePair<PlayerIndex, Player> kvPlayers in _players)
+            {
+                GamePadState padState = GamePad.GetState(kvPlayers.Key);
+                kvPlayers.Value.UpdateInput(gameTime, padState);
+
+            } 
             if (Keyboard.GetState().IsKeyDown(Keys.Escape))
             {
                 Ctx.StateStack.PopState();
             }
+
+        }
+
+        private void SetUpLevels(RCSceneNode lightNode, RCLevelCollection levels)
+        {
+            #region level 1
+            {
+                List<RCLevelSpawnPoint> level1SpawnPoints = new List<RCLevelSpawnPoint>();
+                level1SpawnPoints.Add(new RCLevelSpawnPoint(
+                    new Vector3(+0.779f, +0.406f, -0.728f), new Vector3(-0.003f, -0.013f, +0.099f)));
+                level1SpawnPoints.Add(new RCLevelSpawnPoint(
+                    new Vector3(+0.912f, +0.535f, -0.302f), new Vector3(-0.045f, -0.029f, +0.084f)));
+                level1SpawnPoints.Add(new RCLevelSpawnPoint(
+                    new Vector3(+0.263f, +0.502f, -0.031f), new Vector3(-0.098f, -0.013f, +0.008f)));
+                level1SpawnPoints.Add(new RCLevelSpawnPoint(
+                    new Vector3(-0.638f, +0.430f, +0.480f), new Vector3(+0.057f, -0.021f, -0.079f)));
+                level1SpawnPoints.Add(new RCLevelSpawnPoint(
+                    new Vector3(-0.209f, +0.441f, +0.917f), new Vector3(+0.003f, -0.005f, -0.100f)));
+
+                RCLevelParameters level1Params = new RCLevelParameters(Ctx.ContentRqst, "Deathmatch Level 1",
+                    "tilable_long_grass", "seamless_rock", "tileable_snow", 10f, 1, .3f, .55f, .65f, .75f,
+                    lightNode, level1SpawnPoints);
+
+                levels.Add("Grassy Canyon Battle", new RCLevel(level1Params));
+            }
+            #endregion level 1
+
+            #region level 2
+            {
+                List<RCLevelSpawnPoint> level2SpawnPoints = new List<RCLevelSpawnPoint>();
+                level2SpawnPoints.Add(new RCLevelSpawnPoint(
+                    new Vector3(-0.554f, +0.523f, -0.646f), new Vector3(+0.688f, +0.025f, +0.725f)));
+                level2SpawnPoints.Add(new RCLevelSpawnPoint(
+                    new Vector3(-0.554f, +0.512f, -0.023f), new Vector3(+0.999f, +0.025f, -0.026f)));
+                level2SpawnPoints.Add(new RCLevelSpawnPoint(
+                    new Vector3(-0.079f, +0.525f, +0.571f), new Vector3(+0.078f, +0.025f, -0.997f)));
+                level2SpawnPoints.Add(new RCLevelSpawnPoint(
+                    new Vector3(-0.585f, +0.537f, +0.581f), new Vector3(+0.743f, +0.025f, -0.669f)));
+                level2SpawnPoints.Add(new RCLevelSpawnPoint(
+                    new Vector3(+0.614f, +0.551f, +0.555f), new Vector3(-0.758f, -0.080f, -0.647f)));
+                level2SpawnPoints.Add(new RCLevelSpawnPoint(
+                    new Vector3(+0.702f, +0.564f, -0.698f), new Vector3(-0.994f, -0.028f, -0.104f)));
+                level2SpawnPoints.Add(new RCLevelSpawnPoint(
+                    new Vector3(+0.650f, +0.556f, -0.626f), new Vector3(-0.820f, -0.106f, +0.563f)));
+                level2SpawnPoints.Add(new RCLevelSpawnPoint(
+                    new Vector3(-0.417f, +0.543f, -0.613f), new Vector3(+0.000f, +0.103f, +0.995f)));
+
+                RCLevelParameters level2Params = new RCLevelParameters(Ctx.ContentRqst, "Tower Level 1",
+                    "lava2", "seamless_rock", "lava", 25f, 1, .05f, .075f, .78f, .83f,
+                    lightNode, level2SpawnPoints);
+
+                levels.Add("Volcanic Tower Battle", new RCLevel(level2Params));
+            }
+            #endregion level 2
+
+            #region level 3
+            {
+                List<RCLevelSpawnPoint> level3SpawnPoints = new List<RCLevelSpawnPoint>();
+                level3SpawnPoints.Add(new RCLevelSpawnPoint(
+                    new Vector3(+0.338f, +0.240f, -0.290f), new Vector3(-0.918f, -0.105f, +0.382f)));
+                level3SpawnPoints.Add(new RCLevelSpawnPoint(
+                    new Vector3(+0.912f, +0.535f, -0.302f), new Vector3(-0.045f, -0.029f, +0.084f)));
+                level3SpawnPoints.Add(new RCLevelSpawnPoint(
+                    new Vector3(+0.263f, +0.502f, -0.031f), new Vector3(-0.098f, -0.013f, +0.008f)));
+                level3SpawnPoints.Add(new RCLevelSpawnPoint(
+                    new Vector3(-0.638f, +0.430f, +0.480f), new Vector3(+0.057f, -0.021f, -0.079f)));
+                level3SpawnPoints.Add(new RCLevelSpawnPoint(
+                    new Vector3(-0.209f, +0.441f, +0.917f), new Vector3(+0.003f, -0.005f, -0.100f)));
+
+                RCLevelParameters level3Params = new RCLevelParameters(Ctx.ContentRqst, "Deathmatch Level 2",
+                    "tileable_snow", "ice", "snow", 5f, 1, .1f, .3f, .6f, .7f,
+                    lightNode, level3SpawnPoints);
+
+                levels.Add("Rough Snowy Plain", new RCLevel(level3Params));
+            }
+            #endregion level 3
+
+            #region level 4
+            {
+                List<RCLevelSpawnPoint> level4SpawnPoints = new List<RCLevelSpawnPoint>();
+                level4SpawnPoints.Add(new RCLevelSpawnPoint(
+                    new Vector3(+0.338f, +0.240f, -0.290f), new Vector3(-0.918f, -0.105f, +0.382f)));
+                level4SpawnPoints.Add(new RCLevelSpawnPoint(
+                    new Vector3(+0.912f, +0.535f, -0.302f), new Vector3(-0.045f, -0.029f, +0.084f)));
+                level4SpawnPoints.Add(new RCLevelSpawnPoint(
+                    new Vector3(+0.263f, +0.502f, -0.031f), new Vector3(-0.098f, -0.013f, +0.008f)));
+                level4SpawnPoints.Add(new RCLevelSpawnPoint(
+                    new Vector3(-0.638f, +0.430f, +0.480f), new Vector3(+0.057f, -0.021f, -0.079f)));
+                level4SpawnPoints.Add(new RCLevelSpawnPoint(
+                    new Vector3(-0.209f, +0.441f, +0.917f), new Vector3(+0.003f, -0.005f, -0.100f)));
+
+                RCLevelParameters level4Params = new RCLevelParameters(Ctx.ContentRqst, "Deathmatch Level 2",
+                    "tileable_snow", "ice", "snow", 10f, 1, .1f, .3f, .6f, .7f,
+                    lightNode, level4SpawnPoints);
+
+                levels.Add("Level 4", new RCLevel(level4Params));
+            }
+            #endregion level 4
+
+            levels["Rough Snowy Plain"].LoadLevel(Ctx.Graphics);
 
         }
     }
