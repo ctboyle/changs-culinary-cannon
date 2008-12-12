@@ -11,7 +11,7 @@ using JigLibX.Collision;
 
 namespace RC.Engine.Test
 {
-    class Potato : JibLibXObject
+    public class Potato : JibLibXObject
     {
         public const double LifeDuration = 15.0;
         private bool _fired = false;
@@ -21,6 +21,14 @@ namespace RC.Engine.Test
 
 
 
+        protected override bool OnCollision(CollisionSkin skin0, CollisionSkin skin1)
+        {
+            if (skin0.Owner.ExternalData is Potato)
+            {
+            }
+
+            return base.OnCollision(skin0, skin1);
+        }
 
         public Potato(PotatoPool pool, IRCContentRequester content)
         {

@@ -61,6 +61,8 @@
     <Compile Include="GameState.cs" />
     <Compile Include="HeightMapEffect.cs" />
     <Compile Include="MeshCreator.cs" />
+    <Compile Include="PhysicsVehicle.cs" />
+    <Compile Include="PhysicsWheel.cs" />
     <Compile Include="Particle\ExplositionSmokeParticalSystem.cs" />
     <Compile Include="Particle\ParticleController.cs" />
     <Compile Include="Particle\ParticleEffect.cs" />
