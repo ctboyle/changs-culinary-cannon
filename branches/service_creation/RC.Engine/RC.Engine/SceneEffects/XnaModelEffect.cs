@@ -5,6 +5,7 @@ using RC.Engine.Rendering;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Content;
 using RC.Engine.ContentManagement;
+using Microsoft.Xna.Framework;
 
 namespace RC.Engine.SceneEffects
 {
@@ -14,6 +15,40 @@ namespace RC.Engine.SceneEffects
 
         private EffectConfigure _ConfigureFn;
         protected Effect _effect;
+
+        RCMaterialState _materialState = new RCMaterialState();
+
+        public override void SetRenderState(int iPass, IRCRenderManager render, bool isPrimaryEffect)
+        {
+            if (Content is BasicEffect)
+            {
+                BasicEffect modelEffect = (BasicEffect)Content;
+
+
+                RCMaterialState savedState = (RCMaterialState)render.GetRenderState(RCRenderState.StateType.Material);
+                render.SetRenderState(_materialState);
+                _materialState = savedState;
+
+
+
+            }
+
+            base.SetRenderState(iPass, render, isPrimaryEffect);
+        }
+
+        public override void RestoreRenderState(int iPass, IRCRenderManager render, bool isPrimaryEffect)
+        {
+            if (Content is BasicEffect)
+            {
+                BasicEffect modelEffect = (BasicEffect)Content;
+
+
+                RCMaterialState savedState = (RCMaterialState)render.GetRenderState(RCRenderState.StateType.Material);
+                render.SetRenderState(_materialState);
+                _materialState = savedState;
+            }
+            base.RestoreRenderState(iPass, render, isPrimaryEffect);
+        }
 
         /// <summary>
         /// 
@@ -51,12 +86,18 @@ namespace RC.Engine.SceneEffects
 
             if (Content is BasicEffect)
             {
-                BasicEffect modelEffect = (BasicEffect)Content;
+                BasicEffect modelEffect = (BasicEffect)Content;              
 
                 modelEffect.World = render.World;
                 modelEffect.View = render.View;
                 modelEffect.Projection = render.Projection;
 
+
+                _materialState.Ambient =  new Color(modelEffect.AmbientLightColor);
+                _materialState.Diffuse = new Color(modelEffect.DiffuseColor);
+                _materialState.Specular = new Color(modelEffect.SpecularColor);
+                _materialState.Emissive = new Color(modelEffect.EmissiveColor);
+                _materialState.Shininess = modelEffect.SpecularPower;
             }
         }
 

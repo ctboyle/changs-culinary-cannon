@@ -63,6 +63,8 @@ namespace RC.Engine.SceneEffects
             ((BasicEffect)Content).SpecularPower = materialState.Shininess;
             ((BasicEffect)Content).Alpha = materialState.Alpha;
 
+            
+
 
             if (_lights.Count > 0)
             {
@@ -82,7 +84,7 @@ namespace RC.Engine.SceneEffects
                     basicLight.Enabled = true;
                     basicLight.DiffuseColor = _lights[i].Diffuse;
                     basicLight.Direction = _lights[i].Transform.Forward;
-                    basicLight.SpecularColor = _lights[i].Specular;   
+                    basicLight.SpecularColor = _lights[i].Specular;
                 }
                 else
                 {
