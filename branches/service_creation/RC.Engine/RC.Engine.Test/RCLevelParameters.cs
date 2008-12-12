@@ -20,9 +20,9 @@ namespace RC.Engine.Test
         private float percentBottomOfTopTexture;
         private float percentTopOfMiddleTexture;
         private RCSceneNode parentNode;
-        private List<RCLevelSpawnPoints> spawnPoints;
+        private List<RCLevelSpawnPoint> spawnPoints;
 
-        internal List<RCLevelSpawnPoints> SpawnPoints
+        internal List<RCLevelSpawnPoint> SpawnPoints
         {
             get
             {
@@ -98,7 +98,7 @@ namespace RC.Engine.Test
             float heightMapXYZScaling, float heightMapYScaling,
             float percentBottomOfCenterTexture, float percentTopOfBottomTexture,
             float percentBottomOfTopTexture, float percentTopOfMiddleTexture,
-            RCSceneNode parentNode, List<RCLevelSpawnPoints> spawnPoints)
+            RCSceneNode parentNode, List<RCLevelSpawnPoint> spawnPoints)
         {
             this.requester = requester;
             this.heightMapName = heightMapName;
