@@ -74,7 +74,7 @@ namespace RC.Engine.Test
             // Add a controller for the camera
             /////////////////////////////////////////////////////////////////////
             FlyCameraController cameraController = new FlyCameraController(5f, MathHelper.PiOver2);
-            cameraController.AttachToObject(camera);
+            //cameraController.AttachToObject(camera);
             
 
             /////////////////////////////////////////////////////////////////////
@@ -113,7 +113,7 @@ namespace RC.Engine.Test
             /////////////////////////////////////////////////////////////////////
             JigLibXVehicle car = CreateVehicle();
 
-            car.VehicleData.Chassis.Body.MoveTo(levels["Volcanic Tower Battle"].SpawnPoints[0].GetScaledPosition(25f,1f),Matrix.Identity);
+            car.VehicleData.Chassis.Body.MoveTo(levels["Tower 1"].SpawnPoints[0].GetScaledPosition(25f,1f),Matrix.Identity);
             
             //for (int i = 0; i < 25; ++i)
             //{
@@ -258,7 +258,7 @@ namespace RC.Engine.Test
                     "tilable_long_grass", "seamless_rock", "tileable_snow", 10f, 1, .3f, .55f, .65f, .75f,
                     lightNode, level1SpawnPoints);
 
-                levels.Add("Grassy Canyon Battle", new RCLevel(level1Params));
+                levels.Add("Deathmatch 1", new RCLevel(level1Params));
             }
             #endregion level 1
 
@@ -286,55 +286,11 @@ namespace RC.Engine.Test
                     "lava2", "seamless_rock", "lava", 25f, 1, .05f, .075f, .78f, .83f,
                     lightNode, level2SpawnPoints);
 
-                levels.Add("Volcanic Tower Battle", new RCLevel(level2Params));
+                levels.Add("Tower 1", new RCLevel(level2Params));
             }
             #endregion level 2
 
-            #region level 3
-            {
-                List<RCLevelSpawnPoints> level3SpawnPoints = new List<RCLevelSpawnPoints>();
-                level3SpawnPoints.Add(new RCLevelSpawnPoints(
-                    new Vector3(+0.779f, +0.406f, -0.728f), new Vector3(-0.003f, -0.013f, +0.099f)));
-                level3SpawnPoints.Add(new RCLevelSpawnPoints(
-                    new Vector3(+0.912f, +0.535f, -0.302f), new Vector3(-0.045f, -0.029f, +0.084f)));
-                level3SpawnPoints.Add(new RCLevelSpawnPoints(
-                    new Vector3(+0.263f, +0.502f, -0.031f), new Vector3(-0.098f, -0.013f, +0.008f)));
-                level3SpawnPoints.Add(new RCLevelSpawnPoints(
-                    new Vector3(-0.638f, +0.430f, +0.480f), new Vector3(+0.057f, -0.021f, -0.079f)));
-                level3SpawnPoints.Add(new RCLevelSpawnPoints(
-                    new Vector3(-0.209f, +0.441f, +0.917f), new Vector3(+0.003f, -0.005f, -0.100f)));
-
-                RCLevelParameters level3Params = new RCLevelParameters(Ctx.ContentRqst, "Deathmatch Level 2",
-                    "tileable_snow", "ice", "snow", 5f, 1, .1f, .3f, .6f, .7f,
-                    lightNode, level3SpawnPoints);
-
-                levels.Add("Rough Snowy Plain", new RCLevel(level3Params));
-            }
-            #endregion level 3
-
-            #region level 4
-            {
-                List<RCLevelSpawnPoints> level4SpawnPoints = new List<RCLevelSpawnPoints>();
-                level4SpawnPoints.Add(new RCLevelSpawnPoints(
-                    new Vector3(+0.779f, +0.406f, -0.728f), new Vector3(-0.003f, -0.013f, +0.099f)));
-                level4SpawnPoints.Add(new RCLevelSpawnPoints(
-                    new Vector3(+0.912f, +0.535f, -0.302f), new Vector3(-0.045f, -0.029f, +0.084f)));
-                level4SpawnPoints.Add(new RCLevelSpawnPoints(
-                    new Vector3(+0.263f, +0.502f, -0.031f), new Vector3(-0.098f, -0.013f, +0.008f)));
-                level4SpawnPoints.Add(new RCLevelSpawnPoints(
-                    new Vector3(-0.638f, +0.430f, +0.480f), new Vector3(+0.057f, -0.021f, -0.079f)));
-                level4SpawnPoints.Add(new RCLevelSpawnPoints(
-                    new Vector3(-0.209f, +0.441f, +0.917f), new Vector3(+0.003f, -0.005f, -0.100f)));
-
-                RCLevelParameters level4Params = new RCLevelParameters(Ctx.ContentRqst, "Deathmatch Level 2",
-                    "tileable_snow", "ice", "snow", 10f, 1, .1f, .3f, .6f, .7f,
-                    lightNode, level4SpawnPoints);
-
-                levels.Add("Level 4", new RCLevel(level4Params));
-            }
-            #endregion level 4
-
-            levels["Rough Snowy Plain"].LoadLevel();
+            levels["Tower 1"].LoadLevel();
         }
 
     }

@@ -96,7 +96,7 @@
       <Processor>TextureProcessor</Processor>
     </Compile>
     <Compile Include="Textures\snow texture.jpg">
-      <Name>snow</Name>
+      <Name>snow texture</Name>
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
     </Compile>
@@ -170,10 +170,31 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Textures\final_heightmap.bmp">
-      <Name>final_heightmap</Name>
+    <Compile Include="Textures\Deathmatch Level 1.bmp">
+      <Name>Deathmatch Level 1</Name>
       <Importer>TextureImporter</Importer>
       <Processor>RCHeightMapProcessor</Processor>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Textures\Tower Level 1.bmp">
+      <Name>Tower Level 1</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>RCHeightMapProcessor</Processor>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Textures\lava.jpg">
+      <Name>lava</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Textures\lava2.jpg">
+      <Name>lava2</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
     </Compile>
   </ItemGroup>
   <ItemGroup>
@@ -186,6 +207,25 @@
       <Name>wheel</Name>
       <Importer>FbxImporter</Importer>
       <Processor>ModelProcessor</Processor>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Textures\Deathmatch Level 2.bmp">
+      <Name>Deathmatch Level 2</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>RCHeightMapProcessor</Processor>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Textures\Ice.jpg">
+      <Name>Ice</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+    <Compile Include="Textures\Snow.jpg">
+      <Name>Snow</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
     </Compile>
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Microsoft\XNA Game Studio\v2.0\Microsoft.Xna.GameStudio.ContentPipeline.targets" />

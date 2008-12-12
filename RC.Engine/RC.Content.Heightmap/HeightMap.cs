@@ -51,8 +51,8 @@ namespace RC.Content.Heightmap
 
     public class RCHeightMap : RCSceneNode
     {
-        public const int NumIntervalsX = 100;
-        public const int NumIntervalsZ = 100;
+        public int NumIntervalsX;
+        public int NumIntervalsZ;
         public const float SizeX = 2;
         public const float SizeZ = 2;
 
@@ -114,6 +114,8 @@ namespace RC.Content.Heightmap
             
             mapping = heightMapping;
             textureMapping = textureMap;
+            NumIntervalsX = textureMapping.Width;
+            NumIntervalsZ = textureMapping.Height;
         }
 
         /// <summary>
@@ -236,30 +238,12 @@ namespace RC.Content.Heightmap
 
                     if (i < NumIntervalsX && j < NumIntervalsZ)
                     {
-                        ////what Chang had
-                        //indices[fvertexIdx++] = (vertexIdx);
-                        //indices[fvertexIdx++] = (vertexIdx + NumIntervalsZ + 1);
-                        //indices[fvertexIdx++] = (vertexIdx + NumIntervalsZ + 2);
-                        //indices[fvertexIdx++] = (vertexIdx);
-                        //indices[fvertexIdx++] = (vertexIdx + NumIntervalsZ + 2);
-                        //indices[fvertexIdx++] = (vertexIdx + 1);
-
-
-                        ////switching rows and columns
                         indices[fvertexIdx++] = (vertexIdx);
                         indices[fvertexIdx++] = (vertexIdx + 1);
                         indices[fvertexIdx++] = (vertexIdx + NumIntervalsZ + 2);
                         indices[fvertexIdx++] = (vertexIdx);
                         indices[fvertexIdx++] = (vertexIdx + NumIntervalsZ + 1);
                         indices[fvertexIdx++] = (vertexIdx + NumIntervalsZ + 2);
-
-                        ////what is expected to be right
-                        //indices[fvertexIdx++] = (vertexIdx);
-                        //indices[fvertexIdx++] = (vertexIdx + NumIntervalsZ + 1);
-                        //indices[fvertexIdx++] = (vertexIdx + NumIntervalsZ + 2);
-                        //indices[fvertexIdx++] = (vertexIdx);
-                        //indices[fvertexIdx++] = (vertexIdx + NumIntervalsZ + 2);
-                        //indices[fvertexIdx++] = (vertexIdx + 1);
                     }
 
                     vertexIdx++;
