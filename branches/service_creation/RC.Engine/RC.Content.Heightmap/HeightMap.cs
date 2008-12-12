@@ -49,7 +49,7 @@ namespace RC.Content.Heightmap
         }
     }
 
-    public class RCHeightMap : RCSceneNode
+    public class RCHeightMap
     {
         public int NumIntervalsX;
         public int NumIntervalsZ;
@@ -57,8 +57,9 @@ namespace RC.Content.Heightmap
         public const float SizeZ = 2;
 
         private float[,] mapping = null;
-        private RCGeometry geometry = null;
+        private RCVertexRefrence vertexRef = null;
         private Texture2D textureMapping = null;
+        private bool isLoaded = false;
         private int[] indices = null;
         private float[] vertices = null;
         private float[] texCoords = null;
@@ -79,8 +80,6 @@ namespace RC.Content.Heightmap
                     heightScaling = value;
                     SetupData();
                 }
-                
-                
             }
         }
 
@@ -165,38 +164,32 @@ namespace RC.Content.Heightmap
             return heightMap.TextureMapping;
         }
         #endregion Implicit conversions
-        
-        public override void Draw(IRCRenderManager render, RC.Engine.ContentManagement.IRCContentRequester contentRqst)
+
+        public RCGeometry CreateGeometry(IGraphicsDeviceService graphics)
         {
-            if (geometry == null)
+            if (!isLoaded)
             {
                 SetupData();
             }
 
-            RCVertexRefrence vertexReference = SetupVertexReference(render.Graphics);
-
-            geometry = new RCGeometry();
-            geometry.PartData = vertexReference;
-
-            foreach (RCEffect effect in Effects)
+            if (vertexRef == null)
             {
-                geometry.AddEffect(effect);
+                SetupVertexReference(graphics);
             }
 
-            render.Draw(geometry);
-            base.Draw(render, contentRqst);
+            RCGeometry geometry = new RCGeometry();
+            geometry.PartData = vertexRef;
+
+            return geometry;
         }
-        
+
         private void SetupData()
         {
             float dx = SizeX / NumIntervalsX;
             float dz = SizeZ / NumIntervalsZ;
             float txinc = 1.0f / NumIntervalsX;
             float tyinc = 1.0f / NumIntervalsZ;
-            //scaling = 1;
-
-
-
+ 
             Vector3 position, normal = Vector3.Zero;
             Vector2 texture = Vector2.Zero;
 
@@ -252,10 +245,11 @@ namespace RC.Content.Heightmap
                 texture.Y -= tyinc;
             }
 
-            
+            vertexRef = null;
+            isLoaded = true;
         }
 
-        private RCVertexRefrence SetupVertexReference(IGraphicsDeviceService graphics)
+        private void SetupVertexReference(IGraphicsDeviceService graphics)
         {
             RCVertexAttributes vAttrib = new RCVertexAttributes();
             vAttrib.SetElementChannels(ElementType.Position, RCVertexAttributes.ChannelCount.Three);
@@ -273,7 +267,7 @@ namespace RC.Content.Heightmap
             iBuffer.Enable(graphics);
             vBuffer.Enable(graphics);
 
-            RCVertexRefrence vertexRefrence = new RCVertexRefrence(
+            vertexRef = new RCVertexRefrence(
                 iBuffer.IndexBuffer,
                 vBuffer.VertexBuffer,
                 vBuffer.VertexDeclaration,
@@ -282,8 +276,6 @@ namespace RC.Content.Heightmap
                 vBuffer.NumVertices,
                 iBuffer.NumIndicies / 3
                 );
-
-            return vertexRefrence;
         }
     }
 }

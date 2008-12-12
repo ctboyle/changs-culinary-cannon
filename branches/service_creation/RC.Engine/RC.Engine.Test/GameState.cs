@@ -100,13 +100,14 @@ namespace RC.Engine.Test
             RCContent<Texture2D> texture2 = new RCDefaultContent<Texture2D>(Ctx.ContentRqst, "Content\\Textures\\seamless_rock");
             RCContent<Texture2D> texture3 = new RCDefaultContent<Texture2D>(Ctx.ContentRqst, "Content\\Textures\\tileable_snow");
             heightMap.Content.Scaling = heightMapScaling;
+            RCGeometry heightMapGeo = heightMap.Content.CreateGeometry(Ctx.Graphics);
 
             HeightMapEffect effect = new HeightMapEffect(Ctx.ContentRqst, heightMap,
                 texture1, texture2, texture3, .3f, .55f, .65f, .75f);
-            heightMap.Content.AddEffect(effect);
+            heightMapGeo.AddEffect(effect);
 
             // Attach the heightmap to the pysics system.
-            JibLibXObject physicsHeightMap = JibLibXPhysicsHelper.CreateHeightmap(heightMap);
+            JibLibXObject physicsHeightMap = JibLibXPhysicsHelper.CreateHeightmap(heightMap, heightMapGeo);
 
             _sceneRoot.UpdateRS();
 

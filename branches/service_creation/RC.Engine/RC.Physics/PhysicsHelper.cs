@@ -18,7 +18,7 @@ namespace RC.Physics
             return physicsObject;
         }
 
-        public static JibLibXObject CreateHeightmap(RCHeightMap heightMap)
+        public static JibLibXObject CreateHeightmap(RCHeightMap heightMap, RCGeometry heightMapDrawable)
         {
             JibLibXObject physicsHeightMap = new JibLibXObject();
 
@@ -38,7 +38,7 @@ namespace RC.Physics
                 }
             }
 
-            Vector3 position = heightMap.WorldTrans.Translation;
+            Vector3 position = heightMapDrawable.WorldTrans.Translation;
 
             physicsHeightMap.Body.CollisionSkin.AddPrimitive(
                 new JigLibX.Geometry.Heightmap(heights, position.X, position.Z, 0.004f * heightMap.Scaling, 0.004f * heightMap.Scaling),
@@ -46,14 +46,7 @@ namespace RC.Physics
                 new JigLibX.Collision.MaterialProperties(0.7f, 0.7f, 0.6f)
             );
 
-
-            physicsHeightMap.Body.CollisionSkin.AddPrimitive(
-    new JigLibX.Geometry.Plane(Vector3.Zero, 0),
-    (int)JigLibX.Collision.MaterialTable.MaterialID.UserDefined,
-    new JigLibX.Collision.MaterialProperties(0.7f, 0.7f, 0.6f)
-);
-
-            physicsHeightMap.SetChildNode(heightMap);
+            physicsHeightMap.SetChildNode(heightMapDrawable);
 
             return physicsHeightMap;
         }
