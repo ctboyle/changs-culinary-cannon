@@ -32,14 +32,12 @@ namespace RC.Engine.Test
             this.AddCollisionSkin();
 
             this.Body.CollisionSkin.AddPrimitive( 
-                new Capsule(Vector3.Zero, Matrix.CreateRotationY(MathHelper.PiOver2), 0.002f, 0.003f),
+                new Capsule(Vector3.Zero, Matrix.CreateRotationY(MathHelper.PiOver2), 0.05f, 0.5f),
                 (int)MaterialTable.MaterialID.UserDefined, new MaterialProperties(0.2f, 0.8f, 0.7f));
 
 
-            this.SetMass(50.0f);
+            this.SetMass(500.0f);
 
-            this.Body.ApplyGravity = false;
-            this.Body.ClearForces();
         }
 
         public void Fire(Vector3 worldPos, Matrix worldOrientation, Vector3 velocity)
