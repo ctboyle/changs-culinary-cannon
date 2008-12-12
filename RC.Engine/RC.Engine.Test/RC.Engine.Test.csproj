@@ -61,6 +61,14 @@
     <Compile Include="GameState.cs" />
     <Compile Include="HeightMapEffect.cs" />
     <Compile Include="MeshCreator.cs" />
+    <Compile Include="Particle\ExplositionSmokeParticalSystem.cs" />
+    <Compile Include="Particle\ParticleController.cs" />
+    <Compile Include="Particle\ParticleEffect.cs" />
+    <Compile Include="Particle\ParticleEmitter.cs" />
+    <Compile Include="Particle\ParticleSettings.cs" />
+    <Compile Include="Particle\ParticleSystem.cs" />
+    <Compile Include="Particle\ParticleVertex.cs" />
+    <Compile Include="Particle\SmokePlumeParticleSystem.cs" />
     <Compile Include="Player.cs" />
     <Compile Include="Potato.cs" />
     <Compile Include="PotatoPool.cs" />

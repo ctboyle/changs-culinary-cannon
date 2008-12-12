@@ -13,11 +13,16 @@ using Microsoft.Xna.Framework.Input;
 using RC.Physics;
 using JigLibX.Vehicles;
 using JigLibX.Physics;
+using RC.Engine.Test.Particle;
 
 namespace RC.Engine.Test
 {
     class Player
     {
+        static Random random = new Random();
+
+        private ParticleSystem _fireParticles; 
+        private ParticleSystem _smokeParticles; 
         private RCCamera _playerCamera;
         private RCModelContent _potatoGun;
         private PlayerIndex _playerIndex;
@@ -136,6 +141,11 @@ namespace RC.Engine.Test
             _potatoGun = new RCModelContent(ctx.ContentRqst, @"Content\Models\potatoGun");
             RCMaterialState material = new RCMaterialState();
             material.Ambient = new Color(new Vector3(0.4f));
+
+            _fireParticles = new ExplosionSmokeParticleSystem(ctx, new ParticleEffect(ctx.ContentRqst));
+            _smokeParticles = new SmokePlumeParticleSystem(ctx, new ParticleEffect(ctx.ContentRqst));
+            _potatoGun.Content.AddChild(_fireParticles);
+            _potatoGun.Content.AddChild(_smokeParticles);
         }
 
         private static void CreateCar(RCGameContext ctx, out RCModelContent carModel, out Car car, out JigLibXVehicle carPhysics)
@@ -183,6 +193,10 @@ namespace RC.Engine.Test
 
 
                     _pool.FirePotato(gunPos + 5.0f * _potatoGun.Content.WorldTrans.Forward , Matrix.CreateRotationX(MathHelper.PiOver2) * Matrix.CreateFromQuaternion(gunRot), _potatoGun.Content.WorldTrans.Forward * 25.0f);
+                    
+                    // Add effect of gun
+                    _fireParticles.AddParticle(gunPos + 5f * _potatoGun.Content.WorldTrans.Forward, Vector3.Zero);
+                    _smokeParticles.AddParticle(gunPos + 5f * _potatoGun.Content.WorldTrans.Forward, Vector3.Zero);
                 }
             }
 
@@ -191,7 +205,7 @@ namespace RC.Engine.Test
                 Matrix.CreateFromAxisAngle(-_potatoGun.Content.LocalTrans.Right, (float)gameTime.ElapsedGameTime.TotalSeconds * MathHelper.PiOver2 * padState.ThumbSticks.Right.Y);
 
 
-
+            
             car.Accelerate = padState.ThumbSticks.Left.Y;
 
             car.Steer = -padState.ThumbSticks.Left.X;
@@ -204,6 +218,19 @@ namespace RC.Engine.Test
             }
 
 
+        }
+
+        Vector3 RandomPointOnCircle()
+        {
+            const float radius = 30;
+            const float height = 40;
+
+            double angle = random.NextDouble() * Math.PI * 2;
+
+            float x = (float)Math.Cos(angle);
+            float y = (float)Math.Sin(angle);
+
+            return new Vector3(x * radius, y * radius + height, 0);
         }
 
     }
