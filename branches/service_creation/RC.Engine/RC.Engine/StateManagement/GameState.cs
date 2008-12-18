@@ -25,6 +25,9 @@ namespace RC.Engine.StateManagement
         public RCGameState(IServiceProvider services)
         {
             _services = services;
+
+            IRCGameStateManager stateMgr = (IRCGameStateManager)services.GetService(typeof(IRCGameStateManager));
+            stateMgr.StateChanged += new StateChangeHandler(StateChanged);
         }
 
         ~RCGameState()
@@ -69,7 +72,7 @@ namespace RC.Engine.StateManagement
         {
         }
 
-        internal protected virtual void StateChanged(
+        protected virtual void StateChanged(
             RCGameState newState,
             RCGameState oldState
             )
