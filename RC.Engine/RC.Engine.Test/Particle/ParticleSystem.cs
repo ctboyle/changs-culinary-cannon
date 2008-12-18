@@ -207,7 +207,7 @@ namespace RC.Engine.Test.Particle
         #endregion
 
         #region Draw
-        public override void Draw(RC.Engine.Rendering.IRCRenderManager render, RC.Engine.ContentManagement.IRCContentRequester contentRqst)
+        public override void Draw(RC.Engine.Rendering.IRCRenderManager render)
         {
             GraphicsDevice device = render.Graphics.GraphicsDevice;
 

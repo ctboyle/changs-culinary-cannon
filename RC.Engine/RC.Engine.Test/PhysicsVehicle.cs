@@ -139,13 +139,13 @@ namespace RC.Physics
             }
         }
 
-        public override void Draw(RC.Engine.Rendering.IRCRenderManager render, RC.Engine.ContentManagement.IRCContentRequester contentRqst)
+        public override void Draw(RC.Engine.Rendering.IRCRenderManager render)
         {
-            base.Draw(render, contentRqst);
+            base.Draw(render);
 
             foreach (JigLibXWheel wheel in _wheels)
             {
-                wheel.Draw(render, contentRqst);
+                wheel.Draw(render);
             }
         }
 
