@@ -23,7 +23,7 @@ namespace RC.Engine.Test
 {
     class GameState : RCGameState
     {
-        private const int NumPlayers = 4;
+        private const int NumPlayers = 2;
 
 
         private RCSceneNode _sceneRoot = null;

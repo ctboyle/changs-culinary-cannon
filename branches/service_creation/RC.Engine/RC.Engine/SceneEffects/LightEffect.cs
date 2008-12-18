@@ -8,6 +8,9 @@ using RC.Engine.Rendering;
 
 namespace RC.Engine.SceneEffects
 {
+    /// <summary>
+    /// Light effect that controls rendering of lighting in RC Engine.
+    /// </summary>
     public class RCLightEffect : RCEffect
     {
         private List<RCLight> _lights = new List<RCLight>();
@@ -21,11 +24,18 @@ namespace RC.Engine.SceneEffects
         {
         }
 
+        /// <summary>
+        /// Gets the maximum number of lights that can be used with this light effect.
+        /// </summary>
         public int MaxLights
         {
             get { return 3; }
         }
 
+        /// <summary>
+        /// Adds lights to be rendered with theis effect.
+        /// </summary>
+        /// <param name="light">Light to be added with this effect.</param>
         public void AddLight(RCLight light)
         {
             if (_lights.Count >= MaxLights)
@@ -39,15 +49,22 @@ namespace RC.Engine.SceneEffects
             }
         }
 
+        /// <summary>
+        /// Remove a light to be rendered with this effect.
+        /// </summary>
+        /// <param name="light"></param>
         public void RemoveLight(RCLight light)
         {
             _lights.Remove(light);
         }
-
+        /// <summary>
+        /// Removes all lights from this effect.
+        /// </summary>
         public void RemoveAllLights()
         {
             _lights.Clear();
         }
+
 
         public override void CustomConfigure(IRCRenderManager render)
         {

@@ -11,8 +11,14 @@ using RC.Engine.GraphicsManagement.BoundingVolumes;
 
 namespace RC.Engine.GraphicsManagement
 {
+    /// <summary>
+    /// Geometry is a leaf object in the scen graph that has renderable data.
+    /// </summary>
     public class RCGeometry : RCSpatial
     {
+        /// <summary>
+        /// The list of accumulated render states this object should be rendered with.
+        /// </summary>
         public RCRenderStateCollection RenderStates = new RCRenderStateCollection(false);
 
         private RCLightEffect _lightEffect = null;
@@ -20,12 +26,18 @@ namespace RC.Engine.GraphicsManagement
 
         private RCBoundingSphere _localBound = new RCBoundingSphere();
 
+        /// <summary>
+        /// The bounding volume in object space for this object.
+        /// </summary>
         public RCBoundingSphere LocalBound
         {
             get { return _localBound; }
             set { _localBound = value; }
         }
 
+        /// <summary>
+        /// The vertex reference to be used to render this model's data.
+        /// </summary>
         public RCVertexRefrence PartData
         {
             get { return _vertexRefrence; }
@@ -37,9 +49,13 @@ namespace RC.Engine.GraphicsManagement
             
         }
         
+        /// <summary>
+        /// Draws the geometric data as a triangle list.
+        /// </summary>
+        /// <param name="render">The render manager</param>
+        /// <param name="contentRqst">The content requester for on demand loading</param>
         public override void Draw(IRCRenderManager render, IRCContentRequester contentRqst)
         {
-
             if (_lightEffect != null && !_lightEffect.IsInitialized)
             {
                 _lightEffect.Initialize(contentRqst);
@@ -48,6 +64,11 @@ namespace RC.Engine.GraphicsManagement
             render.Draw(this);
         }
 
+        /// <summary>
+        /// Sets the accumulated renderstates and lights to be used for the drawing o fthis object.
+        /// </summary>
+        /// <param name="stateStack"></param>
+        /// <param name="lightStack"></param>
         protected override void UpdateState(RCRenderStateStack stateStack, Stack<RCLight> lightStack)
         {
             foreach (RCRenderState.StateType type in Enum.GetValues(typeof(RCRenderState.StateType)))
@@ -86,6 +107,9 @@ namespace RC.Engine.GraphicsManagement
             }
         }
 
+        /// <summary>
+        /// Tansforms the local bounding volume to the world bounding volume.
+        /// </summary>
         protected override void UpdateWorldBound()
         {
             _worldBound = _localBound.Transform(WorldTrans);

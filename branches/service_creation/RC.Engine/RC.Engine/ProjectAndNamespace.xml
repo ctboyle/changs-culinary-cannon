@@ -1,0 +1,19 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<doc>
+  <assembly>
+    <name>RCEngine</name>
+  </assembly>
+  <members>
+    <member name="R:Project">
+      <summary>
+        The RC Engine Project defines the RC Engine and components
+      </summary>
+    </member>
+    <member name="N:ApplicationComments">
+      <summary>
+
+      </summary>
+    </member>
+  </members>
+</doc>
+

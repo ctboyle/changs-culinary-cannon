@@ -8,6 +8,9 @@ using RC.Engine.ContentManagement;
 
 namespace RC.Engine.Rendering
 {
+    /// <summary>
+    /// A class for creating single vertex buffer.
+    /// </summary>
     public class RCVertexBuffer : RCDeviceResource
     {
         private RCVertexAttributes _attributes;

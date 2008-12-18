@@ -34,6 +34,7 @@
     <NoStdLib>true</NoStdLib>
     <UseVSHostingProcess>false</UseVSHostingProcess>
     <PlatformTarget>x86</PlatformTarget>
+    <DocumentationFile>bin\x86\Release\RC.Engine.XML</DocumentationFile>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="CastleDynProxy2, Version=0.0.0.0, Culture=neutral, PublicKeyToken=a621a9e7e5c32e69, processorArchitecture=MSIL">
@@ -137,7 +138,7 @@
     </NestedContentProject>
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="GraphicsManagement\Model\" />
+    <Content Include="ProjectAndNamespace.xml" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <Import Project="$(MSBuildExtensionsPath)\Microsoft\XNA Game Studio\v2.0\Microsoft.Xna.GameStudio.Common.targets" />

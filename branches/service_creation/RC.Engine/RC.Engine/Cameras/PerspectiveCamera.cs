@@ -10,11 +10,16 @@ using RC.Engine.Rendering;
 
 namespace RC.Engine.Cameras
 {
+    /// <summary>
+    /// Defines a camera with a frustum view volume.
+    /// </summary>
     public class RCPerspectiveCamera : RCCamera
     {
         protected float _FOV;
 
-        // Field of View property
+        /// <summary>
+        /// Gets or sets the feild of view.
+        /// </summary>
         public float FOV
         {
             get { return _FOV; }
@@ -25,6 +30,10 @@ namespace RC.Engine.Cameras
             }
         }
 
+        /// <summary>
+        /// Creates a camera with perspective projection.
+        /// </summary>
+        /// <param name="newViewport">The region on the screen the camera's view is rendered.</param>
         public RCPerspectiveCamera(Viewport newViewport)
             : base(newViewport)
         {
@@ -32,6 +41,10 @@ namespace RC.Engine.Cameras
   
         }
 
+        /// <summary>
+        /// Creates the pespective projection matrix.
+        /// </summary>
+        /// <returns></returns>
         protected override Matrix UpdateProjection()
         {
             // Create perpective projection Matrix based on viewport

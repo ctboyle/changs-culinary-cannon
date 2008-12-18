@@ -109,6 +109,11 @@ namespace RC.Engine.GraphicsManagement
             }
         }
 
+        /// <summary>
+        /// Updates each child's render states and lights.
+        /// </summary>
+        /// <param name="stateStack"></param>
+        /// <param name="lightStack"></param>
         protected override void  UpdateState(RCRenderStateStack stateStack, Stack<RCLight> lightStack)
         {
             foreach (RCSpatial child in _listChildren)
