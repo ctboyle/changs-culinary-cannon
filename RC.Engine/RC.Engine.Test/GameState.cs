@@ -52,14 +52,16 @@ namespace RC.Engine.Test
 
         float ang = 0.0f;
 
-        public GameState(Game game)
-            : base(game)
+        public GameState(IServiceProvider services)
+            : base(services)
         {
-            _graphics = (IGraphicsDeviceService)game.Services.GetService(typeof(IGraphicsDeviceService));
-            _contentRqst = (IRCContentRequester)game.Services.GetService(typeof(IRCContentRequester));
-            _cameraMgr = (IRCCameraManager)game.Services.GetService(typeof(IRCCameraManager));
-            _renderMgr = (IRCRenderManager)game.Services.GetService(typeof(IRCRenderManager));
-            _stateStk = (IRCGameStateStack)game.Services.GetService(typeof(IRCGameStateStack));
+            #region Get Required Services
+            _graphics = (IGraphicsDeviceService)Services.GetService(typeof(IGraphicsDeviceService));
+            _contentRqst = (IRCContentRequester)Services.GetService(typeof(IRCContentRequester));
+            _cameraMgr = (IRCCameraManager)Services.GetService(typeof(IRCCameraManager));
+            _renderMgr = (IRCRenderManager)Services.GetService(typeof(IRCRenderManager));
+            _stateStk = (IRCGameStateStack)Services.GetService(typeof(IRCGameStateStack));
+            #endregion
         }
 
         public override void Initialize()
@@ -81,7 +83,7 @@ namespace RC.Engine.Test
             PotatoPool pool = new PotatoPool(_contentRqst, 10, _sceneRoot);
             for (int iPlayer = 0; iPlayer < NumPlayers; iPlayer++)
             {
-                Player player = new Player(Game, (PlayerIndex)(iPlayer),pool, NumPlayers);
+                Player player = new Player(Services, (PlayerIndex)(iPlayer),pool, NumPlayers);
                 player.CreatePlayerContent(_sceneRoot);
                 player.SetPlayerPosition(levels.ActiveLevel.SpawnPoints[iPlayer]);
 
@@ -165,8 +167,12 @@ namespace RC.Engine.Test
             {
                 GamePadState padState = GamePad.GetState(kvPlayers.Key);
                 kvPlayers.Value.UpdateInput(gameTime, padState);
+            }
 
-            } 
+            if (Keyboard.GetState().IsKeyDown(Keys.Escape))
+            {
+                _stateStk.PopState();
+            }
         }
 
         private void SetUpLevels(RCSceneNode sceneNode)
