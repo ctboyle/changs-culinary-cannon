@@ -4,6 +4,9 @@ using System.Text;
 
 namespace RC.Engine.Rendering
 {
+    /// <summary>
+    /// A Dictionary of state stacks based on state type.
+    /// </summary>
     public class RCRenderStateStack
     {
         private Dictionary<RCRenderState.StateType, Stack<RCRenderState>> _stateStacks 

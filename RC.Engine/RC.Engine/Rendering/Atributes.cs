@@ -19,6 +19,9 @@ namespace RC.Engine.Rendering
         Bitangent
     }
 
+    /// <summary>
+    /// Helps create custom vertex declarations based on the configuration of vertex elements.
+    /// </summary>
     public class RCVertexAttributes
     {
         public enum ChannelCount
@@ -57,6 +60,11 @@ namespace RC.Engine.Rendering
             }
         }
 
+        /// <summary>
+        /// Sets the number of channels for each vertex element of that type.
+        /// </summary>
+        /// <param name="type"></param>
+        /// <param name="numChannels"></param>
         public void SetElementChannels(ElementType type, ChannelCount numChannels)
         {
             _vertexElementDescriptors[type].Channels = numChannels;
@@ -64,28 +72,49 @@ namespace RC.Engine.Rendering
         }
 
 
-        // The number of 'float' channels used by all the attributes.
+        /// <summary>
+        /// Gets the number of 'float' channels used by all the attributes.
+        /// </summary>
+        /// <returns>the number of 'float' channels used by all the attributes.</returns>
         public int GetChannelQuantity()
         {
             return m_iChannelQuantity;
         }
 
+        /// <summary>
+        /// Gets the number of channels allocated to an element for the given element type.
+        /// </summary>
+        /// <param name="type">The vertex element type.</param>
+        /// <returns>Number of channels allocated for that type.</returns>
         public ChannelCount GetElementChannels(ElementType type)
         {
             return _vertexElementDescriptors[type].Channels;
         }
 
+        /// <summary>
+        /// Gets the offset to the element type for a vertex element.
+        /// </summary>
+        /// <param name="type">The vertex element type.</param>
+        /// <returns>Size in bytes of the element offset</returns>
         public int GetElementOffset(ElementType type)
         {
             return _vertexElementDescriptors[type].Offset;
         }
 
+        /// <summary>
+        /// Gets whether the vertex has the associated element.
+        /// </summary>
+        /// <param name="type">The vertex element type.</param>
+        /// <returns>Indicates if the element is in the vertex.</returns>
         public bool HasElement(ElementType type)
         {
             return (_vertexElementDescriptors[type].Channels != ChannelCount.None);
         }
 
-
+        /// <summary>
+        /// Gets a vertex element array for the defined vertex attribute.
+        /// </summary>
+        /// <returns></returns>
         public VertexElement[] VertexElements()
         {
             List<VertexElement> elements = new List<VertexElement>();
@@ -111,6 +140,11 @@ namespace RC.Engine.Rendering
 
         }
 
+        /// <summary>
+        /// Creates a vertex declaration for the defined vertex.
+        /// </summary>
+        /// <param name="device">Graphics device to create the declaration.</param>
+        /// <returns>The vertex declaration</returns>
         public VertexDeclaration CreateVertexDeclaration(GraphicsDevice device)
         {
             return new VertexDeclaration(device, VertexElements());

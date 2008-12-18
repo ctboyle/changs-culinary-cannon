@@ -7,12 +7,18 @@ using RC.Engine.ContentManagement;
 
 namespace RC.Engine.Rendering
 {
+    /// <summary>
+    /// Defines a wraper for shaders in RC Engine
+    /// </summary>
     public abstract class RCEffect : RCContent<Effect>
     {
         // Blending states for each pass.
         private RCAlphaState[] _alphaStates;
         private int _iPassQuantity;
 
+        /// <summary>
+        /// Gets or sets the current technique for the effect.
+        /// </summary>
         public string TechniqueName
         {
             get { return Content.CurrentTechnique.Name; }
@@ -43,6 +49,9 @@ namespace RC.Engine.Rendering
             
         }
 
+        /// <summary>
+        /// Updates pass quanity based on current technique.
+        /// </summary>
         private void UpdateTechniqueInfo()
         {
             if (Content.CurrentTechnique != null)
@@ -51,6 +60,10 @@ namespace RC.Engine.Rendering
             }
         }
 
+        /// <summary>
+        /// Sets the number of passes to be used for the current effect
+        /// </summary>
+        /// <param name="iPassQuantity"></param>
         private void SetPassQuantity(int iPassQuantity)
         {
             _iPassQuantity = iPassQuantity;
@@ -58,6 +71,9 @@ namespace RC.Engine.Rendering
             SetDefaultAlphaState();
         }
 
+        /// <summary>
+        /// Sets the defaults alpha states for each pass for the effect.
+        /// </summary>
         protected virtual void SetDefaultAlphaState()
         {
             for (int i = 0; i < _iPassQuantity; i++)
@@ -69,12 +85,25 @@ namespace RC.Engine.Rendering
             }
         }
 
+        /// <summary>
+        /// Gets the alpha state associated with the specified pass.
+        /// </summary>
+        /// <param name="iPass">The pass to get alpha state information.</param>
+        /// <returns></returns>
         public RCAlphaState GetBlending(int iPass)
         {
             return _alphaStates[iPass];
         }
 
+        /// <summary>
+        /// Overide to set custom effect properties needed for the effect.
+        /// </summary>
+        /// <param name="render"></param>
         public abstract void CustomConfigure(IRCRenderManager render);
+
+        /// <summary>
+        /// Sets the current render state to that of the pass.
+        /// </summary>
 
         public virtual void SetRenderState(
             int iPass, 
@@ -91,6 +120,12 @@ namespace RC.Engine.Rendering
             }
         }
 
+        /// <summary>
+        /// Restores the previously set alpha states to what they were.
+        /// </summary>
+        /// <param name="iPass">The pass to get the alpha state.</param>
+        /// <param name="render">The render manager</param>
+        /// <param name="isPrimaryEffect">Indicates weather this is the first effect.</param>
         public virtual void RestoreRenderState(
             int iPass, 
             IRCRenderManager render,

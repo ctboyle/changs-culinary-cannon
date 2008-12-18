@@ -9,8 +9,12 @@ namespace RC.Engine.Cameras
 {
     /// <summary>
     /// I am the camera mananager.  I keep a set of cameras and maintain
-    /// an active camera.
+    /// the active camera.
     /// </summary>
+    /// <remarks>
+    /// The active camera is used by the <see cref="IRCRenderManager"/> to render any scenes drawn at the time.
+    /// Be sure to set the correct active camera before rendering a scene.
+    /// </remarks>
     public interface IRCCameraManager
     {
         /// <summary>

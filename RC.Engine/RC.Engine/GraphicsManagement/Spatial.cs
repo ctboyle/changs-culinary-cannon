@@ -18,15 +18,20 @@ using RC.Engine.ContentManagement;
 namespace RC.Engine.GraphicsManagement
 {
     /// <summary>
-    /// This serves as the basic object component. It assumes that all Scene Ojbects
-    /// will have:
-    ///  1. Position in space (world transform)
-    ///  2. A bounding Volume
-    ///  3. A parent
-    ///  4. A position relative to its parent
+    /// This serves as the base scene graph object.
     /// </summary>
+    /// <remarks>
+    /// A spatial object by itself is a leaf in the scene graph.
+    /// 
+    /// As the base for all other nodes in the graph, spatial provides
+    /// support for setting effects, render states, transforms, and bounding
+    /// volumes at every node in the tree.
+    /// </remarks>
     public abstract class RCSpatial : ISpatial
     {
+        /// <summary>
+        /// The computed world bound for this object.
+        /// </summary>
         protected IRCBoundingVolume _worldBound;
         private RCSpatial _parentNode;
         protected Matrix _worldTrans;
@@ -60,29 +65,46 @@ namespace RC.Engine.GraphicsManagement
         /// </summary>
         protected List<RCLight> _lights = new List<RCLight>();
 
+        /// <summary>
+        /// The parent scene graph object of this object. Is null if this is the root.
+        /// </summary>
         public RCSpatial ParentNode
         {
             get { return _parentNode; }
             set { _parentNode = value; }
         }
         
+        /// <summary>
+        /// Gets the current bounding volume in worldspace for theis object.
+        /// </summary>
         public IRCBoundingVolume WorldBound
         {
             get { return _worldBound; }
         }
 
+        /// <summary>
+        /// Gets and sets the list of effects to applies to this object on the draw pass.
+        /// </summary>
         public List<RCEffect> Effects
         {
             get { return _effects; }
             set { _effects = value; }
         }
 
+        /// <summary>
+        /// Gets or sets the transformation from this node's parent.
+        /// If there is no parent, the local is the same as the world transform.
+        /// </summary>
         public Matrix LocalTrans
         {
             get { return _localTrans; }
             set { _localTrans = value; }
         }
 
+        /// <summary>
+        /// Gets or sets the world transform for this node.
+        /// </summary>
+        /// <remarks>The world transform is the object's tranform in world space.</remarks>
         public Matrix WorldTrans
         {
             get { return _worldTrans; }
@@ -90,8 +112,9 @@ namespace RC.Engine.GraphicsManagement
         }
 
         /// <summary>
-        /// Use this property to configure the renderstates associated with this node.
+        /// Use this property to configure the active renderstates associated with this node.
         /// </summary>
+        /// <remarks> There are no states in the collection by default.</remarks>
         public RCRenderStateCollection GlobalStates
         {
             get { return _globalStates; }
@@ -112,10 +135,11 @@ namespace RC.Engine.GraphicsManagement
         }
 
         /// <summary>
-        /// Called to update the SceneObject
-        /// 
-        /// GS stands for Graphic State
+        /// Starts an update pass from this node.
         /// </summary>
+        /// <remarks>May be called from anywhere in the scene graph. Updates transforms, animations, and bounding volumes all the way to the root.</remarks>
+        /// <param name="gameTime">Elasped time</param>
+        /// <param name="fInitiator">Indicates whether this call is the start of an update pass. Is false in recursive calls.</param>
         public virtual void UpdateGS(GameTime gameTime, Boolean fInitiator)
         {
             UpdateWorldData(gameTime);
@@ -126,11 +150,19 @@ namespace RC.Engine.GraphicsManagement
             }
         }
 
+        /// <summary>
+        /// Initiates the start of a render state update. Accumulates render states down to the leaf nodes and updates lights.
+        /// </summary>
         public void UpdateRS()
         {
             UpdateRS(null, null);
         }
 
+        /// <summary>
+        /// Recursivly called to update objects render state.
+        /// </summary>
+        /// <param name="stateStack">Current accumulated state stack. Should be null if pass is initiated.</param>
+        /// <param name="lightStack">Current accumulated light stack. Should be null if pass is initiated.</param>
         public void UpdateRS(RCRenderStateStack stateStack, Stack<RCLight> lightStack)
         {
             bool fInitiator = (stateStack == null);
@@ -158,8 +190,18 @@ namespace RC.Engine.GraphicsManagement
             }
         }
 
+        /// <summary>
+        /// Updates the render state for derived object implementations. Called by UpdateRS during state update pass.
+        /// </summary>
+        /// <param name="stateStack"></param>
+        /// <param name="lightStack"></param>
         protected abstract void UpdateState(RCRenderStateStack stateStack, Stack<RCLight> lightStack);
 
+        /// <summary>
+        /// Ensures that if a pass was initiated not from the root, that the current node has the correct states accumulated so far.
+        /// </summary>
+        /// <param name="stateStack">Current accumulated state stack.</param>
+        /// <param name="lightStack">Current accumulated light stack.</param>
         protected void PropigateStateFromRoot(RCRenderStateStack stateStack, Stack<RCLight> lightStack)
         {
             if (_parentNode != null)
@@ -171,12 +213,10 @@ namespace RC.Engine.GraphicsManagement
         }
 
         /// <summary>
-        /// Places render states on a stack as the scene graph is traversed.
-        /// 
-        /// Also manages active lights on a lights stack.
+        /// Places render states and lights on stacks as the scene graph is traversed down to the leaves.
         /// </summary>
-        /// <param name="stateStack"></param>
-        /// <param name="lightStack"></param>
+        /// <param name="stateStack">Current accumulated state stack.</param>
+        /// <param name="lightStack">Current accumulated light stack.</param>
         private void PushState(RCRenderStateStack stateStack, Stack<RCLight> lightStack)
         {
             stateStack.PushStates(_globalStates);
@@ -187,6 +227,11 @@ namespace RC.Engine.GraphicsManagement
             }
         }
 
+        /// <summary>
+        /// Removes the render states and lights as the scen graph is traveresed up to the root.
+        /// </summary>
+        /// <param name="stateStack">Current accumulated state stack.</param>
+        /// <param name="lightStack">Current accumulated light stack.</param>
         private void PopState(RCRenderStateStack stateStack, Stack<RCLight> lightStack)
         {
             stateStack.PopStates(_globalStates);
@@ -203,6 +248,12 @@ namespace RC.Engine.GraphicsManagement
         /// </summary>
         public abstract void Draw(IRCRenderManager render, IRCContentRequester contentRqst);
 
+        /// <summary>
+        /// Sets the animation controller to be updated on this object.
+        /// </summary>
+        /// <remarks>Please use AnimationController.AttachToObject instead.</remarks>
+        /// <param name="controller">The conntroller to add.</param>
+        /// <returns>If update succeeded</returns>
         public bool AddController(IController controller)
         {
             bool fAttachSucceeded = false;
@@ -216,9 +267,13 @@ namespace RC.Engine.GraphicsManagement
             return fAttachSucceeded;
         }
 
+        /// <summary>
+        /// Gets the controller in the controller list based on its type.
+        /// </summary>
+        /// <typeparam name="ContrllerType"></typeparam>
+        /// <returns></returns>
         public IController GetController<ContrllerType> ()
         {
-
             return _animateControllers.FindLast(new Predicate<IController>(
                     delegate(IController x)
                     {
@@ -232,6 +287,10 @@ namespace RC.Engine.GraphicsManagement
                 ));
         }   
 
+        /// <summary>
+        /// Removes a controller from the controller list.
+        /// </summary>
+        /// <param name="controller">The controller refrence to remove.</param>
         public void RemoveController(IController controller)
         {
             if (controller != null)
@@ -240,6 +299,10 @@ namespace RC.Engine.GraphicsManagement
             }
         }
 
+        /// <summary>
+        /// Updates animations of any controller attached to this object.
+        /// </summary>
+        /// <param name="gameTime"></param>
         protected void UpdateControllers(GameTime gameTime)
         {
             for (int iController = 0; iController < _animateControllers.Count; iController++ )
@@ -261,11 +324,19 @@ namespace RC.Engine.GraphicsManagement
             }
         }
 
+        /// <summary>
+        /// Removes a light from the lights acting on this object.
+        /// </summary>
+        /// <param name="light">The light reference to remove.</param>
         public void RemoveLight(RCLight light)
         {
             _lights.Remove(light);
         }
 
+        /// <summary>
+        /// Adds an effect to be rendered during the drawing of this object.
+        /// </summary>
+        /// <param name="effect"></param>
         public void AddEffect(RCEffect effect)
         {
             if (effect == null)
@@ -279,14 +350,19 @@ namespace RC.Engine.GraphicsManagement
             }
         }
 
+        /// <summary>
+        /// Removes the effect from the list of effect to be rendered for this object.
+        /// </summary>
+        /// <param name="effect">The effect to remove.</param>
         public void RemoveEffect(RCEffect effect)
         {
             _effects.Remove(effect);
         }
 
         /// <summary>
-        /// Override to update all object world oriented data.
+        /// Override to update all object world space data.
         /// </summary>
+        /// <remarks>By default, this function updates animations and transformations.</remarks>
         protected virtual void UpdateWorldData(GameTime gameTime)
         {
             // Update animations

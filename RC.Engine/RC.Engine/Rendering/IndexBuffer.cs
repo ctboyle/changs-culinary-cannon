@@ -8,6 +8,9 @@ using TPrimitive = System.Int32;
 
 namespace RC.Engine.Rendering
 {
+    /// <summary>
+    /// A class for help creating an index buffer.
+    /// </summary>
     public class RCIndexBuffer : RCDeviceResource
     {
         private int _numIndicies;
