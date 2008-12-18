@@ -109,11 +109,11 @@ namespace RC.Physics
             _centerOfMass = com;
         }
 
-        public override void Draw(RC.Engine.Rendering.IRCRenderManager render, RC.Engine.ContentManagement.IRCContentRequester contentRqst)
+        public override void Draw(RC.Engine.Rendering.IRCRenderManager render)
         {
             if (_childNode != null)
             {
-                _childNode.Draw(render, contentRqst);
+                _childNode.Draw(render);
             }
         }
 

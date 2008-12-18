@@ -246,7 +246,7 @@ namespace RC.Engine.GraphicsManagement
         /// <summary>
         /// Override for specific behavior on the draw pass.
         /// </summary>
-        public abstract void Draw(IRCRenderManager render, IRCContentRequester contentRqst);
+        public abstract void Draw(IRCRenderManager render);
 
         /// <summary>
         /// Sets the animation controller to be updated on this object.

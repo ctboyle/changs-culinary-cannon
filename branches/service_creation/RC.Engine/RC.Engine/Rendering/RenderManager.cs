@@ -167,7 +167,7 @@ namespace RC.Engine.Rendering
                 ClearScreen();
             }
              
-            sceneRoot.Draw(this, _contentRqst);
+            sceneRoot.Draw(this);
         }
 
         public void ClearScreen()

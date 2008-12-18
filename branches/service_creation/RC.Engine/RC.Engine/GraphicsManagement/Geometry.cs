@@ -54,13 +54,8 @@ namespace RC.Engine.GraphicsManagement
         /// </summary>
         /// <param name="render">The render manager</param>
         /// <param name="contentRqst">The content requester for on demand loading</param>
-        public override void Draw(IRCRenderManager render, IRCContentRequester contentRqst)
+        public override void Draw(IRCRenderManager render)
         {
-            if (_lightEffect != null && !_lightEffect.IsInitialized)
-            {
-                _lightEffect.Initialize(contentRqst);
-            }
-            
             render.Draw(this);
         }
 
