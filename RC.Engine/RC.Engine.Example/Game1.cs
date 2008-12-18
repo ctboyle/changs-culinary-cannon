@@ -23,15 +23,18 @@ namespace RC.Engine.Example
     {
         protected override void Initialize()
         {
+            // Listen for when states change
             StateMgr.StateChanged += OnStateChanged;
 
-            StateMgr.AddState("GameState", new RCGameState(Services));
+            // Create a new state to be loaded later.
+            StateMgr.AddState("GameState", new GameState(Services));
 
             base.Initialize();
         }
 
         protected override void BeginRun()
         {
+            // Begin the game by pushing the created state on the stack.
             StateStk.PushState("GameState");
 
             base.BeginRun();
@@ -39,6 +42,7 @@ namespace RC.Engine.Example
 
         private void OnStateChanged(RCGameState newState, RCGameState previousState)
         {
+            // If we pop all the states off the stack, end the game.
             if (newState == null)
             {
                 Exit();

@@ -113,8 +113,8 @@ namespace RC.Content.Heightmap
 
             mapping = heightMapping;
             textureMapping = textureMap;
-            NumIntervalsX = textureMapping.Width;
-            NumIntervalsZ = textureMapping.Height;
+            NumIntervalsX = textureMapping.Width-1;
+            NumIntervalsZ = textureMapping.Height-1;
         }
 
         /// <summary>
