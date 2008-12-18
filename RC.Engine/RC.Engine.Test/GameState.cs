@@ -167,11 +167,6 @@ namespace RC.Engine.Test
                 kvPlayers.Value.UpdateInput(gameTime, padState);
 
             } 
-            if (Keyboard.GetState().IsKeyDown(Keys.Escape))
-            {
-                _stateStk.PopState();
-            }
-
         }
 
         private void SetUpLevels(RCSceneNode sceneNode)

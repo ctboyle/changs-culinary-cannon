@@ -35,8 +35,8 @@ namespace RC.Engine.Base
 
             _deviceMgr = new GraphicsDeviceManager(this);
             //_deviceMgr.IsFullScreen = true;
-            _deviceMgr.PreferredBackBufferWidth = 1920;
-            _deviceMgr.PreferredBackBufferHeight = 1200;
+            _deviceMgr.PreferredBackBufferWidth = 800;
+            _deviceMgr.PreferredBackBufferHeight = 600;
         }
 
         /// <summary>
