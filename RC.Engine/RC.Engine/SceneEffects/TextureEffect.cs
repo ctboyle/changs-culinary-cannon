@@ -20,12 +20,6 @@ namespace RC.Engine.SceneEffects
             _texture = texture;
         }
 
-        public RCTextureEffect(IRCContentRequester contentRqst, RCContent<Texture2D> texture)
-            : base(contentRqst)
-        {
-            _texture = texture;
-        }
-
         public override void CustomConfigure(IRCRenderManager render)
         {
             if (_texture != null)

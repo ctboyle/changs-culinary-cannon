@@ -62,8 +62,8 @@ namespace RC.Engine.SceneEffects
         /// 
         /// </summary>
         /// <param name="xnaEffect"></param>
-        public RCModelPartEffect(Effect xnaEffect, IRCContentRequester contentRequest)
-            : base(contentRequest)
+        public RCModelPartEffect(Effect xnaEffect)
+            : base()
         {
             if (xnaEffect == null)
             {

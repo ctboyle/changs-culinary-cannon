@@ -57,13 +57,15 @@ namespace RC.Engine.ContentManagement
     /// of content to be loaded.  If exception occur when all content may need to 
     /// reload and unload, the content manager will take responsibility.
     /// </summary>
-    internal class RCContentManager : DrawableGameComponent, IRCContentManager, IDisposable
+    public class RCContentManager : DrawableGameComponent, IRCContentManager, IDisposable
     {
         private class ContentStore
         {
             public object Content;
             public IRCCreateType TypeCreator;
         }
+
+        public static IRCContentRequester ActiveRequester = null;
 
         /// <summary>
         /// The content stored by id.
@@ -80,15 +82,16 @@ namespace RC.Engine.ContentManagement
         /// </summary>
         private ContentManager _contentMgr = null;
 
-        public RCContentManager(
-            Game game, 
-            ContentManager contentMgr, 
-            IGraphicsDeviceService graphics
-        )
+        public RCContentManager(RCXnaGame game)
             : base(game)
         {
-            _contentMgr = contentMgr;
-            _graphics = graphics;
+            game.Services.AddService(typeof(IRCContentManager), this);
+            game.Services.AddService(typeof(IRCContentRequester), this);
+
+            RCContentManager.ActiveRequester = this;
+
+            _contentMgr = game.Content;
+            _graphics = (IGraphicsDeviceService)game.Services.GetService(typeof(IGraphicsDeviceService));
         }
 
         ~RCContentManager()

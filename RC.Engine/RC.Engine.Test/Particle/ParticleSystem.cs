@@ -6,6 +6,7 @@ using RC.Engine.GraphicsManagement;
 using RC.Engine.Animation;
 using Microsoft.Xna.Framework;
 using RC.Engine.Base;
+using RC.Engine.ContentManagement;
 
 namespace RC.Engine.Test.Particle
 {
@@ -116,25 +117,29 @@ namespace RC.Engine.Test.Particle
         static Random Random = new Random();
 
 
+        protected IGraphicsDeviceService _graphics = null;
+
         #endregion
 
-        public ParticleSystem(RCGameContext ctx, ParticleEffect effect)
+        public ParticleSystem(IGraphicsDeviceService graphics, ParticleEffect effect)
         {
-            VertexDeclaration = new VertexDeclaration(ctx.Graphics.GraphicsDevice,
+            _graphics = graphics;
+
+            VertexDeclaration = new VertexDeclaration(_graphics.GraphicsDevice,
                                                       ParticleVertex.VertexElements);
 
             Particles = new ParticleVertex[Settings.MaxParticles];
 
             // Create a dynamic vertex buffer.
             int size = ParticleVertex.SizeInBytes * Particles.Length;
-            VertexBuffer = new DynamicVertexBuffer(ctx.Graphics.GraphicsDevice, size,
+            VertexBuffer = new DynamicVertexBuffer(_graphics.GraphicsDevice, size,
                                                    BufferUsage.WriteOnly |
                                                    BufferUsage.Points);
             Effect = effect;
 
             Effect.Settings = this.Settings;
 
-            InitializeSettings(ctx, Settings);
+            InitializeSettings(Settings);
 
             Controller<ParticleSystem> controller = new ParticleController();
             controller.AttachToObject(this);
@@ -144,7 +149,7 @@ namespace RC.Engine.Test.Particle
         /// Derived particle system classes should override this method
         /// and use it to initalize their tweakable settings.
         /// </summary>
-        protected abstract void InitializeSettings(RCGameContext ctx, ParticleSettings settings);
+        protected abstract void InitializeSettings(ParticleSettings settings);
 
 
         #region Utility

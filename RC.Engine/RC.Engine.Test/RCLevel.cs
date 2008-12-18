@@ -94,19 +94,19 @@ namespace RC.Engine.Test
         public void LoadLevel()
         {
             IGraphicsDeviceService graphics = levelContainer.Graphics;
-            heightMap = new RCDefaultContent<RCHeightMap>(loadingParameters.Requester, "Content\\Textures\\"
+            heightMap = new RCDefaultContent<RCHeightMap>("Content\\Textures\\"
                 + loadingParameters.HeightMapName);
             heightMap.Content.Scaling = loadingParameters.HeightMapXYZScaling;
             heightMap.Content.HeightScaling = loadingParameters.HeightMapYScaling;
 
-            bottomTexture = new RCDefaultContent<Texture2D>(loadingParameters.Requester, "Content\\Textures\\"
+            bottomTexture = new RCDefaultContent<Texture2D>("Content\\Textures\\"
                 + loadingParameters.BottomTextureName);
-            centerTexture = new RCDefaultContent<Texture2D>(loadingParameters.Requester, "Content\\Textures\\"
+            centerTexture = new RCDefaultContent<Texture2D>("Content\\Textures\\"
                 + loadingParameters.CenterTextureName);
-            topTexture = new RCDefaultContent<Texture2D>(loadingParameters.Requester, "Content\\Textures\\"
+            topTexture = new RCDefaultContent<Texture2D>("Content\\Textures\\"
                 + loadingParameters.TopTextureName);
 
-            HeightMapEffect heightMapEffect = new HeightMapEffect(loadingParameters.Requester,
+            HeightMapEffect heightMapEffect = new HeightMapEffect(
                 heightMap, bottomTexture, centerTexture, topTexture,
                 loadingParameters.PercentBottomOfCenterTexture,
                 loadingParameters.PercentTopOfBottomTexture,

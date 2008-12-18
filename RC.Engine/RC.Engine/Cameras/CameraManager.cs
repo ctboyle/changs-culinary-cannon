@@ -4,6 +4,7 @@ using System.Text;
 using RC.Engine.Rendering;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using RC.Engine.Base;
 
 namespace RC.Engine.Cameras
 {
@@ -167,6 +168,11 @@ namespace RC.Engine.Cameras
         private string _activeCameraLabel = String.Empty;
 
         public RCCamera ActiveCamera { get { return _cameras[_activeCameraLabel]; } }
+
+        public RCCameraManager(RCXnaGame game)
+        {
+            game.Services.AddService(typeof(IRCCameraManager), this);
+        }
 
         public void AddCamera(string cameraLabel, RCCamera newCamera)
         {

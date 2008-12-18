@@ -10,11 +10,11 @@ using Microsoft.Xna.Framework;
 
 namespace RC.Physics
 {
-    public class JigLibXModule : IRCModule
+    public class JigLibXModule
     {
         private PhysicsSystem physicSystem = null;
 
-        public JigLibXModule()
+        public JigLibXModule(Game game)
         {
             physicSystem = new PhysicsSystem();
             physicSystem.Gravity = new Vector3(0, -15f, 0);
@@ -23,9 +23,14 @@ namespace RC.Physics
             physicSystem.EnableFreezing = true;
             physicSystem.SolverType = PhysicsSystem.Solver.Normal;
             physicSystem.CollisionSystem.UseSweepTests = true;
+
+            #region Plugin To RC Engine
+            RCPluginManager plugin = (RCPluginManager)game.Services.GetService(typeof(RCPluginManager));
+            Plugin(plugin);
+            #endregion
         }
 
-        public void Plugin(RCGameManager gameMgr, RCPluginManager pluginMgr)
+        public void Plugin(RCPluginManager pluginMgr)
         {
             pluginMgr.UpdateEvent += new EventHandler<RCPluginManager.GameTimeEventArgs>(UpdateEvent);
         }

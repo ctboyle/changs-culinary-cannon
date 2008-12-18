@@ -6,6 +6,7 @@ using Microsoft.Xna.Framework.Graphics;
 using RC.Engine.Cameras;
 using RC.Engine.GraphicsManagement;
 using RC.Engine.ContentManagement;
+using RC.Engine.Base;
 
 namespace RC.Engine.Rendering
 {
@@ -84,15 +85,13 @@ namespace RC.Engine.Rendering
         private RCRenderStateCollection _renderStates = 
             new RCRenderStateCollection(true);
 
-        public RCRenderManager(
-            IRCCameraManager cameraMgr, 
-            IGraphicsDeviceService graphics,
-            IRCContentRequester contentRqst
-        )
+        public RCRenderManager(RCXnaGame game)
         {
-            _cameraMgr = cameraMgr;
-            _graphics = graphics;
-            _contentRqst = contentRqst;
+            game.Services.AddService(typeof(IRCRenderManager), this);
+
+            _cameraMgr = (IRCCameraManager)game.Services.GetService(typeof(IRCCameraManager));
+            _graphics = (IGraphicsDeviceService)game.Services.GetService(typeof(IGraphicsDeviceService));
+            _contentRqst = (IRCContentRequester)game.Services.GetService(typeof(IRCContentRequester));
         }
 
         public IGraphicsDeviceService Graphics

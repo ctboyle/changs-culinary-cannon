@@ -16,11 +16,7 @@ namespace RC.Engine.SceneEffects
         private List<RCLight> _lights = new List<RCLight>();
 
         public RCLightEffect()
-        {
-        }
-
-        public RCLightEffect(IRCContentRequester contentRqst)
-            : base(contentRqst)
+            : base()
         {
         }
 
