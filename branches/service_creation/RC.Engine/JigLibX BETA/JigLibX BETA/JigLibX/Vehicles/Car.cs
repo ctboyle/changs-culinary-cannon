@@ -103,7 +103,7 @@ namespace JigLibX.Vehicles
             // so d = 2 * sqrt(k*m)
             float damping = 2.0f * (float)System.Math.Sqrt(spring * mass);
            // damping *= 0.0f; // assume wheels act together
-            //damping *= wheelDampingFrac;  // a bit bouncy
+            damping *= wheelDampingFrac;  // a bit bouncy
 
             // the wheels aren't quite at the corners
             min.X += 3.0f * wheelRadius;
