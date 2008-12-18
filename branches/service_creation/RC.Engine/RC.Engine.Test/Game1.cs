@@ -21,23 +21,28 @@ namespace RC.Engine.Test
     {
         private static String GameStart = "Start";
 
-        private IRCGameStateManager _stateMgr = null;
-        private IRCGameStateStack _stateStk = null;
-
         protected override void Initialize()
         {
+            StateMgr.StateChanged += new StateChangeHandler(OnStateChanged);
+
+            StateMgr.AddState(GameStart, new GameState(Services));
+
             base.Initialize();
-
-            _stateMgr = (IRCGameStateManager)Services.GetService(typeof(IRCGameStateManager));
-            _stateStk = (IRCGameStateStack)Services.GetService(typeof(IRCGameStateStack));
-
-            _stateMgr.AddState(GameStart, new GameState(this));
         }
 
         protected override void BeginRun()
         {
-            _stateStk.PushState(GameStart);
+            StateStk.PushState(GameStart);
+
             base.BeginRun();
+        }
+
+        private void OnStateChanged(RCGameState newState, RCGameState oldState)
+        {
+            if (newState == null)
+            {
+                Exit();
+            }
         }
     }
 }

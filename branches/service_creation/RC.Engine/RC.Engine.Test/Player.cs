@@ -42,7 +42,6 @@ namespace RC.Engine.Test
 
         private int _numPlayers = 0;
 
-        private Game _game;
         private IRCCameraManager _cameraMgr;
         private IGraphicsDeviceService _graphics;
 
@@ -62,11 +61,12 @@ namespace RC.Engine.Test
             get { return "Player Camera " + _playerIndex.ToString();}
         }
 
-        public Player(Game game, PlayerIndex playerIndex, PotatoPool pool, int numPlayers)
+        public Player(IServiceProvider services, PlayerIndex playerIndex, PotatoPool pool, int numPlayers)
         {
-            _game = game;
-            _cameraMgr = (IRCCameraManager)game.Services.GetService(typeof(IRCCameraManager));
-            _graphics = (IGraphicsDeviceService)game.Services.GetService(typeof(IGraphicsDeviceService));
+            #region Get Required Services
+            _cameraMgr = (IRCCameraManager)services.GetService(typeof(IRCCameraManager));
+            _graphics = (IGraphicsDeviceService)services.GetService(typeof(IGraphicsDeviceService));
+            #endregion
 
             _playerIndex = playerIndex;
             _pool = pool;

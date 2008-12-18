@@ -35,7 +35,7 @@ namespace RC.Engine.StateManagement
         /// <returns>The state.</returns>
         RCGameState PeekState();
     }
-
+    
     /// <summary>
     /// I am the game state manager and maintain the current stack.  I have 
     /// the ability to push, pop, and peek states from the stack.
@@ -45,18 +45,29 @@ namespace RC.Engine.StateManagement
     /// </summary>
     public interface IRCGameStateManager : IGameComponent
     {
+        /// <summary>
+        /// I inform that a state has changed.
+        /// </summary>
+        event StateChangeHandler StateChanged;
+
+        /// <summary>
+        /// I add a state to the pool of states by name.
+        /// </summary>
+        /// <param name="label">The state name.</param>
+        /// <param name="state">The state.</param>
         void AddState(string label, RCGameState state);
+
+        /// <summary>
+        /// I remove a state from the pool of states by name.
+        /// </summary>
+        /// <param name="label">The state name.</param>
         void RemoveState(string label);
     }
 
     internal class RCGameStateManager : DrawableGameComponent, IRCGameStateManager, IRCGameStateStack
     {
-        public delegate void StateChangeFunc(RCGameState previousState, RCGameState newState);
-
         private Dictionary<string, RCGameState> _states = new Dictionary<string, RCGameState>();
         private List<RCGameState> _stateStack = new List<RCGameState>();
-
-        public event StateChangeFunc StateChanged;
 
         public RCGameStateManager(Game game)
             : base(game)
@@ -67,6 +78,8 @@ namespace RC.Engine.StateManagement
             this.DrawOrder = 1;
             this.UpdateOrder = 1;
         }
+
+        public event StateChangeHandler StateChanged;
 
         public void AddState(string label, RCGameState state)
         {
@@ -83,14 +96,19 @@ namespace RC.Engine.StateManagement
 
         public void PushState(string label)
         {
-            if (_stateStack.Count > 0)
-            {
-                if (StateChanged != null)
-                {
-                    StateChanged(_stateStack[0], _states[label]);
-                }
-            }
             _stateStack.Insert(0, _states[label]);
+
+            if (StateChanged != null)
+            {
+                if (_stateStack.Count > 1)
+                {
+                    StateChanged(_stateStack[0], _stateStack[1]);
+                }
+                else
+                {
+                    StateChanged(_stateStack[0], null);
+                }   
+            }
         }
 
         public RCGameState PopState()
@@ -104,7 +122,11 @@ namespace RC.Engine.StateManagement
             {
                 if (_stateStack.Count >= 1)
                 {
-                    StateChanged(oldState, _stateStack[0]);
+                    StateChanged(_stateStack[0], oldState);
+                }
+                else
+                {
+                    StateChanged(null, oldState);
                 }
             }
 

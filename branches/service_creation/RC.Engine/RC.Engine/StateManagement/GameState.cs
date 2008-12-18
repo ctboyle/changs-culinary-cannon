@@ -20,11 +20,11 @@ namespace RC.Engine.StateManagement
     {
         private bool _isVisible = true;
         private bool _isUpdated = true;
-        private Game _game = null;
+        private IServiceProvider _services = null;
 
-        public RCGameState(Game game)
+        public RCGameState(IServiceProvider services)
         {
-            _game = game;
+            _services = services;
         }
 
         ~RCGameState()
@@ -40,9 +40,9 @@ namespace RC.Engine.StateManagement
 
         #endregion
 
-        public Game Game
+        public IServiceProvider Services
         {
-            get { return _game; }
+            get { return _services; }
         }
 
         public bool IsVisible

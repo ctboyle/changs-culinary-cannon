@@ -169,7 +169,7 @@ namespace RC.Engine.Cameras
 
         public RCCamera ActiveCamera { get { return _cameras[_activeCameraLabel]; } }
 
-        public RCCameraManager(RCXnaGame game)
+        public RCCameraManager(Game game)
         {
             game.Services.AddService(typeof(IRCCameraManager), this);
         }
