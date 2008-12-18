@@ -15,7 +15,8 @@ namespace RC.Engine.Test
         static void Main(string[] args)
         {
             Game1 game = new Game1();
-            JigLibXModule mod = new JigLibXModule(game);
+            JigLibXModule mod = new JigLibXModule();
+            mod.Plugin(game);
             game.Run();
         }
     }
