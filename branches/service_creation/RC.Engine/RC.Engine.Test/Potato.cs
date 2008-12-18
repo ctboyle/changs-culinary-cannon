@@ -34,7 +34,7 @@ namespace RC.Engine.Test
         {
             _pool = pool;
 
-            _potatoModel = new RCModelContent(content, "Content\\Models\\potato");
+            _potatoModel = new RCModelContent("Content\\Models\\potato");
             SetChildNode(_potatoModel);
 
             this.AddCollisionSkin();

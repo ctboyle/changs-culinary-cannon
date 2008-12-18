@@ -16,14 +16,15 @@ using RC.Engine.Base;
 
 namespace RC.Engine.StateManagement
 {
-    public class RCGameState : RCBase, IDisposable
+    public class RCGameState : IDisposable
     {
         private bool _isVisible = true;
         private bool _isUpdated = true;
+        private Game _game = null;
 
-        public RCGameState(RCGameContext gameCtx) 
-            : base(gameCtx)
+        public RCGameState(Game game)
         {
+            _game = game;
         }
 
         ~RCGameState()
@@ -38,6 +39,11 @@ namespace RC.Engine.StateManagement
         }
 
         #endregion
+
+        public Game Game
+        {
+            get { return _game; }
+        }
 
         public bool IsVisible
         {

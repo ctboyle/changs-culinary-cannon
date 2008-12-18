@@ -10,14 +10,14 @@ namespace RC.Engine.Test.Particle
 {
     class SmokePlumeParticleSystem : ParticleSystem
     {
-        public SmokePlumeParticleSystem(RCGameContext ctx, ParticleEffect effect)
-            : base(ctx, effect)
+        public SmokePlumeParticleSystem(IGraphicsDeviceService graphics, ParticleEffect effect)
+            : base(graphics, effect)
         {
         }
 
-        protected override void InitializeSettings(RCGameContext ctx, ParticleSettings settings)
+        protected override void InitializeSettings(ParticleSettings settings)
         {
-            settings.texture = new RCDefaultContent<Texture2D>(ctx.ContentRqst, @"Content\smoke");
+            settings.texture = new RCDefaultContent<Texture2D>(@"Content\smoke");
 
             settings.MaxParticles = 600;
 

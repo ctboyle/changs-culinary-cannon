@@ -18,8 +18,8 @@ namespace RC.Engine.Test.Particle
         public EffectParameter effectViewportHeightParameter;
         public EffectParameter effectTimeParameter;
 
-        public ParticleEffect(IRCContentRequester contReq)
-            : base(contReq)
+        public ParticleEffect()
+            : base()
         {
         }
 

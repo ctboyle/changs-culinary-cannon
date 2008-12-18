@@ -7,22 +7,41 @@ using RC.Engine.GraphicsManagement;
 
 namespace RC.Engine.Animation
 {
-    abstract public class DurationController<CntrlType>
+    /// <summary>
+    /// A duration controller that provides functionality for animations
+    /// that last a certain amount of time.
+    /// </summary>
+    /// <typeparam name="CntrlType">The actual <see cref="RCSpatial"/> type.</typeparam>
+    public abstract class DurationController<CntrlType>
         : Controller<CntrlType> where CntrlType : RCSpatial
     {
+        /// <summary>
+        /// Delegate definition for a AnimationComplete event.
+        /// </summary>
         public delegate void AnimationCompleteHandler();
+
+        /// <summary>
+        /// Event occurs when an animation is complete.
+        /// </summary>
         public event AnimationCompleteHandler OnComplete;
 
-        float _elaspedTime;
-        float _duration;
+        private float _elaspedTime;
+        private float _duration;
 
+        /// <summary>
+        /// Creates an instance of the duration controller.
+        /// </summary>
         public DurationController()
-            :base()
+            : base()
         {
             _elaspedTime = 0.0f;
             _duration = 0.0f;
         }
 
+        /// <summary>
+        /// Starts a new animation of the specified duration.
+        /// </summary>
+        /// <param name="duration">The duration of the animiation.</param>
         protected void Begin(float duration)
         {
             if (!_isAnimating)
@@ -33,6 +52,11 @@ namespace RC.Engine.Animation
             }
         }
 
+        /// <summary>
+        /// Called during an update pass.  Updates the current iteration
+        /// of the animation.
+        /// </summary>
+        /// <param name="gameTime">The current gametime.</param>
         public override void Update(GameTime gameTime)
         {
             if (_isAnimating)
@@ -46,8 +70,6 @@ namespace RC.Engine.Animation
                 }
 
                 _elaspedTime += incrementTime;
-
-                
 
                 if (_elaspedTime >= _duration)
                 {
@@ -64,10 +86,14 @@ namespace RC.Engine.Animation
                         OnComplete();
                     }
                 }
-
             }
         }
 
+        /// <summary>
+        /// Updates the animation given a percentage complete.
+        /// </summary>
+        /// <param name="percentComplete">The percentage the animation is complete.</param>
+        /// <param name="isLastFrame">If the animation is to be completed.</param>
         protected abstract void UpdateDurationAnimation(
             float percentComplete,
             bool isLastFrame
@@ -87,7 +113,5 @@ namespace RC.Engine.Animation
                     ); 
             }
         }
-
-
     }
 }

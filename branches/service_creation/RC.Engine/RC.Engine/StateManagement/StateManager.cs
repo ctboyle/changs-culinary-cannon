@@ -45,7 +45,7 @@ namespace RC.Engine.StateManagement
     /// </summary>
     public interface IRCGameStateManager : IGameComponent
     {
-        void AddState(string label, Type stateType);
+        void AddState(string label, RCGameState state);
         void RemoveState(string label);
     }
 
@@ -55,22 +55,21 @@ namespace RC.Engine.StateManagement
 
         private Dictionary<string, RCGameState> _states = new Dictionary<string, RCGameState>();
         private List<RCGameState> _stateStack = new List<RCGameState>();
-        private RCGameManager _gameMgr = null;
 
         public event StateChangeFunc StateChanged;
 
-        public RCGameStateManager(Game game, RCGameManager gameMgr)
+        public RCGameStateManager(Game game)
             : base(game)
         {
-            _gameMgr = gameMgr;
+            game.Services.AddService(typeof(IRCGameStateManager), this);
+            game.Services.AddService(typeof(IRCGameStateStack), this);
 
             this.DrawOrder = 1;
             this.UpdateOrder = 1;
         }
 
-        public void AddState(string label, Type stateType)
+        public void AddState(string label, RCGameState state)
         {
-            RCGameState state = _gameMgr.RegisterBaseType<RCGameState>(label, stateType);
             _states.Add(label, state);
             state.Initialize();
         }

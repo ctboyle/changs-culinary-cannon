@@ -39,16 +39,17 @@ namespace RC.Engine.Test
         private double _timeSinceLasFire = 0.0;
         private double _deadDuration = 0.0;
         private bool dead = false;
-        
-
 
         private int _numPlayers = 0;
+
+        private Game _game;
+        private IRCCameraManager _cameraMgr;
+        private IGraphicsDeviceService _graphics;
 
         public RCSceneNode Gun
         {
             get { return _potatoGun.Content; }
         }
-
 
         public PlayerIndex PlayerIndex
         {
@@ -61,26 +62,24 @@ namespace RC.Engine.Test
             get { return "Player Camera " + _playerIndex.ToString();}
         }
 
-        public Player(PlayerIndex playerIndex, PotatoPool pool, int numPlayers)
+        public Player(Game game, PlayerIndex playerIndex, PotatoPool pool, int numPlayers)
         {
+            _game = game;
+            _cameraMgr = (IRCCameraManager)game.Services.GetService(typeof(IRCCameraManager));
+            _graphics = (IGraphicsDeviceService)game.Services.GetService(typeof(IGraphicsDeviceService));
+
             _playerIndex = playerIndex;
             _pool = pool;
             _numPlayers = numPlayers;
-
         }
 
         public void Die()
         {
-
             dead = true;
             _deadDuration = 0.0;
-            
-
-
-
         }
 
-        public void CreatePlayerCamera(Viewport screen, IRCCameraManager camManager)
+        public void CreatePlayerCamera(Viewport screen)
         {
             int numPlayersPerRow = 1;
             int numRows = _numPlayers > 1 ? 2 : 1; 
@@ -104,45 +103,34 @@ namespace RC.Engine.Test
             playerCamera.Near = 0.05f;
             _playerCamera = playerCamera;
 
-
-            
-
             FlyCameraController controller = new FlyCameraController(5.0f, MathHelper.PiOver2);
             controller.AttachToObject(_playerCamera);
 
-            camManager.AddCamera(PlayerCameraLabel, _playerCamera);
-           
+            _cameraMgr.AddCamera(PlayerCameraLabel, _playerCamera);
         }
 
-
-        public void CreatePlayerContent(RCSceneNode root, RCGameContext ctx)
+        public void CreatePlayerContent(RCSceneNode root)
         {
-
             RCModelContent carModel;
             JigLibXVehicle carPhysics;
 
-            CreateCar(ctx, out carModel, out car, out carPhysics);
+            CreateCar(out carModel, out car, out carPhysics);
             car.Chassis.Body.MoveTo(new Vector3(0.0f, 10.0f, 0.0f), Matrix.Identity);
 
-            CreateGun(ctx);
+            CreateGun();
             _potatoGun.Content.LocalTrans = Matrix.CreateTranslation(0.0f, 0.0f, 1.0f);
             
             gunPivot = new RCSceneNode();
             gunPivot.LocalTrans = Matrix.CreateRotationY(-MathHelper.PiOver2) * Matrix.CreateTranslation(new Vector3(-1.0f, 2.0f, 0.0f)) ;
 
-            CreatePlayerCamera(ctx.Graphics.GraphicsDevice.Viewport, ctx.CameraMgr);
+            CreatePlayerCamera(_graphics.GraphicsDevice.Viewport);
             _playerCamera.LocalTrans = Matrix.CreateTranslation(new Vector3(-0.0f, 0.5f, -0.75f));
             
             carModel.Content.AddChild(gunPivot);
             gunPivot.AddChild(_potatoGun);
             _potatoGun.Content.AddChild(_playerCamera);
 
-
-
-
-
             root.AddChild(carPhysics);
-
         }
 
         public void SetPlayerPosition(RCLevelSpawnPoint point)
@@ -150,41 +138,36 @@ namespace RC.Engine.Test
             car.Chassis.Body.MoveTo(point.Position, Matrix.CreateWorld(Vector3.Zero, point.Heading, Vector3.Up));
         }
 
-        private void CreateGun(RCGameContext ctx)
+        private void CreateGun()
         {
-
-            _potatoGun = new RCModelContent(ctx.ContentRqst, @"Content\Models\potatoGun");
+            _potatoGun = new RCModelContent(@"Content\Models\potatoGun");
             RCMaterialState material = new RCMaterialState();
             material.Ambient = new Color(new Vector3(0.4f));
 
-            _fireParticles = new ExplosionSmokeParticleSystem(ctx, new ParticleEffect(ctx.ContentRqst));
-            _smokeParticles = new SmokePlumeParticleSystem(ctx, new ParticleEffect(ctx.ContentRqst));
+            _fireParticles = new ExplosionSmokeParticleSystem(_graphics, new ParticleEffect());
+            _smokeParticles = new SmokePlumeParticleSystem(_graphics, new ParticleEffect());
             _potatoGun.Content.AddChild(_fireParticles);
             _potatoGun.Content.AddChild(_smokeParticles);
         }
 
-        private void CreateCar(RCGameContext ctx, out RCModelContent carModel, out Car car, out JigLibXVehicle carPhysics)
+        private void CreateCar(out RCModelContent carModel, out Car car, out JigLibXVehicle carPhysics)
         {
-            carModel = new RCModelContent(ctx.ContentRqst, @"Content\Models\Car");
+            carModel = new RCModelContent(@"Content\Models\Car");
 
-
-            RCModelContent wheelDrawable1 = new RCModelContent(ctx.ContentRqst, @"Content\Models\wheel");
-            RCModelContent wheelDrawable2 = new RCModelContent(ctx.ContentRqst, @"Content\Models\wheel");
-            RCModelContent wheelDrawable3 = new RCModelContent(ctx.ContentRqst, @"Content\Models\wheel");
-            RCModelContent wheelDrawable4 = new RCModelContent(ctx.ContentRqst, @"Content\Models\wheel");
+            RCModelContent wheelDrawable1 = new RCModelContent(@"Content\Models\wheel");
+            RCModelContent wheelDrawable2 = new RCModelContent(@"Content\Models\wheel");
+            RCModelContent wheelDrawable3 = new RCModelContent(@"Content\Models\wheel");
+            RCModelContent wheelDrawable4 = new RCModelContent(@"Content\Models\wheel");
 
             JigLibXWheel wheel1 = new JigLibXWheel(wheelDrawable1);
             JigLibXWheel wheel2 = new JigLibXWheel(wheelDrawable2);
             JigLibXWheel wheel3 = new JigLibXWheel(wheelDrawable3);
             JigLibXWheel wheel4 = new JigLibXWheel(wheelDrawable4);
 
-
             car = new Car(true, true, 60.0f, 20.0f, 4.7f, 5.0f, 0.50f, 0.4f, 0.00f,
               0.45f, 0.3f, 1, 300.0f, PhysicsSystem.CurrentPhysicsSystem.Gravity.Length());
 
-            carPhysics = new JigLibXVehicle(car, carModel, wheel1, wheel2, wheel3, wheel4, this);
-
-            
+            carPhysics = new JigLibXVehicle(car, carModel, wheel1, wheel2, wheel3, wheel4, this); 
         }
 
         public void UpdateInput(GameTime gameTime, GamePadState padState)

@@ -43,12 +43,6 @@ namespace RC.Engine.Rendering
         {
         }
 
-        public RCEffect(IRCContentRequester contentRqst)
-            : base(contentRqst)
-        {
-            
-        }
-
         /// <summary>
         /// Updates pass quanity based on current technique.
         /// </summary>

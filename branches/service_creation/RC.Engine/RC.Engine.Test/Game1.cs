@@ -17,24 +17,26 @@ namespace RC.Engine.Test
     ///// <summary>
     ///// This is the main type for your game
     ///// </summary>
-    public class Game1 : RCBasicGame
+    public class Game1 : RCXnaGame
     {
         private static String GameStart = "Start";
 
-        public Game1(RCGameContext gameCtx)
-            : base(gameCtx)
-        {
-        }
+        private IRCGameStateManager _stateMgr = null;
+        private IRCGameStateStack _stateStk = null;
 
-        public override void Initialize()
+        protected override void Initialize()
         {
-            Ctx.StateMgr.AddState(GameStart, typeof(GameState));
             base.Initialize();
+
+            _stateMgr = (IRCGameStateManager)Services.GetService(typeof(IRCGameStateManager));
+            _stateStk = (IRCGameStateStack)Services.GetService(typeof(IRCGameStateStack));
+
+            _stateMgr.AddState(GameStart, new GameState(this));
         }
 
-        public override void BeginRun()
+        protected override void BeginRun()
         {
-            Ctx.StateStack.PushState(GameStart);
+            _stateStk.PushState(GameStart);
             base.BeginRun();
         }
     }

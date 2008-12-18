@@ -34,6 +34,12 @@ namespace RC.Engine.Test
         private RCContent<SpriteFont> _spriteFont = null;
         private JibLibXObject physicsEnemy = null;
         private RCLevelCollection levels;
+        private IGraphicsDeviceService _graphics = null;
+        private IRCContentRequester _contentRqst = null;
+        private IRCCameraManager _cameraMgr = null;
+        private IRCRenderManager _renderMgr = null;
+        private IRCGameStateStack _stateStk = null;
+
         public List<RCLevelSpawnPoint> spawnPoints
         {
             get
@@ -46,33 +52,37 @@ namespace RC.Engine.Test
 
         float ang = 0.0f;
 
-
-        public GameState(RCGameContext gameCtx)
-            : base(gameCtx)
+        public GameState(Game game)
+            : base(game)
         {
+            _graphics = (IGraphicsDeviceService)game.Services.GetService(typeof(IGraphicsDeviceService));
+            _contentRqst = (IRCContentRequester)game.Services.GetService(typeof(IRCContentRequester));
+            _cameraMgr = (IRCCameraManager)game.Services.GetService(typeof(IRCCameraManager));
+            _renderMgr = (IRCRenderManager)game.Services.GetService(typeof(IRCRenderManager));
+            _stateStk = (IRCGameStateStack)game.Services.GetService(typeof(IRCGameStateStack));
         }
 
         public override void Initialize()
         {
             _sceneRoot = new RCSceneNode();
 
-            Ctx.Graphics.GraphicsDevice.RenderState.CullMode = CullMode.None;
+            _graphics.GraphicsDevice.RenderState.CullMode = CullMode.None;
 
             /////////////////////////////////////////////////////////////////////
             // Setup the SpriteBatch content for displaying the FPS text
             /////////////////////////////////////////////////////////////////////
             _spriteBatch = new RCSpriteBatch();
-            _spriteBatch.Enable(Ctx.Graphics);
-            _spriteFont = new RCDefaultContent<SpriteFont>(Ctx.ContentRqst, "Content\\Fonts\\DefaultFont");
+            _spriteBatch.Enable(_graphics);
+            _spriteFont = new RCDefaultContent<SpriteFont>("Content\\Fonts\\DefaultFont");
 
-            levels = new RCLevelCollection(Ctx.Graphics);
+            levels = new RCLevelCollection(_graphics);
             SetUpLevels(_sceneRoot);
 
-            PotatoPool pool = new PotatoPool(Ctx.ContentRqst, 10, _sceneRoot);
+            PotatoPool pool = new PotatoPool(_contentRqst, 10, _sceneRoot);
             for (int iPlayer = 0; iPlayer < NumPlayers; iPlayer++)
             {
-                Player player = new Player((PlayerIndex)(iPlayer),pool, NumPlayers);
-                player.CreatePlayerContent(_sceneRoot, Ctx);
+                Player player = new Player(Game, (PlayerIndex)(iPlayer),pool, NumPlayers);
+                player.CreatePlayerContent(_sceneRoot);
                 player.SetPlayerPosition(levels.ActiveLevel.SpawnPoints[iPlayer]);
 
                 _players[player.PlayerIndex] = player;
@@ -124,14 +134,14 @@ namespace RC.Engine.Test
 
             foreach (KeyValuePair<PlayerIndex, Player> kvPlayers in _players)
             {
-                Ctx.CameraMgr.SetActiveCamera(kvPlayers.Value.PlayerCameraLabel);
-                Ctx.RenderMgr.Draw(_sceneRoot);
+                _cameraMgr.SetActiveCamera(kvPlayers.Value.PlayerCameraLabel);
+                _renderMgr.Draw(_sceneRoot);
             }
 
 
 
             // Draw the scene statistics
-            string message = string.Format("FPS: {0}\nPosition: {1}\nFacing: {2} \n", _framesPerSecond, Ctx.CameraMgr.ActiveCamera.WorldTrans.Translation, Ctx.CameraMgr.ActiveCamera.WorldTrans.Forward);
+            string message = string.Format("FPS: {0}\nPosition: {1}\nFacing: {2} \n", _framesPerSecond, _cameraMgr.ActiveCamera.WorldTrans.Translation, _cameraMgr.ActiveCamera.WorldTrans.Forward);
 
             _spriteBatch.SpriteBatch.Begin(SpriteBlendMode.AlphaBlend, SpriteSortMode.Texture, SaveStateMode.SaveState);
             _spriteBatch.SpriteBatch.DrawString(_spriteFont, message, Vector2.Zero, Color.Yellow);
@@ -159,7 +169,7 @@ namespace RC.Engine.Test
             } 
             if (Keyboard.GetState().IsKeyDown(Keys.Escape))
             {
-                Ctx.StateStack.PopState();
+                _stateStk.PopState();
             }
 
         }
@@ -178,7 +188,7 @@ namespace RC.Engine.Test
                 level1SpawnPoints.Add(new RCLevelSpawnPoint(
                     new Vector3(-0.209f, +0.441f, +0.917f), new Vector3(+0.003f, -0.005f, -0.100f)));
 
-                RCLevelParameters level1Params = new RCLevelParameters(Ctx.ContentRqst, "Deathmatch Level 1",
+                RCLevelParameters level1Params = new RCLevelParameters(_contentRqst, "Deathmatch Level 1",
                     "tilable_long_grass", "seamless_rock", "tileable_snow", 450f, 1, .3f, .55f, .65f, .75f,
                     sceneNode, level1SpawnPoints, "Grassy Canyon Battle",100,15,5);
 
@@ -206,7 +216,7 @@ namespace RC.Engine.Test
                 level2SpawnPoints.Add(new RCLevelSpawnPoint(
                     new Vector3(-0.417f, +0.543f, -0.613f), new Vector3(+0.000f, +0.103f, +0.995f)));
 
-                RCLevelParameters level2Params = new RCLevelParameters(Ctx.ContentRqst, "Tower Level 1",
+                RCLevelParameters level2Params = new RCLevelParameters(_contentRqst, "Tower Level 1",
                     "lava2", "seamless_rock", "lava", 50f, 1, .05f, .075f, .78f, .83f,
                     sceneNode, level2SpawnPoints,"Volcanic Tower Battle",20,10,2);
 
@@ -228,7 +238,7 @@ namespace RC.Engine.Test
                 level3SpawnPoints.Add(new RCLevelSpawnPoint(
                     new Vector3(-0.209f, +0.441f, +0.917f), new Vector3(+0.003f, -0.005f, -0.100f)));
 
-                RCLevelParameters level3Params = new RCLevelParameters(Ctx.ContentRqst, "Deathmatch Level 2",
+                RCLevelParameters level3Params = new RCLevelParameters(_contentRqst, "Deathmatch Level 2",
                     "tileable_snow", "ice", "snow", 150f, 1, .35f, .65f, .7f, .8f,
                     sceneNode, level3SpawnPoints, "Rough Snowy Plain",30,2,3);
 
@@ -250,7 +260,7 @@ namespace RC.Engine.Test
                 level4SpawnPoints.Add(new RCLevelSpawnPoint(
                     new Vector3(-0.209f, +0.441f, +0.917f), new Vector3(+0.003f, -0.005f, -0.100f)));
 
-                RCLevelParameters level4Params = new RCLevelParameters(Ctx.ContentRqst, "Trenches",
+                RCLevelParameters level4Params = new RCLevelParameters(_contentRqst, "Trenches",
                     "tileable_snow", "ice", "snow", 150f, 1, .35f, .65f, .7f, .8f,
                     sceneNode, level4SpawnPoints, "Trench War", 30, 2, 3);
 
@@ -272,7 +282,7 @@ namespace RC.Engine.Test
                 level5SpawnPoints.Add(new RCLevelSpawnPoint(
                     new Vector3(-0.209f, +0.441f, +0.917f), new Vector3(+0.003f, -0.005f, -0.100f)));
 
-                RCLevelParameters level5Params = new RCLevelParameters(Ctx.ContentRqst, "RandomStuff",
+                RCLevelParameters level5Params = new RCLevelParameters(_contentRqst, "RandomStuff",
                     "tileable_snow", "ice", "snow", 150f, 1, .35f, .65f, .7f, .8f,
                     sceneNode, level5SpawnPoints, "Sharp Chaos", 1, 1, 1);
 
@@ -285,8 +295,6 @@ namespace RC.Engine.Test
             //levels["Rough Snowy Plain"].LoadLevel();
             //levels["Trench War"].LoadLevel();
             //levels["Sharp Chaos"].LoadLevel();
-            
-
         }
     }
 }

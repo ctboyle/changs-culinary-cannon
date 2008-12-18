@@ -27,7 +27,6 @@ namespace RC.Engine.SceneEffects
         private int topTextureTesselationMultiplier = 1;
 
         public HeightMapEffect(
-            IRCContentRequester contentRqst,
             RCContent<RCHeightMap> heightMap,
             RCContent<Texture2D> grassTex,
             RCContent<Texture2D> rockTex,
@@ -41,7 +40,7 @@ namespace RC.Engine.SceneEffects
             int topTextureTesselationMultiplier
 
             )
-            : base(contentRqst)
+            : base()
         {
             _heightMap = heightMap;
             _grassTex = grassTex;

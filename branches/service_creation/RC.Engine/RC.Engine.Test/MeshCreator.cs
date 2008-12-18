@@ -13,7 +13,7 @@ namespace RC.Engine.Test
 {
     class MeshCreator
     {
-        public static RCGeometry CreateObject(IGraphicsDeviceService graphics, IRCContentRequester contentRqst)
+        public static RCGeometry CreateObject(IGraphicsDeviceService graphics)
         {
             int[] indicies = new int[] { 0, 2, 3, 0, 1, 2 };
 
@@ -76,10 +76,10 @@ namespace RC.Engine.Test
             material.Shininess = 15.0f;
             material.Alpha = 0.0f;
 
-            RCContent<Texture2D> texture1 = new RCDefaultContent<Texture2D>(contentRqst, "Content\\Textures\\smiley");
-            RCContent<Texture2D> texture2 = new RCDefaultContent<Texture2D>(contentRqst, "Content\\Textures\\seattle");
-            RCTextureEffect effect1 = new RCTextureEffect(contentRqst, texture1);
-            RCTextureEffect effect2 = new RCTextureEffect(contentRqst, texture2);
+            RCContent<Texture2D> texture1 = new RCDefaultContent<Texture2D>("Content\\Textures\\smiley");
+            RCContent<Texture2D> texture2 = new RCDefaultContent<Texture2D>("Content\\Textures\\seattle");
+            RCTextureEffect effect1 = new RCTextureEffect(texture1);
+            RCTextureEffect effect2 = new RCTextureEffect(texture2);
            
             geometry.AddEffect(effect1);
             geometry.AddEffect(effect2);
