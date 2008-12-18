@@ -7,11 +7,11 @@
       <Importer>XImporter</Importer>
       <Processor>ModelProcessor</Processor>
       <Options>None</Options>
-      <Output>C:\chang1\RC.Engine\RC.Engine.Example\bin\x86\Debug\Content\enemy.xnb</Output>
-      <Time>2008-12-17T23:04:07.5710319-05:00</Time>
+      <Output>C:\Users\Chris\Documents\UofL\Classes\CECS 628\cannonmock\branches\service_creation\RC.Engine\RC.Engine.Example\bin\x86\Debug\Content\enemy.xnb</Output>
+      <Time>2008-12-18T10:47:38.682-05:00</Time>
       <Dependency>
         <Key>obj\x86\Debug\enemy%0.xml</Key>
-        <Value>2008-12-17T23:10:24.509793-05:00</Value>
+        <Value>2008-12-18T10:49:59.768-05:00</Value>
       </Dependency>
     </Item>
     <Item>
@@ -19,37 +19,37 @@
       <Importer>XImporter</Importer>
       <Options>IntermediateFile, DontCacheImportedData</Options>
       <Output>obj\x86\Debug\enemy%0.xml</Output>
-      <Time>2008-12-17T23:04:07.5710319-05:00</Time>
+      <Time>2008-12-18T10:47:38.682-05:00</Time>
     </Item>
     <BuildSuccessful>true</BuildSuccessful>
     <Settings>
       <TargetPlatform>Windows</TargetPlatform>
       <BuildConfiguration>Debug</BuildConfiguration>
-      <RootDirectory>C:\chang1\RC.Engine\RC.Engine.Example\Content\</RootDirectory>
-      <LoggerRootDirectory>C:\chang1\RC.Engine\RC.Engine.Example\</LoggerRootDirectory>
-      <IntermediateDirectory>C:\chang1\RC.Engine\RC.Engine.Example\Content\obj\x86\Debug\</IntermediateDirectory>
-      <OutputDirectory>C:\chang1\RC.Engine\RC.Engine.Example\bin\x86\Debug\Content\</OutputDirectory>
+      <RootDirectory>C:\Users\Chris\Documents\UofL\Classes\CECS 628\cannonmock\branches\service_creation\RC.Engine\RC.Engine.Example\Content\</RootDirectory>
+      <LoggerRootDirectory>C:\Users\Chris\Documents\UofL\Classes\CECS 628\cannonmock\branches\service_creation\RC.Engine\RC.Engine.Example\</LoggerRootDirectory>
+      <IntermediateDirectory>C:\Users\Chris\Documents\UofL\Classes\CECS 628\cannonmock\branches\service_creation\RC.Engine\RC.Engine.Example\Content\obj\x86\Debug\</IntermediateDirectory>
+      <OutputDirectory>C:\Users\Chris\Documents\UofL\Classes\CECS 628\cannonmock\branches\service_creation\RC.Engine\RC.Engine.Example\bin\x86\Debug\Content\</OutputDirectory>
     </Settings>
     <Assemblies>
       <Assembly>
-        <Key>C:\Program Files\Microsoft XNA\XNA Game Studio\v2.0\References\Windows\x86\Microsoft.Xna.Framework.Content.Pipeline.XImporter.dll</Key>
+        <Key>c:\Program Files\Microsoft XNA\XNA Game Studio\v2.0\References\Windows\x86\Microsoft.Xna.Framework.Content.Pipeline.XImporter.dll</Key>
         <Value>2007-11-28T12:08:00-05:00</Value>
       </Assembly>
       <Assembly>
-        <Key>C:\Program Files\Microsoft XNA\XNA Game Studio\v2.0\References\Windows\x86\Microsoft.Xna.Framework.Content.Pipeline.TextureImporter.dll</Key>
+        <Key>c:\Program Files\Microsoft XNA\XNA Game Studio\v2.0\References\Windows\x86\Microsoft.Xna.Framework.Content.Pipeline.TextureImporter.dll</Key>
         <Value>2007-11-28T12:08:42-05:00</Value>
       </Assembly>
       <Assembly>
-        <Key>C:\Program Files\Microsoft XNA\XNA Game Studio\v2.0\References\Windows\x86\Microsoft.Xna.Framework.Content.Pipeline.FBXImporter.dll</Key>
+        <Key>c:\Program Files\Microsoft XNA\XNA Game Studio\v2.0\References\Windows\x86\Microsoft.Xna.Framework.Content.Pipeline.FBXImporter.dll</Key>
         <Value>2007-11-28T12:08:30-05:00</Value>
       </Assembly>
       <Assembly>
-        <Key>C:\Program Files\Microsoft XNA\XNA Game Studio\v2.0\References\Windows\x86\Microsoft.Xna.Framework.Content.Pipeline.EffectImporter.dll</Key>
+        <Key>c:\Program Files\Microsoft XNA\XNA Game Studio\v2.0\References\Windows\x86\Microsoft.Xna.Framework.Content.Pipeline.EffectImporter.dll</Key>
         <Value>2007-11-28T12:07:44-05:00</Value>
       </Assembly>
       <Assembly>
-        <Key>C:\WINDOWS\assembly\GAC_32\Microsoft.Xna.Framework.Content.Pipeline\2.0.0.0__6d5c3888ef60e27d\Microsoft.Xna.Framework.Content.Pipeline.dll</Key>
-        <Value>2008-05-08T17:18:16.1875-04:00</Value>
+        <Key>C:\Windows\assembly\GAC_32\Microsoft.Xna.Framework.Content.Pipeline\2.0.0.0__6d5c3888ef60e27d\Microsoft.Xna.Framework.Content.Pipeline.dll</Key>
+        <Value>2008-09-26T19:30:45.1184079-04:00</Value>
       </Assembly>
     </Assemblies>
   </Asset>
