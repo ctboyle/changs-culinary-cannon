@@ -14,7 +14,7 @@ namespace RC.Physics
     {
         private PhysicsSystem physicSystem = null;
 
-        public JigLibXModule(Game game)
+        public JigLibXModule()
         {
             physicSystem = new PhysicsSystem();
             physicSystem.Gravity = new Vector3(0, -15f, 0);
@@ -23,15 +23,12 @@ namespace RC.Physics
             physicSystem.EnableFreezing = true;
             physicSystem.SolverType = PhysicsSystem.Solver.Normal;
             physicSystem.CollisionSystem.UseSweepTests = true;
-
-            #region Plugin To RC Engine
-            RCPluginManager plugin = (RCPluginManager)game.Services.GetService(typeof(RCPluginManager));
-            Plugin(plugin);
-            #endregion
         }
 
-        public void Plugin(RCPluginManager pluginMgr)
+        public void Plugin(Game game)
         {
+            RCPluginManager pluginMgr = (RCPluginManager)game.Services.GetService(typeof(RCPluginManager));
+
             pluginMgr.UpdateEvent += new EventHandler<RCPluginManager.GameTimeEventArgs>(UpdateEvent);
         }
 
