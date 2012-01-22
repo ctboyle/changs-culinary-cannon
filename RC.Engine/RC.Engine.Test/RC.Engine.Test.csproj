@@ -56,6 +56,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ExplositionSmokeParticalSystem.cs" />
     <Compile Include="FlyCameraController.cs" />
     <Compile Include="Game1.cs" />
     <Compile Include="GameState.cs" />
@@ -63,14 +64,6 @@
     <Compile Include="MeshCreator.cs" />
     <Compile Include="PhysicsVehicle.cs" />
     <Compile Include="PhysicsWheel.cs" />
-    <Compile Include="Particle\ExplositionSmokeParticalSystem.cs" />
-    <Compile Include="Particle\ParticleController.cs" />
-    <Compile Include="Particle\ParticleEffect.cs" />
-    <Compile Include="Particle\ParticleEmitter.cs" />
-    <Compile Include="Particle\ParticleSettings.cs" />
-    <Compile Include="Particle\ParticleSystem.cs" />
-    <Compile Include="Particle\ParticleVertex.cs" />
-    <Compile Include="Particle\SmokePlumeParticleSystem.cs" />
     <Compile Include="Player.cs" />
     <Compile Include="Potato.cs" />
     <Compile Include="PotatoPool.cs" />
@@ -78,6 +71,7 @@
     <Compile Include="Program.cs" />
     <Compile Include="RCLevel.cs" />
     <Compile Include="RCLevelParameters.cs" />
+    <Compile Include="SmokePlumeParticleSystem.cs" />
     <Compile Include="TestState.cs" />
   </ItemGroup>
   <ItemGroup>

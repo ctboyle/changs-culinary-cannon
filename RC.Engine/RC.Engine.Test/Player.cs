@@ -15,6 +15,7 @@ using JigLibX.Vehicles;
 using JigLibX.Physics;
 using JigLibX.Geometry;
 using RC.Engine.Test.Particle;
+using RC.Engine.Particle;
 using JigLibX.Collision;
 
 namespace RC.Engine.Test

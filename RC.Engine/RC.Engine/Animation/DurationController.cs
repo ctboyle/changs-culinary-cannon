@@ -62,7 +62,7 @@ namespace RC.Engine.Animation
             if (_isAnimating)
             {
                 bool isLastframe = false;
-                float incrementTime = (float)gameTime.ElapsedRealTime.TotalSeconds;
+                float incrementTime = (float)gameTime.ElapsedGameTime.TotalSeconds;
 
                 if (incrementTime > 0.03f)
                 {
