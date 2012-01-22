@@ -72,6 +72,7 @@ namespace RC.Engine.Animation
             {
                 _controlledItem = parent;
                 fSuccess = _controlledItem.AddController(this);
+                OnAttach();
             }
 
             return fSuccess;
@@ -91,5 +92,8 @@ namespace RC.Engine.Animation
         /// </summary>
         /// <param name="gameTime">The current gametime.</param>
         public abstract void Update(GameTime gameTime);
+        protected virtual void OnAttach()
+        {
+        }
     }
 }

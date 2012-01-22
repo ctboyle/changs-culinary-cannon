@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using Microsoft.Xna.Framework.Graphics;
+using RC.Engine.ContentManagement;
 
 namespace RC.Engine.Rendering
 {
@@ -42,7 +43,7 @@ namespace RC.Engine.Rendering
             get { return _stride; }
             set { _stride = value; }
         }
-        
+
         public int StartIndex
         {
             get { return _startIndex; }
@@ -94,7 +95,9 @@ namespace RC.Engine.Rendering
             RCVertexAttributes attributes,
             int numVertices,
             int baseVertex,
-            int startIndex
+            int startIndex,
+            int numPrimitives
+            
             )
         {
             _iBuffer = indexBuffer;
@@ -108,6 +111,35 @@ namespace RC.Engine.Rendering
             _startIndex = startIndex;
             _baseVertex = baseVertex;
             _numVertices = numVertices;
+            _numPrimitives = numPrimitives;
+
+        }
+
+        public RCVertexRefrence(
+            IGraphicsDeviceService graphics,
+            RCIndexBuffer indexBuffer,
+            RCVertexBuffer vertexBuffer,
+            int numVertices,
+            int baseVertex,
+            int startIndex,
+            int numPrimitives)
+        {
+
+            indexBuffer.Enable(graphics);
+            vertexBuffer.Enable(graphics);
+
+            _iBuffer = indexBuffer.IndexBuffer;
+            _vBuffer = vertexBuffer.VertexBuffer;
+
+            _vertexDeclaration = vertexBuffer.VertexDeclaration;
+
+            _stride = vertexBuffer.VertexSize;
+
+            _streamOffset = 0;
+            _startIndex = startIndex;
+            _baseVertex = baseVertex;
+            _numVertices = numVertices;
+            _numPrimitives = numPrimitives;
         }
     }
 }

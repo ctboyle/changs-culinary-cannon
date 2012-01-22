@@ -65,7 +65,25 @@ namespace RC.Engine.ContentManagement.ContentTypes
                     RCGeometry newPart = new RCGeometry();
                     newPart.PartData = vertexRefrence;
 
-                    newPart.Effects.Add(new RCModelPartEffect(xnaPart.Effect));
+                    if (xnaPart.Effect is BasicEffect)
+                    {
+                        RCMaterialState material = new RCMaterialState();
+                        
+                        BasicEffect basicEffect = (BasicEffect)xnaPart.Effect;
+
+                        material.Alpha = basicEffect.Alpha;
+                        material.Diffuse = new Color(basicEffect.DiffuseColor);
+                        material.Ambient = new Color(basicEffect.AmbientLightColor);
+                        //material.Specular = new Color(basicEffect.SpecularColor);
+                        material.Emissive = new Color(basicEffect.EmissiveColor);
+                        material.Shininess = basicEffect.SpecularPower;
+
+                        newPart.GlobalStates.Add(material);
+                    }
+					else
+					{
+						newPart.Effects.Add(new RCModelPartEffect(xnaPart.Effect));
+					}
 
                     newPart.LocalBound = new RCBoundingSphere(xnaMesh.BoundingSphere);
                     newPart.LocalTrans = xnaMesh.ParentBone.Transform;

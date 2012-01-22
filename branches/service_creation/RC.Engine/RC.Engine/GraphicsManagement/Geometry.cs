@@ -82,7 +82,7 @@ namespace RC.Engine.GraphicsManagement
                 {
                     // Create a new light effect and put it to be rendered first in the list.
                     _lightEffect = new RCLightEffect();
-                    Effects.Insert(0, _lightEffect);
+                    Effects.Add(_lightEffect);
                 }
                 // Make sure the
 

@@ -61,6 +61,34 @@ namespace RC.Engine.Rendering
             _data = new float[_channelQuantity];
         }
 
+        public void SetData(ElementType type, int vertexIndex, int channelIndex, float data)
+        {
+            if (channelIndex >= (int)_attributes.GetElementChannels(type))
+            {
+                throw new InvalidOperationException(
+                    "Channel Index Out of bounds for specifed type");
+            }
+            int offset = _attributes.GetElementOffset(type);
+            _data[_numChannelsPerVertex * vertexIndex + channelIndex + 0 + offset] = data;
+        }
+        public void SetData(ElementType type, int index, Vector2 data)
+        {
+            SetData(type, index, 0, data.X);
+            SetData(type, index, 1, data.Y);
+        }
+        public void SetData(ElementType type, int index, Vector3 data)
+        {
+            SetData(type, index, 0, data.X);
+            SetData(type, index, 1, data.Y);
+            SetData(type, index, 2, data.Z);
+        }
+        public void SetData(ElementType type, int index, Vector4 data)
+        {
+            SetData(type, index, 0, data.X);
+            SetData(type, index, 1, data.Y);
+            SetData(type, index, 2, data.Z);
+            SetData(type, index, 3, data.W);
+        }
         public void SetData(ElementType type, float[] data)
         {
             int numChannelsForType = (int)_attributes.GetElementChannels(type);
